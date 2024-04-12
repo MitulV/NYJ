@@ -155,7 +155,7 @@ class EventsController extends Controller
         return back();
     }
 
-    public function massDestroy(MassDestroyAmenityRequest $request)
+    public function massDestroy(Request $request)
     {
         abort_if(Gate::denies('Event_Management'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         

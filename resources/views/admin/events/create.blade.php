@@ -83,10 +83,10 @@
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <label for="description">Short Description (max 100 characters)</label>
-                                    <textarea class="form-control" name="shortDescription" id="description" rows="2" maxlength="100" style="resize: none;"
-                                        placeholder="Enter Short Description"></textarea>
+                                    <textarea class="form-control" name="shortDescription" id="description" maxlength="100"></textarea>
                                 </div>
                             </div>
+                            
                             <button type="button" class="btn btn-primary" id="nextButton1">Next</button>
                         </div>
                         <div id="location-details" class="content" role="tabpanel" aria-labelledby="location-details-trigger">
@@ -109,12 +109,15 @@
                             </div>
                             <div class="form-group">
                                 <label for="longDescription">Long Description</label>
-                                <textarea class="form-control" name="long_description" id="longDescription" rows="5" placeholder="Enter Long Description"></textarea>
+                                <textarea class="form-control" name="long_description" id="longDescription"></textarea>
                             </div>
+                           
                             <div class="form-group">
                                 <label for="termsConditions">Terms & Conditions</label>
                                 <textarea class="form-control" name="terms_conditions" id="termsConditions" rows="3" placeholder="Enter Terms & Conditions"></textarea>
                             </div>
+                            
+
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label for="ageRestrictions">Age Restrictions</label>
@@ -214,6 +217,7 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
+
             // Initially hide both Minimum Age and Maximum Age inputs
             $('#minAgeDiv').hide();
             $('#maxAgeDiv').hide();
@@ -247,10 +251,8 @@
                 var endDate = $('#endDate').val();
                 var endTime = $('#endTime').val();
                 var description = $('#description').val();
-
                 if (category === '-- Select --' || title.trim() === '' || startDate.trim() === '' ||
-                    startTime.trim() === '' || endDate.trim() === '' || endTime.trim() === '' || description
-                    .trim() === '') {
+                    startTime.trim() === '' || endDate.trim() === '' || endTime.trim() === '' || $('#description').summernote('isEmpty')) {
                     alert('Please fill out all required fields.');
                     return;
                 }
@@ -269,8 +271,8 @@
                 var minAge = $('#minAge').val();
                 var maxAge = $('#maxAge').val();
 
-                if (city === '-- Select --' || address.trim() === '' || longDescription.trim() === '' ||
-                    termsConditions.trim() === '' || ageRestrictions === '-- Select --') {
+                if (city === '-- Select --' || address.trim() === '' || $('#longDescription').summernote('isEmpty') ||
+                $('#termsConditions').summernote('isEmpty') || ageRestrictions === '-- Select --') {
                     alert('Please fill out all required fields.');
                     return;
                 }
@@ -325,6 +327,21 @@
                 reader.readAsDataURL(file);
             });
 
+            $('#longDescription').summernote({
+            height: 150
+            });
+
+            $('#description').summernote({
+            height: 100
+            });
+
+            $('#termsConditions').summernote({
+            height: 150
+            });
+
+            
+            
+           
         });
     </script>
 @endsection

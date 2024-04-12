@@ -58,33 +58,37 @@
                                 <div class="form-group col-md-6">
                                     <label for="title">Title</label>
                                     <input type="text" name="title" class="form-control" id="title"
-                                        value="{{$event->title}}">
+                                        value="{{ $event->title }}">
                                 </div>
 
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label for="startDate">Start Date</label>
-                                    <input type="date" class="form-control" name="startDate" id="startDate" value="{{date('Y-m-d', strtotime($event->start_date))}}">
+                                    <input type="date" class="form-control" name="startDate" id="startDate"
+                                        value="{{ date('Y-m-d', strtotime($event->start_date)) }}">
                                 </div>
                                 <div class="form-group col-md-2">
                                     <label for="startTime">Start Time</label>
-                                    <input type="time" class="form-control" name="startTime" id="startTime" value="{{$event->start_time}}">
+                                    <input type="time" class="form-control" name="startTime" id="startTime"
+                                        value="{{ $event->start_time }}">
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="endDate">End Date</label>
-                                    <input type="date" class="form-control" name="endDate" id="endDate" value="{{date('Y-m-d', strtotime($event->end_date))}}">
+                                    <input type="date" class="form-control" name="endDate" id="endDate"
+                                        value="{{ date('Y-m-d', strtotime($event->end_date)) }}">
                                 </div>
                                 <div class="form-group col-md-2">
                                     <label for="endTime">End Time</label>
-                                    <input type="time" class="form-control" name="endTime" id="endTime" value="{{$event->end_time}}">
+                                    <input type="time" class="form-control" name="endTime" id="endTime"
+                                        value="{{ $event->end_time }}">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <label for="description">Short Description (max 100 characters)</label>
                                     <textarea class="form-control" name="shortDescription" id="description" rows="2" maxlength="100"
-                                        style="resize: none;" >{{$event->short_description}}</textarea>
+                                        style="resize: none;">{{ $event->short_description }}</textarea>
                                 </div>
                             </div>
                             <button type="button" class="btn btn-primary" id="nextButton1">Next</button>
@@ -104,38 +108,40 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="address">Address</label>
-                                    <textarea class="form-control" name="address" id="address" rows="2">{{$event->address}}</textarea>
+                                    <textarea class="form-control" name="address" id="address" rows="2">{{ $event->address }}</textarea>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="longDescription">Long Description</label>
-                                <textarea class="form-control" name="long_description" id="longDescription" rows="5"
-                                    >{{$event->long_description}}</textarea>
+                                <textarea class="form-control" name="long_description" id="longDescription" rows="5">{{ $event->long_description }}</textarea>
                             </div>
                             <div class="form-group">
                                 <label for="termsConditions">Terms & Conditions</label>
                                 <textarea class="form-control" name="terms_conditions" id="termsConditions" rows="3"
-                                    placeholder="Enter Terms & Conditions">{{$event->terms_and_conditions}}</textarea>
+                                    placeholder="Enter Terms & Conditions">{{ $event->terms_and_conditions }}</textarea>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label for="ageRestrictions">Age Restrictions</label>
                                     <select id="ageRestrictions" name="age_restrictions" class="form-control">
-                                        <option value="{{ $event->age_restrictions }}">{{ $event->age_restrictions }}</option>
+                                        <option value="{{ $event->age_restrictions }}">{{ $event->age_restrictions }}
+                                        </option>
                                     </select>
                                 </div>
                                 @if ($event->min_age > 0)
-                                <div class="form-group col-md-4" id="minAgeDiv">
-                                    <label for="minAge">Minimum Age</label>
-                                    <input type="number" name="min_age" class="form-control" id="minAge" value="$event->min_age">
-                                </div>
+                                    <div class="form-group col-md-4" id="minAgeDiv">
+                                        <label for="minAge">Minimum Age</label>
+                                        <input type="number" name="min_age" class="form-control" id="minAge"
+                                            value="$event->min_age">
+                                    </div>
                                 @endif
 
                                 @if ($event->max_age > 0)
-                                <div class="form-group col-md-4" id="maxAgeDiv">
-                                    <label for="maxAge">Maximum Age</label>
-                                    <input type="number" name="max_age" class="form-control" id="maxAge" value="$event->max_age">
-                                </div>
+                                    <div class="form-group col-md-4" id="maxAgeDiv">
+                                        <label for="maxAge">Maximum Age</label>
+                                        <input type="number" name="max_age" class="form-control" id="maxAge"
+                                            value="$event->max_age">
+                                    </div>
                                 @endif
                             </div>
                             <button type="button" class="btn btn-primary" onclick="stepper.previous()">Previous</button>
@@ -147,12 +153,12 @@
                                 <div class="form-group col-md-6">
                                     <label for="ticketName">Ticket Name (formerly Ticket Type)</label>
                                     <input type="text" name="ticket_name" class="form-control" id="ticketName"
-                                        value="{{$event->tickets[0]->name}}">
+                                        value="{{ $event->tickets[0]->name }}">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="ticketDescription">Ticket Description</label>
                                     <input type="text" name="ticket_description" class="form-control"
-                                        id="ticketDescription" value="{{$event->tickets[0]->description}}">
+                                        id="ticketDescription" value="{{ $event->tickets[0]->description }}">
                                 </div>
                             </div>
                             <div class="form-row">
@@ -163,13 +169,13 @@
                                             <span class="input-group-text">$</span>
                                         </div>
                                         <input type="number" name="ticket_price" class="form-control" id="ticketPrice"
-                                        value="{{$event->tickets[0]->price}}">
+                                            value="{{ $event->tickets[0]->price }}">
                                     </div>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="ticketQuantity">Number of Tickets</label>
                                     <input type="number" name="ticket_quantity" class="form-control"
-                                        id="ticketQuantity" value="{{$event->tickets[0]->quantity}}">
+                                        id="ticketQuantity" value="{{ $event->tickets[0]->quantity }}">
                                 </div>
                             </div>
                             <button type="button" class="btn btn-primary" onclick="stepper.previous()">Previous</button>
@@ -183,7 +189,7 @@
                                     <label for="status">Status</label>
                                     <select id="status" name="status" class="form-control">
                                         @if ($event->status)
-                                        <option value="{{ $event->status}}">{{ $event->status }}</option>
+                                            <option value="{{ $event->status }}">{{ $event->status }}</option>
                                         @endif
                                     </select>
                                 </div>
@@ -191,8 +197,7 @@
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <label for="additionalInfo">Additional Info</label>
-                                    <textarea class="form-control" name="additionalInfo" id="additionalInfo" rows="3"
-                                        >{{$event->additional_info}}</textarea>
+                                    <textarea class="form-control" name="additionalInfo" id="additionalInfo" rows="3">{{ $event->additional_info }}</textarea>
                                 </div>
                             </div>
                             <button type="button" class="btn btn-primary" onclick="stepper.previous()">Previous</button>
@@ -308,6 +313,18 @@
                     alert('Please fill out all required fields.');
                     event.preventDefault(); // Prevent default form submission if validation fails
                 }
+            });
+
+            $('#longDescription').summernote({
+            height: 150
+            });
+
+            $('#description').summernote({
+            height: 100
+            });
+
+            $('#termsConditions').summernote({
+            height: 150
             });
 
         });
