@@ -26,6 +26,7 @@ return [
     'no'                                   => 'No',
     'pleaseSelect'                         => 'Please select',
     'register'                             => 'Register',
+    'register_account'                     => 'Register a new Account',
     'remember_me'                          => 'Remember me',
     'reset_password'                       => 'Reset Password',
     'save'                                 => 'Save',

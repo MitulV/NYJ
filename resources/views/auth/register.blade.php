@@ -10,14 +10,23 @@
     </div>
     <div class="card">
         <div class="card-body login-card-body">
-            <p class="login-box-msg">Sign in to start your session</p>
+            <p class="login-box-msg">Register a new membership</p>
             @if(\Session::has('message'))
                 <p class="alert alert-info">
                     {{ \Session::get('message') }}
                 </p>
             @endif
-            <form action="{{ route('login') }}" method="POST">
+            <form action="{{ route('register') }}" method="POST">
                 {{ csrf_field() }}
+
+                <div class="form-group">
+                    <input type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" required autofocus placeholder="{{ trans('global.name') }}" name="name" value="{{ old('name', null) }}">
+                    @if($errors->has('name'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('name') }}
+                        </div>
+                    @endif
+                </div>
 
                 <div class="form-group">
                     <input type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" required autofocus placeholder="{{ trans('global.login_email') }}" name="email" value="{{ old('email', null) }}">
@@ -37,32 +46,27 @@
                     @endif
                 </div>
 
+                <div class="form-group">
+                    <input type="password" class="form-control{{ $errors->has('password_confirmation') ? ' is-invalid' : '' }}" required placeholder="{{ trans('global.confirm_password') }}" name="password_confirmation">
+                    @if($errors->has('password_confirmation'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('password_confirmation') }}
+                        </div>
+                    @endif
+                </div>
+
 
                 <div class="row">
-                    <div class="col-8">
-                        <div class="icheck-primary">
-                            <input type="checkbox" name="remember" id="remember">
-                            <label for="remember">{{ trans('global.remember_me') }}</label>
-                        </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary btn-block btn-flat rounded">{{ trans('global.register') }}</button>
                     </div>
-                    <!-- /.col -->
-                    <div class="col-4">
-                        <button type="submit" class="btn btn-primary btn-block btn-flat">{{ trans('global.login') }}</button>
-                    </div>
-                    <!-- /.col -->
                 </div>
             </form>
 
 
-
-            <p class="mb-1">
-                <a class="" href="{{ route('password.request') }}">
-                    {{ trans('global.forgot_password') }}
-                </a>
-            </p>
             <p class="mb-1 mt-2">
-                <a class="" href="{{ route('register') }}">
-                    {{ trans('global.register_account') }}
+                <a class="" href="{{ route('login') }}">
+                    I already have a membership
                 </a>
             </p>
             <p class="mb-0">

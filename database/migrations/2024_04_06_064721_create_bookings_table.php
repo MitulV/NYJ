@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('status');
             $table->dateTime('booking_date_time');
             $table->integer('number_of_tickets');
-            // Other necessary fields
             $table->timestamps();
 
             

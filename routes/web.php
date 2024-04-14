@@ -25,10 +25,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::delete('users/destroy', 'UsersController@massDestroy')->name('users.massDestroy');
     Route::resource('users', 'UsersController');
 
-    // Organizers
-    Route::delete('organizers/destroy', 'OrganizerController@massDestroy')->name('organizers.massDestroy');
-    Route::resource('organizers', 'OrganizerController');
-
     // Events
     Route::delete('events/destroy', 'EventsController@massDestroy')->name('events.massDestroy');
     Route::resource('events', 'EventsController');

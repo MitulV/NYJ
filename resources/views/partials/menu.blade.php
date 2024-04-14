@@ -73,7 +73,7 @@
 
                 @can('Bookings')
                 <li class="nav-item">
-                    <a href="{{ route('admin.bookings.index') }}" class="nav-link {{ request()->is('user/my-bookings') || request()->is('user/my-bookings/*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.bookings.index') }}" class="nav-link {{ request()->is('admin/bookings') || request()->is('admin/bookings/*') ? 'active' : '' }}">
                         <p>
                             <i class="fas fa-fw fa-cart-plus"></i>
                             <span>Bookings</span>
