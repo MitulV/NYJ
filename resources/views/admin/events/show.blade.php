@@ -2,7 +2,7 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            {{ trans('global.create') }} {{ trans('cruds.events.title_singular') }}
+            {{ trans('cruds.events.title_singular') }} Details
         </div>
         <div class="card-body">
             <form id="eventForm" action="{{ route('admin.events.store') }}" method="POST" enctype="multipart/form-data">
@@ -58,7 +58,7 @@
                                 <div class="form-group col-md-6">
                                     <label for="title">Title</label>
                                     <input type="text" name="title" class="form-control" id="title"
-                                        value="{{ $event->title }}">
+                                        value="{{ $event->title }}" disabled>
                                 </div>
 
                             </div>
@@ -66,28 +66,35 @@
                                 <div class="form-group col-md-4">
                                     <label for="startDate">Start Date</label>
                                     <input type="date" class="form-control" name="startDate" id="startDate"
-                                        value="{{ date('Y-m-d', strtotime($event->start_date)) }}">
+                                        value="{{ date('Y-m-d', strtotime($event->start_date)) }}" disabled>
                                 </div>
                                 <div class="form-group col-md-2">
                                     <label for="startTime">Start Time</label>
                                     <input type="time" class="form-control" name="startTime" id="startTime"
-                                        value="{{ $event->start_time }}">
+                                        value="{{ $event->start_time }}" disabled>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="endDate">End Date</label>
                                     <input type="date" class="form-control" name="endDate" id="endDate"
-                                        value="{{ date('Y-m-d', strtotime($event->end_date)) }}">
+                                        value="{{ date('Y-m-d', strtotime($event->end_date)) }}" disabled>
                                 </div>
                                 <div class="form-group col-md-2">
                                     <label for="endTime">End Time</label>
                                     <input type="time" class="form-control" name="endTime" id="endTime"
-                                        value="{{ $event->end_time }}">
+                                        value="{{ $event->end_time }}" disabled>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="booking_deadline">Booking Deadline</label>
+                                    <input type="date" class="form-control" name="booking_deadline"
+                                        id="booking_deadline" value="{{ date('Y-m-d', strtotime($event->booking_deadline)) }}" disabled>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <label for="description">Short Description (max 100 characters)</label>
-                                    <textarea class="form-control" name="shortDescription" id="description" rows="2" maxlength="100"
+                                    <textarea class="form-control" name="shortDescription" id="shortDescription" rows="2" maxlength="100"
                                         style="resize: none;">{{ $event->short_description }}</textarea>
                                 </div>
                             </div>
@@ -98,7 +105,7 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="city">City</label>
-                                    <select id="city" name="city" class="form-control">
+                                    <select id="city" name="city" class="form-control" disabled>
                                         @if ($event->city)
                                             <option value="{{ $event->city->id }}">{{ $event->city->name }}</option>
                                         @endif
@@ -108,7 +115,7 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="address">Address</label>
-                                    <textarea class="form-control" name="address" id="address" rows="2">{{ $event->address }}</textarea>
+                                    <textarea class="form-control" name="address" id="address" rows="2" disabled>{{ $event->address }}</textarea>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -123,7 +130,7 @@
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label for="ageRestrictions">Age Restrictions</label>
-                                    <select id="ageRestrictions" name="age_restrictions" class="form-control">
+                                    <select id="ageRestrictions" name="age_restrictions" class="form-control" disabled>
                                         <option value="{{ $event->age_restrictions }}">{{ $event->age_restrictions }}
                                         </option>
                                     </select>
@@ -149,57 +156,64 @@
                         </div>
 
                         <div id="ticket-info" class="content" role="tabpanel" aria-labelledby="ticket-info-trigger">
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="ticketName">Ticket Name (formerly Ticket Type)</label>
-                                    <input type="text" name="ticket_name" class="form-control" id="ticketName"
-                                        value="{{ $event->tickets[0]->name }}">
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="ticketDescription">Ticket Description</label>
-                                    <input type="text" name="ticket_description" class="form-control"
-                                        id="ticketDescription" value="{{ $event->tickets[0]->description }}">
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="ticketPrice">Ticket Price</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">$</span>
+                            @foreach($event->tickets as $ticket)
+                                <div class="ticket-info-section">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="ticketName">Ticket Name</label>
+                                            <input type="text" name="ticket_name[]" class="form-control"
+                                                placeholder="Enter Ticket Name" value="{{ $ticket->name }}" disabled>
                                         </div>
-                                        <input type="number" name="ticket_price" class="form-control" id="ticketPrice"
-                                            value="{{ $event->tickets[0]->price }}">
+                                        <div class="form-group col-md-6">
+                                            <label for="ticketDescription">Ticket Description</label>
+                                            <input type="text" name="ticket_description[]" class="form-control"
+                                                placeholder="Enter Ticket Description" value="{{ $ticket->description }}" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="ticketPrice">Ticket Price</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">$</span>
+                                                </div>
+                                                <input type="number" name="ticket_price[]" class="form-control"
+                                                    placeholder="Enter Ticket Price" value="{{ $ticket->price }}" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="ticketQuantity">Number of Tickets</label>
+                                            <input type="number" name="ticket_quantity[]" class="form-control"
+                                                placeholder="Enter Number of Tickets" value="{{ $ticket->quantity }}" disabled>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <label for="ticketQuantity">Number of Tickets</label>
-                                    <input type="number" name="ticket_quantity" class="form-control"
-                                        id="ticketQuantity" value="{{ $event->tickets[0]->quantity }}">
-                                </div>
-                            </div>
+                            @endforeach
+                        
                             <button type="button" class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                             <button type="button" class="btn btn-primary" id="nextButton3">Next</button>
                         </div>
+                        
 
                         <div id="additional-info" class="content" role="tabpanel"
                             aria-labelledby="additional-info-trigger">
                             <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="status">Status</label>
-                                    <select id="status" name="status" class="form-control">
-                                        @if ($event->status)
-                                            <option value="{{ $event->status }}">{{ $event->status }}</option>
-                                        @endif
-                                    </select>
+                                <div class="form-group col-md-12">
+                                    <label for="additionalInfo">Additional Info</label>
+                                    <textarea class="form-control" name="additionalInfo" id="additionalInfo" rows="3" disabled>{{ $event->additional_info }}</textarea>
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-12">
-                                    <label for="additionalInfo">Additional Info</label>
-                                    <textarea class="form-control" name="additionalInfo" id="additionalInfo" rows="3">{{ $event->additional_info }}</textarea>
+                                <div class="form-group col-md-6">
+                                    <label for="banner1">Banner Image 1</label>
+                                    <img src="{{ $event->image1 }}" alt="Banner Image 1" style="max-width: 100%; height: auto;">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="banner2">Banner Image 2</label>
+                                    <img src="{{ $event->image2 }}" alt="Banner Image 2" style="max-width: 100%; height: auto;">
                                 </div>
                             </div>
+                            
                             <button type="button" class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                         </div>
 
@@ -240,92 +254,26 @@
             });
 
             $('#nextButton1').click(function() {
-                var category = $('#category').val();
-                var title = $('#title').val();
-                var startDate = $('#startDate').val();
-                var startTime = $('#startTime').val();
-                var endDate = $('#endDate').val();
-                var endTime = $('#endTime').val();
-                var description = $('#description').val();
-
-                if (category === '-- Select --' || title.trim() === '' || startDate.trim() === '' ||
-                    startTime.trim() === '' || endDate.trim() === '' || endTime.trim() === '' || description
-                    .trim() === '') {
-                    alert('Please fill out all required fields.');
-                    return;
-                }
-
-                // Proceed to the next step if all fields are filled
                 stepper.next(); // Assuming you have a stepper object
             });
 
 
             $('#nextButton2').click(function() {
-                var city = $('#city').val();
-                var address = $('#address').val();
-                var longDescription = $('#longDescription').val();
-                var termsConditions = $('#termsConditions').val();
-                var ageRestrictions = $('#ageRestrictions').val();
-                var minAge = $('#minAge').val();
-                var maxAge = $('#maxAge').val();
-
-                if (city === '-- Select --' || address.trim() === '' || longDescription.trim() === '' ||
-                    termsConditions.trim() === '' || ageRestrictions === '-- Select --') {
-                    alert('Please fill out all required fields.');
-                    return;
-                }
-
-                // Validate age restrictions
-                if (ageRestrictions === 'Minimum Age' && minAge.trim() === '') {
-                    alert('Please fill out the Minimum Age field.');
-                    return;
-                }
-                if (ageRestrictions === 'Maximum Age' && maxAge.trim() === '') {
-                    alert('Please fill out the Maximum Age field.');
-                    return;
-                }
-
-                // Proceed to the next step if all fields are filled
                 stepper.next(); // Assuming you have a stepper object
             });
 
             $('#nextButton3').click(function() {
-                var ticketName = $('#ticketName').val();
-                var ticketDescription = $('#ticketDescription').val();
-                var ticketPrice = $('#ticketPrice').val();
-                var ticketQuantity = $('#ticketQuantity').val();
-
-                if (ticketName.trim() === '' || ticketDescription.trim() === '' || ticketPrice.trim() ===
-                    '' || ticketQuantity.trim() === '') {
-                    alert('Please fill out all required fields.');
-                    return;
-                }
-
-                // Proceed to the next step if all fields are filled
                 stepper.next(); // Assuming you have a stepper object
             });
 
-            $('#eventForm').submit(function(event) {
-                var status = $('#status').val();
-                var additionalInfo = $('#additionalInfo').val();
+            $('#longDescription').summernote({height: 150,});
+            $('#longDescription').summernote('disable');
 
-                if (status === 'Choose...' || additionalInfo.trim() === '') {
-                    alert('Please fill out all required fields.');
-                    event.preventDefault(); // Prevent default form submission if validation fails
-                }
-            });
+            $('#shortDescription').summernote({height: 100});
+            $('#shortDescription').summernote('disable');
 
-            $('#longDescription').summernote({
-            height: 150
-            });
-
-            $('#description').summernote({
-            height: 100
-            });
-
-            $('#termsConditions').summernote({
-            height: 150
-            });
+            $('#termsConditions').summernote({height: 150});
+            $('#termsConditions').summernote('disable');
 
         });
     </script>

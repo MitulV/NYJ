@@ -27,7 +27,8 @@ class Event extends Model
         'min_age',
         'max_age',
         'additional_info',
-        'image1','image2'
+        'image1','image2',
+        'booking_deadline'
     ];
 
     protected $casts = [
@@ -53,5 +54,10 @@ class Event extends Model
     public function tickets()
     {
         return $this->hasMany(Ticket::class);
+    }
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
     }
 }

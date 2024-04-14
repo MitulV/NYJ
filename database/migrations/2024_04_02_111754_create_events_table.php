@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->increments('id');
-            // Add the user_id column to store the organizer's user ID
             $table->unsignedBigInteger('organizer_id');
             $table->string('title');
             $table->text('short_description')->nullable();
@@ -24,7 +23,7 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->unsignedBigInteger('city_id')->nullable();
             $table->unsignedBigInteger('category_id');
-            $table->string('status')->default('pending');
+            $table->enum('status', ['Draft', 'Published', 'Cancelled'])->default('Draft');
             $table->text('long_description')->nullable();
             $table->text('terms_and_conditions')->nullable();
             $table->string('age_restrictions')->nullable();
@@ -33,6 +32,7 @@ return new class extends Migration
             $table->text('additional_info')->nullable();
             $table->string('image1')->nullable();
             $table->string('image2')->nullable();
+            $table->dateTime('booking_deadline')->nullable();
             $table->timestamps();
         });
     }

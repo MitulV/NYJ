@@ -1,0 +1,330 @@
+*{
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: auto;
+    touch-action: none;
+  }
+  
+  nav a {
+  
+    font-weight: 500;
+  }
+  
+  .sticky-top-navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: #ffffff;
+    border-bottom: 1px solid rgb(234, 228, 228);
+    
+  }
+  
+  
+  
+  
+  .nav-link {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+  }
+  
+  .nav-link:hover {
+    color: #c35e28 !important;
+  }
+  
+  .nav-link:active {
+    color: #db5f1d !important;
+  }
+  
+  .hero-section {
+    height: 100vh;
+    background-color: #293047;
+    padding: 100px 0;
+  }
+  
+  .hero-section h1 {
+    color: white;
+    font-size: 60px;
+    font-weight: bold;
+    margin-bottom: 30px;
+  }
+  
+  .hero-content p {
+    color: white;
+    font-size: 24px;
+    margin-bottom: 30px;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    width: 65%;
+  }
+  
+  .hero-section img {
+    height:650px;
+    width: 650px;
+  
+  }
+  
+  .event-btn {
+    height: 6vh;
+    width: 12vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    background-color: #c1310d;
+  }
+  
+  .event-btn:hover {
+    background-color: #e2441d;
+  }
+
+  .card {
+    width: 45%;
+    height: 90%;
+    background-color: #fff;
+    border-radius: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    
+  }
+  
+  .card-body {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+  }
+
+  .flex-center{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url(https://www.eventbookings.com/wp-content/uploads/2023/02/shape-price-up.png);
+    background-size: 80%;
+    background-repeat: no-repeat;
+    background-position:72px -10px;
+  }
+  
+  .card h1 {
+    font-size: 90px;
+    color: #003F3E;
+    margin-bottom: -27px;
+  }
+
+  .card h3 {
+    font-size: 60px;
+    color: #003F3E;
+    margin-bottom: -0px;
+  }
+  
+  .card h2 {
+    font-size: 50px;
+    color: #ffffff;
+    margin-bottom: 10px;
+    background-image: linear-gradient(30deg, #d86b22 0%, #bd4d15 100%);
+    padding: 1px 45px;
+    border-radius: 40px;
+  }
+  
+ 
+  
+  .card p {
+    font-size: 16px;
+    color: #161515;
+    
+  }
+  .faq-section {
+    padding: 50px 0;
+    background-color: #F5F5FB;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .section-header {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .faq-item {
+    margin-bottom: 5px;
+   
+  }
+
+  .faq-section .container{
+    width: 60%;
+  }
+
+  .collapsible {
+    background-color: #ffffff;
+    color: #444;
+    cursor: pointer;
+    padding: 22px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-weight: 700;
+    font-size: 20px;
+    transition: background-color 0.3s ease;
+    position: relative;
+  }
+
+
+
+  .toggle-icon {
+    font-weight: bolder;
+    float: right;
+  }
+
+
+  .content {
+    padding: 0 18px;
+    overflow: hidden;
+    background-color: #ffffff;
+    max-height: 0;
+    transition: max-height 0.3s ease-out;
+  }
+
+  
+.footer {
+    background-color: #343a40;
+    color: #fff;
+    padding: 50px 0;
+  }
+  
+  .footer .gap {
+    gap: 50px;
+  }
+  
+  .footer h5 {
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  
+  .footer ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  
+  
+  .footer .gap-2 {
+    display: flex;
+    gap: 25px !important;
+    list-style: disc;
+  }
+  
+  .footer ul li {
+    margin-bottom: 10px;
+    color: #ccc;
+  }
+  
+  .footer ul li:hover {
+  
+    cursor: pointer;
+    color: #c35e28;
+  }
+  
+  .footer ul li a {
+    color: #db5f1d;
+  
+  }
+  
+  .footer ul li a:hover {
+    color: #fff;
+  
+  }
+  
+  .list-inline {
+    padding-left: 0;
+    list-style: none;
+    display: flex;
+  
+  }
+  
+  .list-inline-item {
+  
+    font-size: 30px;
+    margin-right: 10px;
+  }
+  
+  .list-inline-item a {
+    text-decoration: none;
+  }
+  
+  .list-inline-item:last-child {
+    margin-right: 0;
+  }
+  
+  
+  @media (max-width: 1024px) {
+    .hero-section {
+      height: 137vh;
+      padding: 78px 0;
+    }
+    .hero-section h1 {
+      font-size: 28px;
+    }
+  
+    .container{
+      width: 100%;
+    }
+  
+    .hero-content{
+      display: flex;
+      flex-direction: column;
+  
+      align-items: center;
+  }
+
+  .flex-center{
+    margin-top: 15vh;
+  }
+
+  .flex-center .card{
+    width: 100%;
+    height: 120%;
+  }
+
+  .hero-section h1{
+    font-size: 9vw;
+   text-align: center;
+  }
+  
+  .hero-content p{
+    text-align: center;
+    font-size: 20px;
+    width: 100%;
+}
+  .event-btn{
+    width: 100%;
+  }
+  
+  .hero-section img{
+    
+    height: 381px;
+    width: 330px;
+  
+  }
+
+  .faq-section .container{
+    width: 100%;
+  }
+
+ 
+
+}

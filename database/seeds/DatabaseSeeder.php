@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,7 +13,7 @@ class DatabaseSeeder extends Seeder
             UsersTableSeeder::class,
             RoleUserTableSeeder::class,
             CitySeeder::class,
-            CategorySeeder::class         
+            CategorySeeder::class      
         ]);
     }
 }

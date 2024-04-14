@@ -1,0 +1,328 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+
+
+nav a {
+
+  font-weight: 500;
+}
+
+.sticky-top-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: #ffffff;
+  border-bottom: 1px solid rgb(234, 228, 228);
+}
+
+
+
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+.nav-link:hover {
+  color: #c35e28 !important;
+}
+
+.nav-link:active {
+  color: #db5f1d !important;
+}
+
+
+.events-section {
+  padding: 150px 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url('https://www.eventbookings.com/wp-content/uploads/2023/02/explore-ev-bg.png');
+}
+
+.events-section .col {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.events-section .src-form {
+  width: 70%;
+}
+
+.section-header {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 40px;
+  width: 40%;
+}
+
+.form-control {
+  width: 100%;
+  height: 60px;
+  border-radius: 0;
+}
+
+.event-btn {
+
+  height: 6vh;
+  width: 12vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  background-color:#c1310d;
+  border: none;
+}
+
+.events-section .event-btn {
+  font-size: 20px;
+  font-weight: 650;
+  height: 60px;
+}
+
+.second-nav .navbar-nav {
+  margin-top: 10px;
+}
+
+.second-nav .navbar-nav .container {
+  display: flex;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 25px;
+}
+
+.second-nav .navbar-nav .nav-link {
+  border: 1px solid #e2dddd;
+  border-radius: 30px;
+  padding: 5px 20px !important;
+  color: #333333;
+  margin-right: 10px;
+}
+
+.second-nav .navbar-nav .nav-link:hover {
+  background-color: #bdc3c8;
+}
+
+.second-nav .navbar-nav .nav-link2 {
+  padding: 5px 20px !important;
+  color: #000000;
+  margin-right: 10px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.second-nav .navbar-nav .nav-link2:hover {
+
+  color: rgb(13, 211, 211);
+  border-bottom: 2px solid rgb(13, 211, 211);
+}
+
+
+.card {
+  width: 80%;
+  margin-bottom: 20px;
+}
+
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+.card-body {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.down-arrow {
+  position: absolute;
+
+  left: 50%;
+
+  cursor: pointer;
+}
+
+.down-arrow svg {
+  width: 30px;
+  height: 30px;
+  transition: fill 0.3s;
+}
+
+.down-arrow svg:hover {
+  fill: #c35e28;
+  /* Change color on hover */
+}
+
+.down-arrow svg path {
+  transition: transform 0.3s;
+}
+
+.down-arrow:hover svg path {
+  transform: translateY(5px);
+  /* Downward animation on hover */
+}
+
+.footer {
+  background-color: #343a40;
+  color: #fff;
+  padding: 50px 0;
+  margin-top: 12vh;
+}
+
+.footer .gap {
+  gap: 50px;
+}
+
+.footer h5 {
+  color: #fff;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.footer ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+
+.footer .gap-2 {
+  display: flex;
+  gap: 25px !important;
+  list-style: disc;
+}
+
+.footer ul li {
+  margin-bottom: 10px;
+  color: #ccc;
+}
+
+.footer ul li:hover {
+  
+  cursor: pointer;
+  color: #c35e28;
+}
+
+.footer ul li a {
+  color: #db5f1d;
+
+}
+
+.footer ul li a:hover {
+  color: #fff;
+
+}
+
+.list-inline {
+  padding-left: 0;
+  list-style: none;
+  display: flex;
+
+}
+
+.list-inline-item {
+
+  font-size: 30px;
+  margin-right: 10px;
+}
+
+.list-inline-item a {
+  text-decoration: none;
+}
+
+.list-inline-item:last-child {
+  margin-right: 0;
+}
+
+@media only screen and (max-width: 1024px) {
+
+  /* For mobile phones: */
+  .events-section {
+    padding: 50px 0;
+  }
+
+  .events-section .src-form {
+    width: 105%;
+  }
+
+  .section-header {
+    font-size: 25px;
+    text-align: center;
+    width: 100%;
+  }
+
+  .events-section .col {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+  }
+
+  .events-section .row {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .form-control {
+    width: 90%;
+  }
+
+  .event-btn {
+    width: 90%;
+  }
+
+  .second-nav .navbar>.container {
+    flex-direction: row;
+  }
+
+  .second-nav .navbar-nav {
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .second-nav .nav-item {
+    padding-bottom: 10px;
+  }
+
+  .second-nav .navbar-nav .nav-link {
+  width: max-content;
+}
+
+.second-nav .navbar-nav .nav-link2{
+  display: flex;
+  width: max-content;
+}
+
+  .container .cont-cent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .container .card {
+    width: 100%;
+
+  }
+ 
+
+}
+
+
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+
+  /* For tablets: */
+  .col-md-4 {
+
+    width: 50.333333%;
+  }
+}

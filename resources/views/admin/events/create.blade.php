@@ -48,24 +48,25 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="category">Category</label>
-                                    <select id="category"  name="category" class="form-control">
+                                    <select id="category" name="category" class="form-control">
                                         <option selected>-- Select --</option>
                                         @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
 
                                 <div class="form-group col-md-6">
                                     <label for="title">Title</label>
-                                    <input type="text" name="title" class="form-control" id="title" placeholder="Enter Title">
+                                    <input type="text" name="title" class="form-control" id="title"
+                                        placeholder="Enter Title">
                                 </div>
 
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label for="startDate">Start Date</label>
-                                    <input type="date" class="form-control" name="startDate" id="startDate">
+                                    <input type="date" class="form-control" name="startDate" id="startDate" min="{{ date('Y-m-d') }}">
                                 </div>
                                 <div class="form-group col-md-2">
                                     <label for="startTime">Start Time</label>
@@ -73,23 +74,34 @@
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="endDate">End Date</label>
-                                    <input type="date" class="form-control" name="endDate"  id="endDate">
+                                    <input type="date" class="form-control" name="endDate" id="endDate">
                                 </div>
                                 <div class="form-group col-md-2">
                                     <label for="endTime">End Time</label>
                                     <input type="time" class="form-control" name="endTime" id="endTime">
                                 </div>
                             </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="booking_deadline">Booking Deadline</label>
+                                    <input type="date" class="form-control" name="booking_deadline"
+                                        id="booking_deadline" min="{{ date('Y-m-d') }}">
+                                </div>
+                            </div>
+
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <label for="description">Short Description (max 100 characters)</label>
-                                    <textarea class="form-control" name="shortDescription" id="description" maxlength="100"></textarea>
+                                    <textarea class="form-control" name="shortDescription" id="shortDescription" maxlength="100"></textarea>
                                 </div>
                             </div>
-                            
+
+
                             <button type="button" class="btn btn-primary" id="nextButton1">Next</button>
                         </div>
-                        <div id="location-details" class="content" role="tabpanel" aria-labelledby="location-details-trigger">
+                        <div id="location-details" class="content" role="tabpanel"
+                            aria-labelledby="location-details-trigger">
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="city">City</label>
@@ -111,19 +123,19 @@
                                 <label for="longDescription">Long Description</label>
                                 <textarea class="form-control" name="long_description" id="longDescription"></textarea>
                             </div>
-                           
+
                             <div class="form-group">
                                 <label for="termsConditions">Terms & Conditions</label>
-                                <textarea class="form-control" name="terms_conditions" id="termsConditions" rows="3" placeholder="Enter Terms & Conditions"></textarea>
+                                <textarea class="form-control" name="terms_conditions" id="termsConditions" rows="3"
+                                    placeholder="Enter Terms & Conditions"></textarea>
                             </div>
-                            
+
 
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label for="ageRestrictions">Age Restrictions</label>
                                     <select id="ageRestrictions" name="age_restrictions" class="form-control">
-                                        <option selected>-- Select --</option>
-                                        <option>None</option>
+                                        <option selected>None</option>
                                         <option>Minimum Age</option>
                                         <option>Maximum Age</option>
                                     </select>
@@ -140,71 +152,74 @@
                             <button type="button" class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                             <button type="button" class="btn btn-primary" id="nextButton2">Next</button>
                         </div>
-                        
+
                         <div id="ticket-info" class="content" role="tabpanel" aria-labelledby="ticket-info-trigger">
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="ticketName">Ticket Name (formerly Ticket Type)</label>
-                                    <input type="text" name="ticket_name" class="form-control" id="ticketName" placeholder="Enter Ticket Name">
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="ticketDescription">Ticket Description</label>
-                                    <input type="text" name="ticket_description" class="form-control" id="ticketDescription" placeholder="Enter Ticket Description">
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="ticketPrice">Ticket Price</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">$</span>
-                                        </div>
-                                        <input type="number" name="ticket_price" class="form-control" id="ticketPrice" placeholder="Enter Ticket Price">
+                            <div class="ticket-info-section">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="ticketName">Ticket Name</label>
+                                        <input type="text" name="ticket_name[]" class="form-control"
+                                            placeholder="Enter Ticket Name">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="ticketDescription">Ticket Description</label>
+                                        <input type="text" name="ticket_description[]" class="form-control"
+                                            placeholder="Enter Ticket Description">
                                     </div>
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <label for="ticketQuantity">Number of Tickets</label>
-                                    <input type="number" name="ticket_quantity" class="form-control" id="ticketQuantity" placeholder="Enter Number of Tickets">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="ticketPrice">Ticket Price</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">$</span>
+                                            </div>
+                                            <input type="number" name="ticket_price[]" class="form-control"
+                                                placeholder="Enter Ticket Price">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="ticketQuantity">Number of Tickets</label>
+                                        <input type="number" name="ticket_quantity[]" class="form-control"
+                                            placeholder="Enter Number of Tickets">
+                                    </div>
                                 </div>
                             </div>
+                            <button type="button" class="btn btn-primary" id="addTicketButton">Add+</button>
                             <button type="button" class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                             <button type="button" class="btn btn-primary" id="nextButton3">Next</button>
                         </div>
-                        
-                        <div id="additional-info" class="content" role="tabpanel" aria-labelledby="additional-info-trigger">
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="status">Status</label>
-                                    <select id="status" name="status" class="form-control">
-                                        <option selected>Choose...</option>
-                                        <option selected>Active</option>
-                                        <option>Inactive</option>
-                                        <option>Cancelled</option>
-                                    </select>
-                                </div>
-                            </div>
+
+
+                        <div id="additional-info" class="content" role="tabpanel"
+                            aria-labelledby="additional-info-trigger">
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <label for="additionalInfo">Additional Info</label>
-                                    <textarea class="form-control" name="additionalInfo" id="additionalInfo" rows="3" placeholder="Enter Additional Info (e.g., special instructions, event rules)"></textarea>
+                                    <textarea class="form-control" name="additionalInfo" id="additionalInfo" rows="3"
+                                        placeholder="Enter Additional Info (e.g., special instructions, event rules)"></textarea>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="banner1">Banner Image 1</label>
-                                    <input type="file" class="form-control-file banner-input" id="banner1" name="banner1" accept="image/*">
-                                    <img id="preview1" src="#" alt="Preview of Banner Image 1" style="display: none; max-width: 100%; height: auto;">
+                                    <input type="file" class="form-control-file banner-input" id="banner1"
+                                        name="banner1" accept="image/*">
+                                    <img id="preview1" src="#" alt="Preview of Banner Image 1"
+                                        style="display: none; max-width: 100%; height: auto;">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="banner2">Banner Image 2</label>
-                                    <input type="file" class="form-control-file banner-input" id="banner2" name="banner2" accept="image/*">
-                                    <img id="preview2" src="#" alt="Preview of Banner Image 2" style="display: none; max-width: 100%; height: auto;">
+                                    <input type="file" class="form-control-file banner-input" id="banner2"
+                                        name="banner2" accept="image/*">
+                                    <img id="preview2" src="#" alt="Preview of Banner Image 2"
+                                        style="display: none; max-width: 100%; height: auto;">
                                 </div>
                             </div>
                             <button type="button" class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                             <button type="submit" class="btn btn-danger">Submit</button>
                         </div>
-                        
+
 
 
                     </div>
@@ -250,9 +265,10 @@
                 var startTime = $('#startTime').val();
                 var endDate = $('#endDate').val();
                 var endTime = $('#endTime').val();
-                var description = $('#description').val();
+                var description = $('#shortDescription').val();
                 if (category === '-- Select --' || title.trim() === '' || startDate.trim() === '' ||
-                    startTime.trim() === '' || endDate.trim() === '' || endTime.trim() === '' || $('#description').summernote('isEmpty')) {
+                    startTime.trim() === '' || endDate.trim() === '' || endTime.trim() === '' || $(
+                        '#shortDescription').summernote('isEmpty')) {
                     alert('Please fill out all required fields.');
                     return;
                 }
@@ -271,8 +287,9 @@
                 var minAge = $('#minAge').val();
                 var maxAge = $('#maxAge').val();
 
-                if (city === '-- Select --' || address.trim() === '' || $('#longDescription').summernote('isEmpty') ||
-                $('#termsConditions').summernote('isEmpty') || ageRestrictions === '-- Select --') {
+                if (city === '-- Select --' || address.trim() === '' || $('#longDescription').summernote(
+                        'isEmpty') ||
+                    $('#termsConditions').summernote('isEmpty') || ageRestrictions === '-- Select --') {
                     alert('Please fill out all required fields.');
                     return;
                 }
@@ -292,25 +309,45 @@
             });
 
             $('#nextButton3').click(function() {
-                var ticketName = $('#ticketName').val();
-                var ticketDescription = $('#ticketDescription').val();
-                var ticketPrice = $('#ticketPrice').val();
-                var ticketQuantity = $('#ticketQuantity').val();
+                var ticketSections = $('.ticket-info-section');
 
-                if (ticketName.trim() === '' || ticketDescription.trim() === '' || ticketPrice.trim() === '' || ticketQuantity.trim() === '') {
-                    alert('Please fill out all required fields.');
-                    return;
+                var isValid = true;
+                ticketSections.each(function(index, section) {
+                    var ticketName = $(section).find('.form-group input[name="ticket_name[]"]')
+                        .val();
+                    var ticketDescription = $(section).find(
+                        '.form-group input[name="ticket_description[]"]').val();
+                    var ticketPrice = $(section).find('.form-group input[name="ticket_price[]"]')
+                        .val();
+                    var ticketQuantity = $(section).find(
+                        '.form-group input[name="ticket_quantity[]"]').val();
+
+                    if (ticketName.trim() === '' || ticketDescription.trim() === '' || ticketPrice
+                        .trim() === '' || ticketQuantity.trim() === '') {
+                        isValid = false;
+                        alert('Please fill out all required fields in Ticket ' + (index + 1) + '.');
+                        return false;
+                    }
+                });
+
+                if (isValid) {
+                    stepper.next(); // Assuming you have a stepper object
                 }
-
-                // Proceed to the next step if all fields are filled
-                stepper.next(); // Assuming you have a stepper object
             });
 
             $('#eventForm').submit(function(event) {
-                var status = $('#status').val();
-                var additionalInfo = $('#additionalInfo').val();
 
-                if (status === 'Choose...' || additionalInfo.trim() === '') {
+                var shortDescriptionHtml = $('#shortDescription').summernote('code');
+                $('#shortDescription').val(shortDescriptionHtml);
+                var longDescriptionHtml = $('#longDescription').summernote('code');
+                $('#longDescription').val(longDescriptionHtml);
+                var termsConditionsHtml = $('#termsConditions').summernote('code');
+                $('#termsConditions').val(termsConditionsHtml);
+                
+                
+
+                var additionalInfo = $('#additionalInfo').val();
+                if (additionalInfo.trim() === '') {
                     alert('Please fill out all required fields.');
                     event.preventDefault(); // Prevent default form submission if validation fails
                 }
@@ -328,20 +365,34 @@
             });
 
             $('#longDescription').summernote({
-            height: 150
+                height: 150
             });
 
-            $('#description').summernote({
-            height: 100
+            $('#shortDescription').summernote({
+                height: 100
             });
 
             $('#termsConditions').summernote({
-            height: 150
+                height: 150
             });
 
-            
-            
-           
+        });
+    </script>
+
+
+    <script>
+        $('#addTicketButton').click(function() {
+            // Clone the ticket-info-section
+            var ticketSection = $('.ticket-info-section').first().clone(true);
+
+            // Clear input values in the cloned section
+            var inputs = ticketSection.find('input');
+            inputs.each(function() {
+                $(this).val('');
+            });
+
+            // Append the cloned section to the ticket-info-container div
+            $('.ticket-info-section').append(ticketSection);
         });
     </script>
 @endsection

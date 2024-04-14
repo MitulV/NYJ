@@ -1,0 +1,478 @@
+/* Custom CSS */
+*{
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+nav a {
+
+  font-weight: 500;
+}
+
+.sticky-top-navbar {
+  position: sticky!important;
+  top: 0;
+  z-index: 1000;
+  background-color: #ffffff;
+  border-bottom: 1px solid rgb(234, 228, 228);
+  padding: 0 42px;
+}
+
+
+
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+.nav-link:hover {
+  color: #c35e28 !important;
+}
+
+.nav-link:active {
+  color: #db5f1d !important;
+}
+
+.hero-section {
+  height: 100vh;
+  background-color: #293047;
+  padding: 100px 0;
+}
+
+.hero-section h1 {
+  color: white;
+  font-size: 60px;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+.hero-section p {
+  color: white;
+  font-size: 22px;
+  margin-bottom: 30px;
+  width: 85%;
+}
+
+.hero-section img {
+  height:650px;
+  width: 650px;
+
+}
+
+.event-btn {
+  height: 6vh;
+  width: 12vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  background-color: #c1310d;
+}
+
+.event-btn:hover {
+  background-color: #e2441d;
+}
+
+.event-logos {
+  padding: 50px 0;
+  text-align: center;
+}
+
+.event-logos p {
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.event-logos img {
+  max-width: 100px;
+  margin: 0 20px;
+  filter: grayscale(1);
+}
+
+.event-logos img:hover {
+  filter: none;
+}
+
+.advantages-section {
+  padding: 50px 0;
+  background-image: url("https://www.eventbookings.com/wp-content/uploads/2023/02/leverage-integrated-features-bg-min.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  text-align: center;
+}
+
+.advantages-section .mb-4 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+  text-align: start;
+}
+
+.advantages-section .flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.section-heading {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+.advantages-section img {
+  max-width: 100px;
+  margin-bottom: 20px;
+}
+
+.advantages-section h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.advantages-section p {
+  font-size: 16px;
+  color: #6c757d;
+  margin-bottom: 30px;
+}
+
+.btn-create-event {
+  margin-top: 30px;
+}
+
+.section-with-containers {
+
+  text-align: center;
+}
+
+.section-with-containers .container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.section-heading {
+  font-size: 50px;
+  font-weight: 620;
+  margin-bottom: 50px;
+}
+
+.container-item {
+  height: 500px;
+  background-color: #fff;
+  padding: 40px;
+  margin-bottom: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+}
+
+.container-item .ano-one {
+  margin-left: 8vw;
+  text-align: start;
+}
+
+.container-item .ano-two {
+  text-align: start;
+}
+
+
+
+
+.container-item img {
+  max-width: 80%;
+  height: auto;
+  border-radius: 10px;
+ 
+}
+
+.container-item h3 {
+  width: 80%;
+  font-size: 48px;
+  margin-bottom: 20px;
+  color: #293047;
+}
+
+.container-item p {
+  width: 80%;
+  font-size: 18px;
+  color: #6c757d;
+  margin-bottom: 20px;
+}
+
+.container-item a {
+  display: inline-block;
+  color: #293047;
+  border-bottom: #293047;
+  font-size: 18px;
+  transition: color 0.3s ease;
+}
+
+.container-item a:hover {
+  color: #0056b3;
+}
+
+
+
+.feature-section {
+  padding: 50px 0;
+  background-color: #F8F9FC;
+}
+
+.logo img {
+  max-width: 80%;
+}
+
+.section-heading {
+  color: #03363D;
+    font-size: 46px;
+    font-weight: 700;
+    line-height: 60px;
+    text-align: center;
+}
+
+.feature {
+  margin-bottom: 30px;
+  text-align: left;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+
+
+.feature .logo img  {
+  max-width: 100px;
+  display: block;
+  margin: 0 auto 15px;
+}
+
+.feature h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.feature p {
+  font-size: 16px;
+  color: #6c757d;
+  margin-bottom: 10px;
+}
+
+.scrollable-features {
+  max-height: 400px;
+  overflow-y: auto;
+
+}
+
+.scrollable-features::-webkit-scrollbar {
+  display: none;
+}
+
+.faq-section {
+
+  background-color: #F5F5FB;
+  height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+.faq-item {
+  margin-bottom: 5px;
+ 
+}
+
+.faq-section .container{
+  width: 60%;
+}
+
+.collapsible {
+  background-color: #ffffff;
+  color: #444;
+  cursor: pointer;
+  padding: 22px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-weight: 700;
+  font-size: 20px;
+  transition: background-color 0.3s ease;
+  position: relative;
+}
+
+
+
+.toggle-icon {
+  font-weight: bolder;
+  float: right;
+}
+
+
+.content {
+  padding: 0 18px;
+  overflow: hidden;
+  background-color: #ffffff;
+  max-height: 0;
+  transition: max-height 0.3s ease-out;
+}
+
+.footer {
+  background-color: #343a40;
+  color: #fff;
+  padding: 50px 0;
+}
+
+.footer .gap {
+  gap: 50px;
+}
+
+.footer h5 {
+  color: #fff;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.footer ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+
+.footer .gap-2 {
+  display: flex;
+  gap: 25px !important;
+  list-style: disc;
+}
+
+.footer ul li {
+  margin-bottom: 10px;
+  color: #ccc;
+}
+
+.footer ul li:hover {
+  
+  cursor: pointer;
+  color: #c35e28;
+}
+
+.footer ul li a {
+  color: #db5f1d;
+
+}
+
+.footer ul li a:hover {
+  color: #fff;
+
+}
+
+.list-inline {
+  padding-left: 0;
+  list-style: none;
+  display: flex;
+
+}
+
+.list-inline-item {
+
+  font-size: 30px;
+  margin-right: 10px;
+}
+
+.list-inline-item a {
+  text-decoration: none;
+}
+
+.list-inline-item:last-child {
+  margin-right: 0;
+}
+
+
+
+@media (max-width: 1024px) {
+
+  .section-heading {
+    font-size: 28px;
+       line-height: 35px;
+  }
+  .hero-section {
+    height: 90vh;
+    padding: 94px 0;
+  }
+  
+  .hero-section .col-md-6{
+display: flex;
+align-items: center;
+justify-content: center;
+  }
+
+  .hero-section h1 {
+    font-size: 28px;
+  }
+
+  .container{
+    width: 92%;
+  }
+
+  .hero-content{
+    display: flex;
+    flex-direction: column;
+justify-content: center;
+    align-items: center;
+}
+.hero-content h1, .hero-content p{
+  text-align: center;
+}
+.event-btn{
+  width: 100%;
+}
+
+.hero-section img{
+  
+  height: 381px;
+  width: 330px;
+
+}
+
+.section-with-containers{
+  height: 206vh;
+}
+
+.container-item{
+  flex-direction: column;
+}
+.container-item h3{
+  font-size: 25px;
+}
+.container-item .ano-one {
+   margin-left: 0; 
+ 
+}
+
+.advantages-section .mb-4 {
+  flex-direction: column;
+  align-items: start;
+}
+svg{
+  height: 70px;
+}
+
+.faq-section{
+  height: 88vh;
+}
+}
