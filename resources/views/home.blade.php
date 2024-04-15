@@ -39,7 +39,7 @@
                     <a href="{{ route('admin.home') }}" class="nav-link me-3">Greeting, Sign In</a>
                 @endauth
 
-                <a href="#" class="event-btn me-3">Create Event</a>
+                <a href="{{ route('register') }}" class="event-btn me-3">Create Event</a>
             </div>
         </div>
     </nav>

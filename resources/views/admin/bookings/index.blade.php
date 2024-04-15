@@ -20,7 +20,6 @@
                     <thead>
                         <tr>
                             <th width="10"></th>
-                            <th>{{ trans('cruds.city.fields.id') }}</th>
                             <th>User Name</th>
                             <th>Amount</th>
                             <th>Event Name</th>
@@ -33,7 +32,6 @@
                         @foreach ($bookings as $key => $booking)
                             <tr data-entry-id="{{ $booking->id }}">
                                 <td></td>
-                                <td>{{ $booking->id ?? '' }}</td>
                                 <td>{{ $booking->user->name ?? '' }}</td>
                                 <td>{{ $booking->amount ?? '' }}</td>
                                 <td>{{ $booking->event->name ?? '' }}</td>

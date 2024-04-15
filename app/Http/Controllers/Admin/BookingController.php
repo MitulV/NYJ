@@ -14,8 +14,18 @@ class BookingController extends Controller
     public function index()
     {
         abort_if(Gate::denies('Bookings'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $bookings = Booking::all();
+        
+        /** @var \App\User $user */
+        $user = auth()->user();
+        
+        if ($user->isAdmin()) {
+            $bookings = Booking::all();
+        } elseif ($user->isOrganizer()) {
+            $organizerId = $user->id;
+            $bookings = Booking::whereHas('event', function ($query) use ($organizerId) {
+                $query->where('organizer_id', $organizerId);
+            })->get();
+        }    
 
         return view('admin.bookings.index', compact('bookings'));
     }
