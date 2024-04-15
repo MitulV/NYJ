@@ -13,7 +13,8 @@ class DatabaseSeeder extends Seeder
             UsersTableSeeder::class,
             RoleUserTableSeeder::class,
             CitySeeder::class,
-            CategorySeeder::class      
+            CategorySeeder::class,
+            EventSeeder::class      
         ]);
     }
 }

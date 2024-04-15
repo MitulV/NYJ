@@ -18,8 +18,15 @@ class EventsController extends Controller
     public function index()
     {
         abort_if(Gate::denies('Event_Management'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        /** @var \App\User $user */
+        $user = auth()->user();
 
-        $events = Event::all();
+        if ($user->isAdmin()) {
+            $events = Event::all();
+        } elseif ($user->isOrganizer()) {
+            $events = Event::where('organizer_id', $user->id)->get();
+        } 
+        
         return view('admin.events.index', compact('events'));
     }
 
