@@ -59,7 +59,7 @@
         </div>
     </section>
 
-    <nav class="navbar navbar-expand-lg navbar-light second-nav mt-4">
+    {{-- <nav class="navbar navbar-expand-lg navbar-light second-nav mt-4">
         <div class="container">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-4">
                 <li class="nav-item">
@@ -86,31 +86,16 @@
                 <!-- Add more buttons as needed -->
             </ul>
         </div>
-    </nav>
+    </nav> --}}
 
     <nav class="navbar navbar-expand-lg navbar-light second-nav">
         <div class="container">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link2 active" aria-current="page" href="#">All</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link2" href="#">Art</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link2" href="#">Buisness</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link2" href="#">Coaching and consulting</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link2" href="#">Free</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link2" href="#">Others</a>
-                </li>
-
-                <!-- Add more buttons as needed -->
+                @foreach ($categories as $category)
+                    <li class="nav-item">
+                        <a class="nav-link2 active" aria-current="page" href="#">{{$category->name}}</a>
+                    </li>  
+                @endforeach
             </ul>
         </div>
     </nav>
@@ -134,10 +119,10 @@
                             <div class="col">
                                 <p class="card-text" style="font-weight: 700">AUD $174.0</p>
 
-                                <p class="card-text">Multiple session</p>
+                                {{ \Illuminate\Support\Carbon::parse($event->start_date)->format('l jS F') }}
                             </div>
                             <div class="col">
-                                <p class="card-text">6 Remaining</p>
+                                <p class="card-text"></p>
                             </div>
                         </div>
                     </div>

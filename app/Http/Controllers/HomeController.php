@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Event;
 
 class HomeController extends Controller
@@ -13,7 +14,8 @@ class HomeController extends Controller
 
     public function events(){
         $events = Event::where('status', 'Published')->get();
-        return view('events',compact('events'));
+        $categories = Category::all();
+        return view('events',compact('events','categories'));
     }
 
     public function pricing(){
