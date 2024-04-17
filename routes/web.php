@@ -44,3 +44,13 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('my-bookings', 'MyBookingsController@index')->name('mybookings.index');
     Route::get('my-bookings/{booking}', 'MyBookingsController@show')->name('mybookings.show');
 });
+
+
+
+Route::get('details', 'UserEventBookingController@eventDetails')->name('eventDetails');
+Route::post('book-event', 'UserEventBookingController@bookEvent')->name('bookEvent');
+
+Route::group(['middleware' => ['auth']], function () {
+
+});
+   

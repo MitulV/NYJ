@@ -104,7 +104,7 @@
         <div class="row">
           @foreach ($events as $event)
           <div class="col-md-4 cont-cent">
-            <a href="/Album.html">
+            <a href="{{ route('eventDetails', ['eventId' => $event->id]) }}">
                 <div class="card">
                     <img src="https://www.eventbookings.com/upload/orgs/33a6ad50c21d4b49492077607be029e2/events/a9bbc342-5582-4f3b-be11-ad63f908e03a.jpeg?q=100&fit=crop-center&crop=3854%2C1764%2C177%2C533&s=e30634f008443c59474c07c9b0e15d81"
                         class="card-img-top" alt="..." />

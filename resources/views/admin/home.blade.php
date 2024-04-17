@@ -84,7 +84,7 @@
             var revenueData = [];
 
             @foreach ($revenueData as $data)
-                labels.push("{{ Carbon::createFromDate($data->year, $data->month, 1)->format('M Y') }}");
+                labels.push("{{ \Carbon\Carbon::createFromDate($data->year, $data->month, 1)->format('M Y') }}");
                 revenueData.push("{{ $data->total_revenue }}");
             @endforeach
 

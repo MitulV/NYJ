@@ -54,7 +54,7 @@
                                     {{ $booking->status }}
                                 </td>
                                 <td>
-                                    <a class="btn btn-xs btn-primary" href="{{ route('user.mybookings.show', $city->id) }}">
+                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.mybookings.show', $booking->id) }}">
                                         {{ trans('global.view') }}
                                     </a>
                                 </td>

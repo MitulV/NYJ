@@ -21,8 +21,6 @@ class MyBookingsController extends Controller
     public function show(Booking $booking)
     {
         abort_if(Gate::denies('My_Bookings'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        //$booking->load('permissions');
-
         return view('admin.mybookings.show', compact('booking'));
     }
 

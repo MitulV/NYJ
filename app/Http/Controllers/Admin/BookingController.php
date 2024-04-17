@@ -43,7 +43,6 @@ class BookingController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            // Add other validation rules as needed
         ]);
         if ($validator->fails()) {
             return redirect()->back()
@@ -68,7 +67,6 @@ class BookingController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            // Add other validation rules as needed
         ]);
 
         if ($validator->fails()) {
