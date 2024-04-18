@@ -3,6 +3,7 @@
     <!-- Add input fields for user details -->
     Name: <input type="text" name="name"> 
     Email:<input type="email" name="email">
+
     Password:<input type="password" name="password">
 
     <!-- Add hidden input fields for other parameters -->
