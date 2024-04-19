@@ -66,11 +66,16 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class);
     }
 
+    public function stripeSettings()
+    {
+        return $this->hasOne(StripeSetting::class);
+    }
+
     public function isAdmin()
     {
         return $this->roles->contains('title', 'Admin');
     }
-    
+
     public function isOrganizer()
     {
         return $this->roles->contains('title', 'Organizer');

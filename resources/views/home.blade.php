@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>NYJ Tickets</title>
+    <title>{{ trans('panel.site_title') }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
@@ -13,7 +13,7 @@
 
 <body>
     <nav class="navbar navbar-expand-lg  sticky-top-navbar">
-        <a href="{{ route('home') }}"><img src="{{ asset('img/NYJ_LOGO.png') }}" alt="Logo" height="100" /></a>
+        <a href="{{route('home')}}"><img src="{{ asset('img/NYJ_LOGO.png') }}" alt="Logo" height="100" /></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -33,11 +33,11 @@
 
             </ul>
             <div class="d-flex">
-                @auth
-                    <a href="{{ route('admin.home') }}" class="nav-link me-3">Greeting, {{ Auth::user()->name }}</a>
+                @if (auth()->check())
+                    <a href="{{ route('login') }}" class="nav-link me-3">{{ auth()->user()->name }}</a>
                 @else
-                    <a href="{{ route('admin.home') }}" class="nav-link me-3">Greeting, Sign In</a>
-                @endauth
+                    <a href="{{ route('login') }}" class="nav-link me-3">Greeting, Sign In</a>
+                @endif
 
                 <a href="{{ route('register') }}" class="event-btn me-3">Create Event</a>
             </div>
@@ -54,12 +54,11 @@
                             Explore the reasons why event planners are turning to NYJ
                             Events. Competitive fees are just the beginning.
                         </p>
-                        <a href="#" class="event-btn">Create Event</a>
+                        <a href="{{ route('register') }}" class="event-btn">Create Event</a>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <img src="https://www.eventbookings.com/wp-content/uploads/2023/02/EventBrite-banner-1.png"
-                        alt="Hero Image" class="hero-image" />
+                <div class="col-md-6 d-flex align-items-center justify-content-center">
+                    <img src="{{ asset('img/img1.jpeg') }}" alt="Hero Image" class="hero-image" />
                 </div>
             </div>
         </div>
@@ -101,7 +100,7 @@
                     <h1 class="section-heading">10 advantages of using NYJ Events</h1>
                 </div>
             </div>
-            <div class="row">
+            <div class="row rsws">
                 <div class="col-md-6">
                     <div class="row flex-center">
                         <div class="mb-4">
@@ -320,7 +319,7 @@
             </div>
             <div class="row">
                 <div class="col flex-center">
-                    <a href="#" class="event-btn">Create your first event</a>
+                    <a href="{{ route('register') }}" class="event-btn">Create your first event</a>
                     <p>Create your first event in minutes</p>
                 </div>
             </div>
@@ -338,7 +337,7 @@
             <div class="col-md-12">
                 <div class="container-item">
                     <div class="col-md-6 order-md-2">
-                        <img src="https://www.eventbookings.com/wp-content/uploads/2023/02/st.png" alt="Image 2" />
+                        <img src="{{ asset('img/img2.jpeg') }}" alt="Image 2" />
                     </div>
                     <div class="col-md-6 order-md-1 ano-two">
                         <h3>
@@ -356,8 +355,7 @@
             <div class="col-md-12">
                 <div class="container-item">
                     <div class="col-md-6">
-                        <img src="https://www.eventbookings.com/wp-content/uploads/2023/02/Design-a-stunning-page.png"
-                            alt="Image 5" />
+                        <img src="{{ asset('img/img3.jpeg') }}" alt="Image 5" />
                     </div>
                     <div class="col-md-6 ano-one">
                         <h3>Tailor your event pages to fit your unique vision.</h3>
@@ -372,8 +370,7 @@
             <div class="col-md-12">
                 <div class="container-item">
                     <div class="col-md-6 order-md-2">
-                        <img src="https://www.eventbookings.com/wp-content/uploads/2024/01/multiple-ticket-types.png"
-                            alt="Image 6" />
+                        <img src="{{ asset('img/img4.jpeg') }}" alt="Image 6" />
                     </div>
                     <div class="col-md-6 order-md-1 ano-two">
                         <h3>
@@ -398,8 +395,7 @@
                 <h1 class="section-heading">Explore NYJ Events' full feature set</h1>
                 <div class="col-md-6">
                     <div class="logo">
-                        <img src="https://www.eventbookings.com/wp-content/uploads/2023/02/Event-image.png"
-                            alt="Logo" />
+                        <img src="{{ asset('img/img3.jpeg') }}" alt="Logo" />
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -528,8 +524,7 @@
             <div class="row align-items-start">
                 <div class="col-md-6">
                     <div class="logo">
-                        <img src="https://www.eventbookings.com/wp-content/uploads/2024/01/multiple-ticket-types.png"
-                            alt="Logo" />
+                        <img src="{{ asset('img/img4.jpeg') }}" alt="Logo" />
                     </div>
                 </div>
                 <div class="col-md-6">

@@ -44,4 +44,18 @@ class UserEventBookingController extends Controller
 
         return redirect()->route('admin.mybookings.index');
     }
+
+    public function registerUser(Request $request){
+        return view('registerUser');
+    }
+
+    public function storeUser(Request $request){
+        $user = User::create([
+            'name' => $request->name,
+            'email' =>$request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        $user->roles()->attach(3);
+    }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\StripeController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -50,7 +51,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 Route::get('details', 'UserEventBookingController@eventDetails')->name('eventDetails');
 Route::post('book-event', 'UserEventBookingController@bookEvent')->name('bookEvent');
 
-Route::group(['middleware' => ['auth']], function () {
+Route::get('register-user', 'UserEventBookingController@registerUser')->name('registerUser.index');
+Route::post('register-user', 'UserEventBookingController@storeUser')->name('registerUser.store');
 
-});
-   
+
+Route::get('/stripe/reauth',[StripeController::class, 'reauth'])->name('reauth');
+Route::get('/stripe/return',[StripeController::class, 'return'])->name('return');

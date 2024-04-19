@@ -1,7 +1,15 @@
 @extends('layouts.admin')
 @section('content')
+    @if (auth()->user()->stripe_connected_account_id === null && auth()->user()->isOrganizer())
+        <div class="alert alert-danger alert-dismissible">
+            <h5><i class="icon fas fa-info"></i> Warning!</h5>
+            Please Connect with Stripe to Access the plateform.
+            <a href="">Click Here</a>
+        </div>
+    @endif
+
     <div style="margin-bottom: 10px;" class="row">
-        @if(auth()->user()->isOrganizer())
+        @if (auth()->user()->isOrganizer() && auth()->user()->stripe_connected_account_id != null)
             <div class="col-lg-12">
                 <a class="btn btn-success" href="{{ route('admin.events.create') }}">
                     {{ trans('global.create') }} {{ trans('cruds.events.title_singular') }}
@@ -68,7 +76,7 @@
                                     @endif
 
 
-                                    @if($event->bookings->count() === 0)
+                                    @if ($event->bookings->count() === 0)
                                         <form action="{{ route('admin.events.destroy', $event->id) }}" method="POST"
                                             onsubmit="return confirm('{{ trans('global.areYouSure') }}');"
                                             style="display: inline-block;">
@@ -78,8 +86,8 @@
                                                 value="{{ trans('global.delete') }}">
                                         </form>
                                     @endif
-    
-                                   
+
+
 
 
 

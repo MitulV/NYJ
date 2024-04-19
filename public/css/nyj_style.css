@@ -40,9 +40,9 @@ nav a {
 }
 
 .hero-section {
-  height: 100vh;
+  height: auto;
   background-color: #293047;
-  padding: 100px 0;
+  padding: 23vh 10vh;
 }
 
 .hero-section h1 {
@@ -60,8 +60,9 @@ nav a {
 }
 
 .hero-section img {
-  height:650px;
-  width: 650px;
+  height:50vh;
+  width: auto;
+  border-radius: 25px;
 
 }
 
@@ -232,6 +233,7 @@ nav a {
 
 .logo img {
   max-width: 80%;
+  border-radius: 25px;
 }
 
 .section-heading {
@@ -406,12 +408,20 @@ nav a {
 
 @media (max-width: 1024px) {
 
+  .faq-section .container {
+width: 100%;
+  }
+  
+
+
   .section-heading {
     font-size: 28px;
        line-height: 35px;
+    
+       text-align: center;
   }
   .hero-section {
-    height: 90vh;
+    height: 100%;
     padding: 94px 0;
   }
   
@@ -419,6 +429,7 @@ nav a {
 display: flex;
 align-items: center;
 justify-content: center;
+margin-bottom: 10vh;
   }
 
   .hero-section h1 {
@@ -444,17 +455,33 @@ justify-content: center;
 
 .hero-section img{
   
-  height: 381px;
-  width: 330px;
+  height: 340px;
+  width: 100%;
 
 }
 
 .section-with-containers{
-  height: 206vh;
+  height: auto;
 }
 
 .container-item{
   flex-direction: column;
+  padding: 0;
+}
+
+.container-item .order-md-2{
+  display: flex;
+  align-items: start;
+}
+
+.container-item .col-md-6{
+   display: flex;
+  align-items: start;
+  flex-direction: column;
+}
+
+.container-item img {
+  margin-bottom: 2vh;
 }
 .container-item h3{
   font-size: 25px;
@@ -462,6 +489,10 @@ justify-content: center;
 .container-item .ano-one {
    margin-left: 0; 
  
+}
+
+.advantages-section {
+  display: flex;
 }
 
 .advantages-section .mb-4 {

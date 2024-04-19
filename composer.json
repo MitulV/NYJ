@@ -13,6 +13,7 @@
         "laravel/tinker": "*",
         "laravel/ui": "*",
         "spatie/laravel-medialibrary": "*",
+        "stripe/stripe-php": "^14.3",
         "yajra/laravel-datatables-oracle": "*"
     },
     "require-dev": {

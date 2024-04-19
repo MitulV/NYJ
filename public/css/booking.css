@@ -1,0 +1,112 @@
+*{
+    margin: 0;
+    padding: 0;
+  }
+  
+  html {
+    scroll-behavior: auto;
+  }
+
+ 
+
+  .header.curved {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 7rem;
+    overflow-x: hidden;
+    z-index: 10000;
+}
+
+.header.curved:before {
+    border-radius: 0 0 100% 100%;
+    position: absolute;
+    background-color: #0f354b;
+    height: 7rem;
+    right: -300px;
+    left: -300px;
+    content: "";
+    top: 0;
+    z-index: -1;
+}
+
+.header.curved .logo {
+    height: 100%;
+    max-width: 75rem;
+  
+    padding-right: .9375rem;
+    padding-left: .9375rem;
+    background-repeat: no-repeat;
+    background-size: auto 3rem;
+    background-position: 50%;
+    background-image: url(https://www.ticketsource.co.uk/images/ticketsource-white.svg);
+    background-position: .75rem 1.6rem;
+}
+
+.sticky-bottom-navbar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: rgba(0,0,0,.08); /* Change this to the desired background color */
+  z-index: 1000; /* Adjust the z-index as needed */
+}
+
+.sticky-bottom-navbar h2{
+  font-size: 22px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif !important;
+  
+}
+
+.event-btn {
+
+  height: 6vh;
+  width: 8vw;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  background-color:#c1310d;
+  border: none;
+}
+
+
+
+
+@media (max-width: 1024px) {
+  .header.curved .logo{
+    margin-left: 24vw;
+  
+  }
+
+  #select{
+    margin-left: 0;
+    padding: 0 25px;
+  }
+
+  .grid{
+    gap: 5vh;
+  }
+
+  .ml-\[17\.5rem\] {
+    margin-left: 0 !important;
+  }
+
+  .pl-\[38rem\] {
+    padding-left: 0 !important;
+  }
+
+  .sticky-bottom-navbar{
+    align-items: center  !important;
+    justify-content: center !important;
+  }
+
+  .event-btn {width: 50%;}
+
+
+}
+  
