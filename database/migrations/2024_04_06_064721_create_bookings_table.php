@@ -20,9 +20,8 @@ return new class extends Migration
             $table->string('status');
             $table->dateTime('booking_date_time');
             $table->integer('number_of_tickets');
+            $table->boolean('checked_in')->default(false);
             $table->timestamps();
-
-            
         });
     }
 

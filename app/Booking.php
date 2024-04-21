@@ -19,6 +19,7 @@ class Booking extends Model
         'status',
         'booking_date_time',
         'number_of_tickets',
+        'checked_in',
     ];
 
     public function event()
