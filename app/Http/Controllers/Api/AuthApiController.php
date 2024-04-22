@@ -15,18 +15,19 @@ class AuthApiController extends Controller
         $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required', 'string'],
-            'type' => ['required', 'string', 'in:user,organizer']
+            'type' => ['required', 'string', 'in:User,Organizer']
         ]);
 
-        $user = User::where('email', $request->email)->with('profile')->first();
+        $user = User::where('email', $request->email)->first();
 
         if (!$user ||  !Hash::check($request->password, $user->password)) {
             return response()->json(['error' => 'UnAuthenticated'], 401);
         }
 
-        if($request->input('type')=='user' && $user->isOrganizer()){
+
+        if($request->input('type')=='User' && $user->isOrganizer()){
             return response()->json(['error' => 'Invalid Inputs'], 401);
-        }else if($request->input('type')=='organizer' && $user->isUser()){
+        }else if($request->input('type')=='Organizer' && $user->isUser()){
             return response()->json(['error' => 'Invalid Inputs'], 401);
         }
 
