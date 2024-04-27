@@ -1,15 +1,25 @@
 @extends('layouts.admin')
 @section('content')
-    @if (auth()->user()->stripe_connected_account_id === null && auth()->user()->isOrganizer())
+    @if (auth()->user()->isOrganizer() && !auth()->user()->stripeSettings()->exists())
         <div class="alert alert-danger alert-dismissible">
             <h5><i class="icon fas fa-info"></i> Warning!</h5>
-            Please Connect with Stripe to Access the plateform.
-            <a href="">Click Here</a>
+            Please Connect with Admin Team.
+        </div>
+    @endif
+    @if (auth()->user()->isOrganizer() &&
+            auth()->user()->stripeSettings()->exists() &&
+            !auth()->user()->stripeSettings()->first()->details_submitted)
+        <div class="alert alert-danger alert-dismissible">
+            <h5><i class="icon fas fa-info"></i> Warning!</h5>
+            Please Connect with Stripe to Access the platform.
+            <a href="{{ auth()->user()->stripeSettings->onboarding_url }}">Click Here</a>
         </div>
     @endif
 
     <div style="margin-bottom: 10px;" class="row">
-        @if (auth()->user()->isOrganizer() && auth()->user()->stripe_connected_account_id != null)
+        @if (auth()->user()->isOrganizer() &&
+                auth()->user()->stripeSettings()->exists() &&
+                auth()->user()->stripeSettings()->first()->details_submitted)
             <div class="col-lg-12">
                 <a class="btn btn-success" href="{{ route('admin.events.create') }}">
                     {{ trans('global.create') }} {{ trans('cruds.events.title_singular') }}

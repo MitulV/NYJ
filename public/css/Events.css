@@ -71,16 +71,16 @@ nav a {
 }
 
 .event-btn {
-
   height: 6vh;
-  width: 12vw;
+  width: 8vw;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
   text-decoration: none;
   font-weight: 600;
-  background-color:#c1310d;
+  background-color: #c1310d;
   border: none;
 }
 
@@ -114,11 +114,13 @@ nav a {
 }
 
 .second-nav .navbar-nav .nav-link2 {
-  padding: 5px 20px !important;
+  padding: 5px 10px !important;
   color: #000000;
   margin-right: 10px;
   text-decoration: none;
   font-weight: 600;
+  display: flex;
+  height: 40px;
 }
 
 .second-nav .navbar-nav .nav-link2:hover {

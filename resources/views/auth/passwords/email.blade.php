@@ -3,9 +3,7 @@
 <div class="login-box">
     <div class="login-logo">
         <div class="login-logo">
-            <a href="#">
-                {{ trans('panel.site_title') }}
-            </a>
+            <a href="{{route('home')}}"><img src="{{ asset('img/NYJ_LOGO.png') }}" alt="Logo" height="100" /></a>
         </div>
     </div>
     <div class="card">

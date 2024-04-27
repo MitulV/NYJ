@@ -1,19 +1,18 @@
 @extends('layouts.admin')
 @section('content')
     <div class="content">
-        @if (auth()->user()->isOrganizer())
-            @if (!auth()->user()->stripeSettings()->exists())
+        @if (auth()->user()->isOrganizer() && !auth()->user()->stripeSettings()->exists())
+                <div class="alert alert-danger alert-dismissible">
+                    <h5><i class="icon fas fa-info"></i> Warning!</h5>
+                    Please Connect with Admin Team.
+                </div>
+        @endif
+        @if (auth()->user()->isOrganizer() && auth()->user()->stripeSettings()->exists() && !auth()->user()->stripeSettings()->first()->details_submitted)
                 <div class="alert alert-danger alert-dismissible">
                     <h5><i class="icon fas fa-info"></i> Warning!</h5>
                     Please Connect with Stripe to Access the platform.
-                    <a href="">Click Here</a>
+                    <a href="{{ auth()->user()->stripeSettings->onboarding_url }}">Click Here</a>
                 </div>
-            @elseif(auth()->user()->stripeSettings()->exists() && !auth()->user()->stripeSettings()->first()->details_submitted)
-                <div class="alert alert-info alert-dismissible">
-                    <h5><i class="icon fas fa-info"></i> Note!</h5>
-                    Please contact the admin to complete the setup.
-                </div>
-            @endif
         @endif
 
 

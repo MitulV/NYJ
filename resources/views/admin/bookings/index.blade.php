@@ -1,14 +1,20 @@
 @extends('layouts.admin')
 @section('content')
-    @can('amenity_create')
-        <div style="margin-bottom: 10px;" class="row">
-            <div class="col-lg-12">
-                <a class="btn btn-success" href="{{ route('admin.bookings.create') }}">
-                    {{ trans('global.add') }} {{ trans('cruds.city.title_singular') }}
-                </a>
-            </div>
+    @if (auth()->user()->isOrganizer() && !auth()->user()->stripeSettings()->exists())
+        <div class="alert alert-danger alert-dismissible">
+            <h5><i class="icon fas fa-info"></i> Warning!</h5>
+            Please Connect with Admin Team.
         </div>
-    @endcan
+    @endif
+    @if (auth()->user()->isOrganizer() &&
+            auth()->user()->stripeSettings()->exists() &&
+            !auth()->user()->stripeSettings()->first()->details_submitted)
+        <div class="alert alert-danger alert-dismissible">
+            <h5><i class="icon fas fa-info"></i> Warning!</h5>
+            Please Connect with Stripe to Access the platform.
+            <a href="{{ auth()->user()->stripeSettings->onboarding_url }}">Click Here</a>
+        </div>
+    @endif
     <div class="card">
         <div class="card-header">
             {{ trans('cruds.city.title_singular') }} {{ trans('global.list') }}
@@ -38,23 +44,23 @@
                                 <td>{{ $booking->reference_number ?? '' }}</td>
                                 <td>{{ $booking->status ?? '' }}</td>
                                 <td>
-                                    
-                                        <a class="btn btn-xs btn-primary"
-                                            href="{{ route('admin.cities.show', $booking->id) }}">{{ trans('global.view') }}</a>
-                                   
-                                        <a class="btn btn-xs btn-info"
-                                            href="{{ route('admin.cities.edit', $booking->id) }}">{{ trans('global.edit') }}</a>
-                                  
-                                    
-                                        <form action="{{ route('admin.cities.destroy', $booking->id) }}" method="POST"
-                                            onsubmit="return confirm('{{ trans('global.areYouSure') }}');"
-                                            style="display: inline-block;">
-                                            <input type="hidden" name="_method" value="DELETE">
-                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                            <input type="submit" class="btn btn-xs btn-danger"
-                                                value="{{ trans('global.delete') }}">
-                                        </form>
-                                    
+
+                                    <a class="btn btn-xs btn-primary"
+                                        href="{{ route('admin.cities.show', $booking->id) }}">{{ trans('global.view') }}</a>
+
+                                    <a class="btn btn-xs btn-info"
+                                        href="{{ route('admin.cities.edit', $booking->id) }}">{{ trans('global.edit') }}</a>
+
+
+                                    <form action="{{ route('admin.cities.destroy', $booking->id) }}" method="POST"
+                                        onsubmit="return confirm('{{ trans('global.areYouSure') }}');"
+                                        style="display: inline-block;">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        <input type="submit" class="btn btn-xs btn-danger"
+                                            value="{{ trans('global.delete') }}">
+                                    </form>
+
                                 </td>
                             </tr>
                         @endforeach

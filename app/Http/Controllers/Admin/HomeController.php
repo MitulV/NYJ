@@ -11,18 +11,26 @@ class HomeController
     {
         /** @var \App\User $user */
         $user = auth()->user();
+
+        if ($user->isUser()) {
+            return redirect()->route('admin.mybookings.index');
+        }
+
         $counts = null;
         $revenueData = null;
 
         if ($user->isAdmin()) {
             $counts = [
                 'totalEvents' => Event::count(),
-                'totalTicketsSold' => Booking::sum('number_of_tickets'),
+                'totalTicketsSold' => Booking::where('status', 'complete')->with('tickets')->get()->sum(function ($booking) {
+                    return $booking->tickets->sum('pivot.quantity');
+                }),
                 'upcomingEvents' => Event::where('start_date', '>', now())->count(),
-                'totalRevenue' => Booking::sum('amount')
+                'totalRevenue' => Booking::where('status', 'complete')->sum('amount')
             ];
 
-            $revenueData = Booking::selectRaw('YEAR(booking_date_time) as year, MONTH(booking_date_time) as month, SUM(amount) as total_revenue')
+            $revenueData = Booking::where('status', 'complete')
+                ->selectRaw('YEAR(booking_date_time) as year, MONTH(booking_date_time) as month, SUM(amount) as total_revenue')
                 ->groupBy('year', 'month')
                 ->orderBy('year')
                 ->orderBy('month')
@@ -33,18 +41,21 @@ class HomeController
                 'totalEvents' => Event::where('organizer_id', $organizerId)->count(),
                 'totalTicketsSold' => Booking::whereHas('event', function ($query) use ($organizerId) {
                     $query->where('organizer_id', $organizerId);
-                })->sum('number_of_tickets'),
+                })->where('status', 'complete')->with('tickets')->get()->sum(function ($booking) {
+                    return $booking->tickets->sum('pivot.quantity');
+                }),
                 'upcomingEvents' => Event::where('organizer_id', $organizerId)
                     ->where('start_date', '>', now())
                     ->count(),
                 'totalRevenue' => Booking::whereHas('event', function ($query) use ($organizerId) {
                     $query->where('organizer_id', $organizerId);
-                })->sum('amount')
+                })->where('status', 'complete')->sum('amount')
             ];
 
             $revenueData = Booking::whereHas('event', function ($query) use ($organizerId) {
                 $query->where('organizer_id', $organizerId);
             })
+                ->where('status', 'complete')
                 ->selectRaw('YEAR(booking_date_time) as year, MONTH(booking_date_time) as month, SUM(amount) as total_revenue')
                 ->groupBy('year', 'month')
                 ->orderBy('year')

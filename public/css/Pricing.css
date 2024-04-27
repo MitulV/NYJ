@@ -71,7 +71,8 @@ nav a {
   
   .event-btn {
     height: 6vh;
-    width: 12vw;
+    width: 8vw;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -79,6 +80,7 @@ nav a {
     text-decoration: none;
     font-weight: 600;
     background-color: #c1310d;
+    border: none;
   }
   
   .event-btn:hover {

@@ -5,18 +5,22 @@ namespace App;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class StripeSetting extends Model
+class Transaction extends Model
 {
     use HasFactory;
 
-    protected $table = 'stripe_settings';
-
     protected $fillable = [
+        'stripe_checkout_id',
+        'booking_id',
         'user_id',
-        'account_id',
-        'onboarding_url',
-        'details_submitted'
+        'amount_total',
+        'status',
     ];
+
+    public function booking()
+    {
+        return $this->belongsTo(Booking::class);
+    }
 
     public function user()
     {

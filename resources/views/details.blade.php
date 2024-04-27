@@ -1,29 +1,10 @@
-{{-- <form method="POST" action="{{ route('bookEvent') }}">
-    @csrf
-    <!-- Add input fields for user details -->
-    Name: <input type="text" name="name"> 
-    Email:<input type="email" name="email">
-
-    Password:<input type="password" name="password">
-
-    <!-- Add hidden input fields for other parameters -->
-    <input type="hidden" name="event_id" value="{{ $event->id }}"> <!-- Assuming $event is the event object -->
-    <input type="hidden" name="number_of_tickets" value="1"> <!-- Set the default number of tickets -->
-    <input type="hidden" name="amount" value="100">
-    <input type="hidden" name="booking_date_time" value="{{ now()->toDateTimeString() }}"> <!-- Set booking date time to current time -->
-
-    <!-- You can add more fields here for additional details if needed -->
-
-    <button type="submit">Book Event</button>
-</form> --}}
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Album Page</title>
+    <title>{{ trans('panel.site_title') }} - Event Detail</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('css/details.css') }}" />
@@ -44,16 +25,21 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="/Events.html">Explore Events</a>
+                    <a class="nav-link" href="{{ route('events') }}">Explore Events</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/Pricing.html">Pricing</a>
+                    <a class="nav-link" href="{{ route('pricing') }}">Pricing</a>
                 </li>
 
             </ul>
             <div class="d-flex">
-                <a href="#" class="nav-link me-3">Greeting, Sign In</a>
-                <a href="#" class="event-btn me-3">Create Event</a>
+                @if (auth()->check())
+                    <a href="{{ route('login') }}" class="nav-link me-3">{{ auth()->user()->name }}</a>
+                @else
+                    <a href="{{ route('login') }}" class="nav-link me-3">Greeting, Sign In</a>
+                @endif
+
+                <a href="{{ route('register') }}" class="event-btn me-3">Create Event</a>
             </div>
         </div>
     </nav>
@@ -108,7 +94,7 @@
 
                 <div class="event-details mt-4">
                     <h2>About This Event</h2>
-                    <p>{{$event->short_description}}</p>
+                    <p>{{ $event->short_description }}</p>
                     <p>This time bigger and better, we are so excited to have some of Australia's leading choreographers
                         and dancers coming to inspire our dancers!</p>
                 </div>
@@ -234,11 +220,11 @@
 
     <nav class="navbar navbar-expand-lg sticky-bottom-navbar d-flex py-4 px-5 align-items-end justify-content-between">
         <div class="d-flex align-items-center justify-content-center">
-            <h2>AUD {{$event->tickets()->first()->price}}</h2>
+            <h2>AUD {{ $event->tickets()->first()->price }}</h2>
         </div>
 
 
-        <a href="{{route('registerUser.index')}}" class="event-btn">Purchase Ticket</a>
+        <a href="{{ route('registerUser.index', ['event_id' => $event->id]) }}" class="event-btn">Purchase Ticket</a>
 
     </nav>
 

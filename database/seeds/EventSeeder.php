@@ -4,6 +4,7 @@ use App\Event;
 use App\Ticket;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
+use Stripe\StripeClient;
 
 class EventSeeder extends Seeder
 {
@@ -57,17 +58,34 @@ class EventSeeder extends Seeder
                 'additional_info' => $faker->text(),
                 'image1' => $banner1,
                 'image2' => $banner2,
+                'status' => 'Published',
                 'booking_deadline' => $faker->dateTimeBetween($endDate, strtotime('+1 month'))
             ]);
 
-            // Create tickets for the event
+
+            $stripe = new StripeClient(config('stripe.api_keys.secret_key'));
+
             for ($j = 0; $j < rand(1, 5); $j++) {
+
+                $ticketName = $faker->word();
+                $price = $faker->randomFloat(2, 0, 100);
+                // Convert the price to cents
+                $price_in_cents = (int)($price * 100);
+
+                $productObj = $stripe->products->create(['name' => $ticketName]);
+                $priceObj = $stripe->prices->create([
+                    'currency' => 'usd',
+                    'unit_amount' => $price_in_cents,
+                    'product' => $productObj->id
+                ]);
                 Ticket::create([
                     'event_id' => $event->id,
-                    'name' => $faker->word(),
+                    'name' => $ticketName,
                     'description' => $faker->text(50),
-                    'price' => $faker->randomFloat(2, 0, 100),
+                    'price' => $price,
                     'quantity' => $faker->numberBetween(0, 100),
+                    'stripe_product_id' => $productObj->id,
+                    'stripe_price_id' => $priceObj->id
                 ]);
             }
         }

@@ -18,9 +18,13 @@ class Booking extends Model
         'amount',
         'status',
         'booking_date_time',
-        'number_of_tickets',
         'checked_in',
     ];
+
+    public function tickets()
+    {
+        return $this->belongsToMany(Ticket::class, 'booking_tickets')->withPivot('quantity');
+    }
 
     public function event()
     {
@@ -38,7 +42,7 @@ class Booking extends Model
 
         // Define event listeners or actions here
         static::creating(function ($booking) {
-            $booking->reference_number = strtoupper(Str::random(8)); // Generate an 8-character alphanumeric code
+            $booking->reference_number = strtoupper(Str::random(12)); // Generate an 12-character alphanumeric code
 
         });
     }

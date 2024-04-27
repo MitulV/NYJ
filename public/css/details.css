@@ -39,19 +39,19 @@ nav a {
   color: #db5f1d !important;
 }
 
-  .event-btn {
-
-    height: 6vh;
-    width: 12vw;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    background-color:#c1310d;
-    border: none;
-  }
+.event-btn {
+  height: 6vh;
+  width: 11vw;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  background-color: #c1310d;
+  border: none;
+}
   
   .date-section {
     margin-bottom: 20px;

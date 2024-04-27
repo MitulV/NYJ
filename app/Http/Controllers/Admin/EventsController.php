@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
+use Stripe\StripeClient;
 
 class EventsController extends Controller
 {
@@ -25,8 +26,8 @@ class EventsController extends Controller
             $events = Event::all();
         } elseif ($user->isOrganizer()) {
             $events = Event::where('organizer_id', $user->id)->get();
-        } 
-        
+        }
+
         return view('admin.events.index', compact('events'));
     }
 
@@ -41,6 +42,7 @@ class EventsController extends Controller
 
     public function store(Request $request)
     {
+
         abort_if(Gate::denies('Event_Management'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $validator = Validator::make($request->all(), [
             'category' => 'required|numeric', // Example validation rule for category (required and numeric)
@@ -111,16 +113,54 @@ class EventsController extends Controller
         $ticketPrices = $request->input('ticket_price');
         $ticketQuantities = $request->input('ticket_quantity');
 
+        /** @var \App\User $user */
+        $user = auth()->user();
+        $stripe = new StripeClient(config('stripe.api_keys.secret_key'));
+
         // Iterate through the arrays and create Ticket records
         foreach ($ticketNames as $key => $ticketName) {
+            $price_in_cents = (int)($ticketPrices[$key] * 100);
+            $product = $stripe->products->create(['name' => $ticketName]);
+            $price = $stripe->prices->create([
+                'currency' => 'usd',
+                'unit_amount' => $price_in_cents,
+                'product' => $product->id
+            ]);
+
             Ticket::create([
                 'event_id' => $event->id,
                 'name' => $ticketName,
                 'description' => $ticketDescriptions[$key],
-                'price' => $ticketPrices[$key],
+                'price' => $price_in_cents,
                 'quantity' => $ticketQuantities[$key],
+                'stripe_product_id' => $product->id,
+                'stripe_price_id' => $price->id
             ]);
         }
+
+        if ($request->has('group_ticket_name')) {
+
+            $price_in_cents = (int)($request->input('group_ticket_price') * 100);
+            $product = $stripe->products->create(['name' => $request->input('group_ticket_name')]);
+            $price = $stripe->prices->create([
+                'currency' => 'usd',
+                'unit_amount' => $price_in_cents,
+                'product' => $product->id
+            ]);
+
+            Ticket::create([
+                'event_id' => $event->id,
+                'name' => $request->input('group_ticket_name'),
+                'description' => $request->input('group_ticket_description'),
+                'price' => $price_in_cents,
+                'quantity' => $request->input('group_ticket_quantity'),
+                'group_count' =>$request->input('group_count'),
+                'stripe_product_id' => $product->id,
+                'stripe_price_id' => $price->id
+            ]);
+        }
+
+        
 
         return redirect()->route('admin.events.index');
     }
@@ -187,6 +227,7 @@ class EventsController extends Controller
             'booking_deadline' => $request->input('booking_deadline'),
         ]);
 
+        $stripe = new StripeClient(config('stripe.api_keys.secret_key'));
 
         foreach ($request->input('tickets', []) as $ticketData) {
             if (isset($ticketData['id'])) {
@@ -200,12 +241,24 @@ class EventsController extends Controller
                 ]);
             } else {
                 // If the ticket does not have an ID, it's a new ticket, so create it
+
+
+                $price_in_cents = (int)($ticketData['price'] * 100);
+                $product = $stripe->products->create(['name' => $ticketData['name']]);
+                $price = $stripe->prices->create([
+                    'currency' => 'usd',
+                    'unit_amount' => $price_in_cents,
+                    'product' => $product->id
+                ]);
+
                 Ticket::create([
                     'event_id' => $event->id,
                     'name' => $ticketData['name'],
                     'description' => $ticketData['description'],
                     'price' => $ticketData['price'],
                     'quantity' => $ticketData['quantity'],
+                    'stripe_product_id' => $product->id,
+                    'stripe_price_id' => $price->id
                 ]);
             }
         }

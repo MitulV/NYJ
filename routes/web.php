@@ -1,14 +1,12 @@
 <?php
 
 use App\Http\Controllers\StripeController;
+use App\Http\Controllers\UserEventBookingController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
 
 Route::get('/', 'HomeController@index')->name('home');
-Route::get('/events', 'HomeController@events')->name('events');
-Route::get('/pricing', 'HomeController@pricing')->name('pricing');
-Route::get('speaker/{speaker}', 'HomeController@view')->name('speaker');
 Route::redirect('/home', '/admin');
 Auth::routes();
 
@@ -46,14 +44,19 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('my-bookings/{booking}', 'MyBookingsController@show')->name('mybookings.show');
 });
 
-
+Route::get('/events', 'HomeController@events')->name('events');
+Route::get('/pricing', 'HomeController@pricing')->name('pricing');
+Route::get('/stepper', 'HomeController@stepper')->name('stepper');
 
 Route::get('details', 'UserEventBookingController@eventDetails')->name('eventDetails');
+Route::get('register-user', 'UserEventBookingController@registerUser')->name('registerUser.index');
 Route::post('book-event', 'UserEventBookingController@bookEvent')->name('bookEvent');
 
-Route::get('register-user', 'UserEventBookingController@registerUser')->name('registerUser.index');
-Route::post('register-user', 'UserEventBookingController@storeUser')->name('registerUser.store');
-
-
-Route::get('/stripe/reauth',[StripeController::class, 'reauth'])->name('reauth');
+Route::get('/stripe/refresh',[StripeController::class, 'refresh'])->name('refresh');
 Route::get('/stripe/return',[StripeController::class, 'return'])->name('return');
+
+Route::get('/payment/success',[UserEventBookingController::class, 'paymentSuccess'])->name('paymentSuccess');
+Route::get('/payment/cancel',[UserEventBookingController::class, 'paymentCancel'])->name('paymentCancel');
+
+
+Route::get('/stripe/delete-account',[StripeController::class, 'deleteAccount'])->name('delete.account');

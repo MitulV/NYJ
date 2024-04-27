@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('stripe_settings', function (Blueprint $table) {
+        Schema::create('booking_tickets', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->string('account_id');
-            $table->string('onboarding_url')->nullable();
-            $table->boolean('details_submitted')->default(false);
+            $table->foreignId('booking_id')->constrained()->onDelete('cascade');
+            $table->foreignId('ticket_id')->constrained()->onDelete('cascade');
+            $table->unsignedInteger('quantity');
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('stripe_settings');
+        Schema::dropIfExists('booking_tickets');
     }
 };

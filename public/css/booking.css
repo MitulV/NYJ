@@ -1,15 +1,13 @@
-*{
+* {
     margin: 0;
     padding: 0;
-  }
-  
-  html {
+}
+
+html {
     scroll-behavior: auto;
-  }
+}
 
- 
-
-  .header.curved {
+.header.curved {
     position: absolute;
     top: 0;
     left: 0;
@@ -34,79 +32,81 @@
 .header.curved .logo {
     height: 100%;
     max-width: 75rem;
-  
-    padding-right: .9375rem;
-    padding-left: .9375rem;
+
+    padding-right: 0.9375rem;
+    padding-left: 0.9375rem;
     background-repeat: no-repeat;
     background-size: auto 3rem;
     background-position: 50%;
     background-image: url(https://www.ticketsource.co.uk/images/ticketsource-white.svg);
-    background-position: .75rem 1.6rem;
+    background-position: 0.75rem 1.6rem;
 }
 
 .sticky-bottom-navbar {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background-color: rgba(0,0,0,.08); /* Change this to the desired background color */
-  z-index: 1000; /* Adjust the z-index as needed */
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: rgba(
+        0,
+        0,
+        0,
+        0.08
+    ); /* Change this to the desired background color */
+    z-index: 1000; /* Adjust the z-index as needed */
 }
 
-.sticky-bottom-navbar h2{
-  font-size: 22px;
-  font-weight: 600;
-  font-family: 'Poppins', sans-serif !important;
-  
+.sticky-bottom-navbar h2 {
+    font-size: 22px;
+    font-weight: 600;
+    font-family: "Poppins", sans-serif !important;
 }
 
 .event-btn {
-
-  height: 6vh;
-  width: 8vw;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  text-decoration: none;
-  font-weight: 600;
-  background-color:#c1310d;
-  border: none;
+    height: 6vh;
+    width: 8vw;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    background-color: #c1310d;
+    border: none;
 }
 
-
-
+.event-btn:hover {
+    border: 1 px solid #c1310d;
+}
 
 @media (max-width: 1024px) {
-  .header.curved .logo{
-    margin-left: 24vw;
-  
-  }
+    .header.curved .logo {
+        margin-left: 24vw;
+    }
 
-  #select{
-    margin-left: 0;
-    padding: 0 25px;
-  }
+    #select {
+        margin-left: 0;
+        padding: 0 25px;
+    }
 
-  .grid{
-    gap: 5vh;
-  }
+    .grid {
+        gap: 5vh;
+    }
 
-  .ml-\[17\.5rem\] {
-    margin-left: 0 !important;
-  }
+    .ml-\[17\.5rem\] {
+        margin-left: 0 !important;
+    }
 
-  .pl-\[38rem\] {
-    padding-left: 0 !important;
-  }
+    .pl-\[38rem\] {
+        padding-left: 0 !important;
+    }
 
-  .sticky-bottom-navbar{
-    align-items: center  !important;
-    justify-content: center !important;
-  }
+    .sticky-bottom-navbar {
+        align-items: center !important;
+        justify-content: center !important;
+    }
 
-  .event-btn {width: 50%;}
-
-
+    .event-btn {
+        width: 50%;
+    }
 }
-  

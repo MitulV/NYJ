@@ -1,5 +1,21 @@
 @extends('layouts.admin')
 @section('content')
+    @if (session('payment_success'))
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close text-light" data-dismiss="alert" aria-hidden="true">×</button>
+            <h5><i class="icon fas fa-check"></i> Payment successful!</h5>
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session('payment_fail'))
+        <div class="alert alert-danger alert-dismissible">
+            <h5><i class="icon fas fa-info"></i> Payment Failed!</h5>
+            {{ session('payment_fail') }}
+        </div>
+    @endif
+
+
     <div class="card">
         <div class="card-header">
             My Bookings {{ trans('global.list') }}
@@ -10,9 +26,7 @@
                 <table class=" table table-bordered table-striped table-hover datatable datatable-Amenity">
                     <thead>
                         <tr>
-                            <th>
-                                Booking Reference Number
-                            </th>
+                            
                             <th>
                                 Event Title
                             </th>
@@ -22,22 +36,18 @@
                             <th>
                                 Amount
                             </th>
-                            <th>
-                                Number of Tickets
-                            </th>
+                            
                             <th>
                                 Status
                             </th>
-                            
+
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($bookings  as $key => $booking)
+                        @foreach ($bookings as $key => $booking)
                             <tr data-entry-id="{{ $booking->id }}">
-                                
-                                <td>
-                                    {{ $booking->reference_number }}
-                                </td>
+
+                               
                                 <td>
                                     {{ $booking->event->title }}
                                 </td>
@@ -47,14 +57,13 @@
                                 <td>
                                     {{ $booking->amount }}
                                 </td>
-                                <td>
-                                    {{ $booking->number_of_tickets }}
-                                </td>
+                                
                                 <td>
                                     {{ $booking->status }}
                                 </td>
                                 <td>
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.mybookings.show', $booking->id) }}">
+                                    <a class="btn btn-xs btn-primary"
+                                        href="{{ route('admin.mybookings.show', $booking->id) }}">
                                         {{ trans('global.view') }}
                                     </a>
                                 </td>

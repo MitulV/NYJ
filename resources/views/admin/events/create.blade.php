@@ -66,7 +66,8 @@
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label for="startDate">Start Date</label>
-                                    <input type="date" class="form-control" name="startDate" id="startDate" min="{{ date('Y-m-d') }}">
+                                    <input type="date" class="form-control" name="startDate" id="startDate"
+                                        min="{{ date('Y-m-d') }}">
                                 </div>
                                 <div class="form-group col-md-2">
                                     <label for="startTime">Start Time</label>
@@ -190,7 +191,6 @@
                             <button type="button" class="btn btn-primary" id="nextButton3">Next</button>
                         </div>
 
-
                         <div id="additional-info" class="content" role="tabpanel"
                             aria-labelledby="additional-info-trigger">
                             <div class="form-row">
@@ -216,6 +216,55 @@
                                         style="display: none; max-width: 100%; height: auto;">
                                 </div>
                             </div>
+
+                            <div class="card card-success my-3">
+                                <div class="card-header">
+                                    <h3 class="card-title">Group Ticket</h3>
+                                </div>
+
+                                <div class="card-body">
+                                    <div class="group_ticket-info-section">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="group_ticketName">Ticket Name</label>
+                                                <input type="text" name="group_ticket_name" class="form-control"
+                                                    placeholder="Enter Ticket Name">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="group_ticketDescription">Ticket Description</label>
+                                                <input type="text" name="group_ticket_description"
+                                                    class="form-control" placeholder="Enter Ticket Description">
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="group_ticketPrice">Ticket Price</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">$</span>
+                                                    </div>
+                                                    <input type="number" name="group_ticket_price" class="form-control"
+                                                        placeholder="Enter Ticket Price">
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="group_ticketQuantity">Number of Tickets</label>
+                                                <input type="number" name="group_ticket_quantity" class="form-control"
+                                                    placeholder="Enter Number of Tickets">
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="group_ticketQuantity">Number of Persons in Group</label>
+                                                <input type="number" name="group_count" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
                             <button type="button" class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                             <button type="submit" class="btn btn-danger">Submit</button>
                         </div>
@@ -343,8 +392,8 @@
                 $('#longDescription').val(longDescriptionHtml);
                 var termsConditionsHtml = $('#termsConditions').summernote('code');
                 $('#termsConditions').val(termsConditionsHtml);
-                
-                
+
+
 
                 var additionalInfo = $('#additionalInfo').val();
                 if (additionalInfo.trim() === '') {
