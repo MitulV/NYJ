@@ -10,7 +10,8 @@ use Illuminate\Http\Request;
 
 class EventsApiController extends Controller
 {
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         /** @var \App\User $user */
         $user = auth()->user();
 
@@ -18,11 +19,11 @@ class EventsApiController extends Controller
             $events = Event::all();
         } elseif ($user->isOrganizer()) {
             $events = Event::where('organizer_id', $user->id)->get();
-        }else{
+        } else {
             return response()->json(['error' => 'Invalid user'], 401);
-        } 
+        }
 
-        return response()->json(['data' => $events ], 200);
+        return response()->json(['data' => $events], 200);
     }
 
     public function guests(Request $request, $eventId)
@@ -38,20 +39,28 @@ class EventsApiController extends Controller
         // Extract user IDs from bookings
         $userIds = $bookings->pluck('user_id')->unique();
 
-        // Fetch user data for the extracted user IDs
-        $users = User::whereIn('id', $userIds)->get();
+        // Fetch user data for the extracted user IDs along with their booking details
+        $users = User::whereIn('id', $userIds)->with(['bookings' => function ($query) use ($eventId) {
+            $query->where('event_id', $eventId)->select('user_id', 'reference_number', 'status');
+        }])->get();
 
-        return response()->json(['data'=>$users]);
+        return response()->json(['data' => $users]);
     }
 
-    public function checkIn(Request $request, $bookingId)
+    public function checkIn(Request $request, $referenceNumber)
     {
         // Find the booking by its ID
-        $booking = Booking::findOrFail($bookingId);
+        $booking = Booking::findOrFail($referenceNumber);
 
         // Update the checked_in status to true
         $booking->update(['checked_in' => true]);
 
         return response()->json(['message' => 'User checked in successfully']);
+    }
+
+    public function bookingDetails(Request $request, $referenceNumber)
+    {
+        $booking = Booking::with('event', 'user', 'tickets')->where('reference_number', $referenceNumber)->firstOrFail();
+        return response()->json(['data' => $booking]);
     }
 }
