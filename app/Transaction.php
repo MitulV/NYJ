@@ -15,6 +15,7 @@ class Transaction extends Model
         'user_id',
         'amount_total',
         'status',
+        'payment_status'
     ];
 
     public function booking()

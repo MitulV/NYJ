@@ -54,37 +54,10 @@
                     <div class="circle active">1</div>
                     <div class="circle">2</div>
                 </div>
-                <form action="{{ route('bookEvent') }}" method="POST">
-                    @csrf
-                    <input type="hidden" class="form-control" id="event_id" name="event_id"
-                        value="{{ $event->id }}" />
-                    <!-- Step 1: Account -->
-                    <div class="step" id="step1">
-                        <h3>Account</h3>
-                        <div class="mb-3">
-                            <label for="name">Name</label>
-                            <input type="text" class="form-control" id="name" name="name" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="email">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="confirmPassword">Confirm Password</label>
-                            <input type="password" class="form-control" id="confirmPassword"
-                                name="password_confirmation" />
-                        </div>
-                        <button class="btn event-btn" id="next" onclick="showStep(2)">
-                            Create
-                        </button>
-                        <p class="mt-3">Already have an account? <a href="#">Login</a></p>
-                    </div>
 
-                    <!-- Step 2: Select Ticket -->
+                @if (auth()->check()){
+                    <form action="{{ route('bookEvent') }}" method="POST">
+                        @csrf
                     <div class="step" id="step2" style="display: none">
                         <h3>Select ticket</h3>
                         @foreach ($normalTickets as $ticket)
@@ -142,7 +115,99 @@
 
                         <button type="submit" class="btn event-btn">Book</button>
                     </div>
-                </form>
+                    </form>
+                }else{
+
+                    <form action="{{ route('bookEvent') }}" method="POST">
+                        @csrf
+                        <input type="hidden" class="form-control" id="event_id" name="event_id"
+                            value="{{ $event->id }}" />
+                        <!-- Step 1: Account -->
+                        <div class="step" id="step1">
+                            <h3>Account</h3>
+                            <div class="mb-3">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" id="name" name="name" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="confirmPassword">Confirm Password</label>
+                                <input type="password" class="form-control" id="confirmPassword"
+                                    name="password_confirmation" />
+                            </div>
+                            <button class="btn event-btn" id="next" onclick="showStep(2)">
+                                Create
+                            </button>
+                            <p class="mt-3">Already have an account? <a href="#">Login</a></p>
+                        </div>
+    
+                        <!-- Step 2: Select Ticket -->
+                        <div class="step" id="step2" style="display: none">
+                            <h3>Select ticket</h3>
+                            @foreach ($normalTickets as $ticket)
+                                <div class="d-flex justify-content-between mb-3 input-group-text">
+                                    <div>
+                                        <label for="ticket_id_{{ $ticket->id }}" class="fw-bold">
+                                            {{ $ticket->name }}</label> <span class="input-group-text text-danger">
+                                            ${{ $ticket->price }}</span>
+                                    </div>
+                                    <div class="input-group">
+                                        <div class="d-flex align-items-center">
+                                            <button class="btn btn-outline-secondary rounded-circle" type="button"
+                                                onclick="decrementQuantity(this)">
+                                                -
+                                            </button>
+                                            <input type="text" class="form-control text-center" value="0"
+                                                name="ticket_id_{{ $ticket->id }}" readonly />
+                                            <button class="btn btn-outline-secondary rounded-circle" type="button"
+                                                onclick="incrementQuantity(this)">
+                                                +
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+    
+                            @if ($groupTickets)
+                                <h3>Group ticket</h3>
+                            @endif
+    
+                            @foreach ($groupTickets as $ticket)
+                                <div class="d-flex justify-content-between mb-3 input-group-text">
+                                    <div>
+                                        <label for="group_ticket_id_{{ $ticket->id }}" class="fw-bold">Ticket for
+                                            {{ $ticket->group_count }}</label> <span
+                                            class="input-group-text text-danger d-flex justify-content-center">
+                                            $${{ $ticket->price }}</span>
+                                    </div>
+                                    <div class="input-group">
+                                        <div class="d-flex align-items-center">
+                                            <button class="btn btn-outline-secondary rounded-circle" type="button"
+                                                onclick="decrementQuantity(this)">
+                                                -
+                                            </button>
+                                            <input type="text" class="form-control text-center" value="0"
+                                                name="group_ticket_id_{{ $ticket->id }}" readonly />
+                                            <button class="btn btn-outline-secondary rounded-circle" type="button"
+                                                onclick="incrementQuantity(this)">
+                                                +
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+    
+                            <button type="submit" class="btn event-btn">Book</button>
+                        </div>
+                    </form>
+                }
             </div>
         </div>
     </div>

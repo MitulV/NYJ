@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->string('stripe_checkout_id');
+            $table->string('stripe_checkout_id')->nullable();
             $table->unsignedBigInteger('booking_id');
             $table->unsignedBigInteger('user_id');
-            $table->integer('amount_total');
-            $table->string('status');
+            $table->integer('amount_total')->nullable();
+            $table->string('status')->nullable();
+            $table->string('payment_status');
             $table->timestamps();
         });
     }

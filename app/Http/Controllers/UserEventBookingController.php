@@ -39,16 +39,21 @@ class UserEventBookingController extends Controller
 
   public function bookEvent(Request $request)
   {
+    $user=null;
+    if (!Auth::check()) {
+      $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+      ]);
 
-    $user = User::create([
-      'name' => $request->name,
-      'email' => $request->email,
-      'password' => Hash::make($request->password),
-    ]);
+      $user->roles()->attach(3);
 
-    $user->roles()->attach(3);
+      Auth::login($user);
+    }else{
+      $user = auth()->user();
+    }
 
-    Auth::login($user);
 
     $lineItems = [];
     $totalAmount = 0;
@@ -69,8 +74,7 @@ class UserEventBookingController extends Controller
         $ticketId = substr($ticketId, strlen('ticket_id_'));
 
         $ticket = Ticket::findOrFail($ticketId);
-        if ($quantity > 0) 
-        {
+        if ($quantity > 0) {
 
           $amount = $ticket->price * $quantity;
 
@@ -109,9 +113,22 @@ class UserEventBookingController extends Controller
     $organizer = User::find($event->organizer_id);
     $stripeSettings = $organizer->stripeSettings;
     $stripe = new StripeClient(config('stripe.api_keys.secret_key'));
+
+
+    $transaction = Transaction::create([
+      'booking_id' => $booking->id,
+      'user_id' => $user->id,
+      'payment_status' => 'unpaid'
+    ]);
+
     $checkoutSession = $stripe->checkout->sessions->create([
       'mode' => 'payment',
       'line_items' =>  $lineItems,
+      'metadata' => [
+        'transaction_id' => $transaction->id,
+        'booking_id' => $booking->id,
+        'user_id' => $user->id,
+      ],
       'payment_intent_data' => [
         'application_fee_amount' => 100,
         'transfer_data' => ['destination' => $stripeSettings->account_id],
@@ -120,10 +137,8 @@ class UserEventBookingController extends Controller
       'cancel_url' => route('paymentCancel'),
     ]);
 
-    Transaction::create([
+    $transaction->update([
       'stripe_checkout_id' => $checkoutSession->id,
-      'booking_id' => $booking->id,
-      'user_id' => $user->id,
       'amount_total' => $checkoutSession->amount_total,
       'status' => $checkoutSession->status
     ]);
@@ -132,38 +147,12 @@ class UserEventBookingController extends Controller
   }
 
 
-  public function paymentSuccess(Request $request)
+  public function paymentSuccess()
   {
-    /** @var \App\User $user */
-    $user = auth()->user();
-    $transaction = Transaction::where('user_id', $user->id)
-      ->latest('created_at')
-      ->firstOrFail();
-
-    $booking = Booking::where('user_id', $user->id)
-      ->latest('created_at')
-      ->firstOrFail();
-
-    $stripe = new StripeClient(config('stripe.api_keys.secret_key'));
-    $checkoutSession = $stripe->checkout->sessions->retrieve(
-      $transaction->stripe_checkout_id,
-      []
-    );
-
-    $transaction->update([
-      'status' => $checkoutSession->status
-    ]);
-
-    if ($checkoutSession->status == 'complete') {
-      $booking->update([
-        'status' => 'complete'
-      ]);
-    }
-
     return redirect()->route('admin.mybookings.index')->with('payment_success', 'Your booking has been confirmed.');
   }
 
-  public function paymentCancel(Request $request)
+  public function paymentCancel()
   {
     return redirect()->route('admin.mybookings.index')->with('payment_fail', 'Your  Payment has been Failed.');
   }
