@@ -89,6 +89,11 @@ class WebhookController extends Controller
             $booking->update([
                 'status' => 'Complete'
             ]);
+        }else if($session->payment_status == 'no_payment_required'){
+            $booking->update([
+                'status' => 'Cancelled'
+            ]);
+        }
 
             // if ($wasBookingPending && $booking->status == 'Complete') {
 
@@ -112,6 +117,6 @@ class WebhookController extends Controller
             // }
 
             Log::info('exit from handleAction Method');
-        }
+        
     }
 }
