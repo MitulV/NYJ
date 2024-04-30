@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\UserEventBookingController;
+use App\Http\Controllers\WebhookController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -58,5 +59,6 @@ Route::get('/stripe/return',[StripeController::class, 'return'])->name('return')
 Route::get('/payment/success',[UserEventBookingController::class, 'paymentSuccess'])->name('paymentSuccess');
 Route::get('/payment/cancel',[UserEventBookingController::class, 'paymentCancel'])->name('paymentCancel');
 
+Route::get('/stripe/webhook',[WebhookController::class, 'handle'])->name('webhook');
 
 Route::get('/stripe/delete-account',[StripeController::class, 'deleteAccount'])->name('delete.account');
