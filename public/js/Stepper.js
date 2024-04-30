@@ -73,3 +73,16 @@ function decrementQuantity(button) {
         input.value = value - 1;
     }
 }
+
+function validateAndSubmit() {
+  var ticketQuantities = document.querySelectorAll('.ticket-quantity');
+  var ticketCount = 0;
+  ticketQuantities.forEach(function(ticket) {
+      ticketCount += parseInt(ticket.value);
+  });
+  if (ticketCount === 0) {
+      alert('Please select at least one ticket.');
+  } else {
+      document.getElementById('ticketForm').submit();
+  }
+}

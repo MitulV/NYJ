@@ -220,7 +220,7 @@
 
     <nav class="navbar navbar-expand-lg sticky-bottom-navbar d-flex py-4 px-5 align-items-end justify-content-between">
         <div class="d-flex align-items-center justify-content-center">
-            <h2>AUD {{ $event->tickets()->first()->price }}</h2>
+            <h2>GBP {{ $event->tickets()->first()->price }}</h2>
         </div>
 
 

@@ -105,7 +105,8 @@ class EventsController extends Controller
             'additional_info' => $request->input('additionalInfo'),
             'image1' => $url1,
             'image2' => $url2,
-            'booking_deadline' => $request->input('booking_deadline')
+            'booking_deadline' => $request->input('booking_deadline'),
+            'status' => 'Published'
         ]);
 
         $ticketNames = $request->input('ticket_name');
@@ -119,44 +120,45 @@ class EventsController extends Controller
 
         // Iterate through the arrays and create Ticket records
         foreach ($ticketNames as $key => $ticketName) {
-            $price_in_cents = (int)($ticketPrices[$key] * 100);
-            $product = $stripe->products->create(['name' => $ticketName]);
-            $price = $stripe->prices->create([
-                'currency' => 'usd',
+            $price = $ticketPrices[$key];
+            $price_in_cents = (int)($price * 100);
+            $productObj = $stripe->products->create(['name' => $ticketName]);
+            $priceObj = $stripe->prices->create([
+                'currency' => 'GBP',
                 'unit_amount' => $price_in_cents,
-                'product' => $product->id
+                'product' => $productObj->id
             ]);
 
             Ticket::create([
                 'event_id' => $event->id,
                 'name' => $ticketName,
                 'description' => $ticketDescriptions[$key],
-                'price' => $price_in_cents,
+                'price' => $price,
                 'quantity' => $ticketQuantities[$key],
-                'stripe_product_id' => $product->id,
-                'stripe_price_id' => $price->id
+                'stripe_product_id' => $productObj->id,
+                'stripe_price_id' => $priceObj->id
             ]);
         }
 
         if ($request->has('group_ticket_name')) {
-
-            $price_in_cents = (int)($request->input('group_ticket_price') * 100);
-            $product = $stripe->products->create(['name' => $request->input('group_ticket_name')]);
-            $price = $stripe->prices->create([
-                'currency' => 'usd',
+            $price=$request->input('group_ticket_price');
+            $price_in_cents = (int)($price* 100);
+            $productObj = $stripe->products->create(['name' => $request->input('group_ticket_name')]);
+            $priceObj = $stripe->prices->create([
+                'currency' => 'GBP',
                 'unit_amount' => $price_in_cents,
-                'product' => $product->id
+                'product' => $productObj->id
             ]);
 
             Ticket::create([
                 'event_id' => $event->id,
                 'name' => $request->input('group_ticket_name'),
                 'description' => $request->input('group_ticket_description'),
-                'price' => $price_in_cents,
+                'price' => $price,
                 'quantity' => $request->input('group_ticket_quantity'),
                 'group_count' =>$request->input('group_count'),
-                'stripe_product_id' => $product->id,
-                'stripe_price_id' => $price->id
+                'stripe_product_id' => $productObj->id,
+                'stripe_price_id' => $priceObj->id
             ]);
         }
 
@@ -246,7 +248,7 @@ class EventsController extends Controller
                 $price_in_cents = (int)($ticketData['price'] * 100);
                 $product = $stripe->products->create(['name' => $ticketData['name']]);
                 $price = $stripe->prices->create([
-                    'currency' => 'usd',
+                    'currency' => 'GBP',
                     'unit_amount' => $price_in_cents,
                     'product' => $product->id
                 ]);

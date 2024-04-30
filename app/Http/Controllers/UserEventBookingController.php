@@ -16,6 +16,7 @@ use Stripe\StripeClient;
 use Illuminate\Support\Str;
 
 
+
 class UserEventBookingController extends Controller
 {
   public function eventDetails(Request $request)
@@ -39,6 +40,7 @@ class UserEventBookingController extends Controller
 
   public function bookEvent(Request $request)
   {
+
     $user=null;
     if (!Auth::check()) {
       $user = User::create([
@@ -53,7 +55,6 @@ class UserEventBookingController extends Controller
     }else{
       $user = auth()->user();
     }
-
 
     $lineItems = [];
     $totalAmount = 0;
@@ -77,7 +78,6 @@ class UserEventBookingController extends Controller
         if ($quantity > 0) {
 
           $amount = $ticket->price * $quantity;
-
           $totalAmount += $amount;
 
           // Create the booking ticket
@@ -95,7 +95,7 @@ class UserEventBookingController extends Controller
         }
       }
     }
-
+    
     $booking->update(['amount' => $totalAmount]);
 
     $event = Event::find($request->event_id);
@@ -130,7 +130,7 @@ class UserEventBookingController extends Controller
         'user_id' => $user->id,
       ],
       'payment_intent_data' => [
-        'application_fee_amount' => 100,
+        'application_fee_amount' => 100, // Commission of Plateform (1$) but sent as cents
         'transfer_data' => ['destination' => $stripeSettings->account_id],
       ],
       'success_url' => route('paymentSuccess'),

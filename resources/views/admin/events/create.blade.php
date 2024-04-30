@@ -173,7 +173,7 @@
                                         <label for="ticketPrice">Ticket Price</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text">$</span>
+                                                <span class="input-group-text">£</span>
                                             </div>
                                             <input type="number" name="ticket_price[]" class="form-control"
                                                 placeholder="Enter Ticket Price">
@@ -241,7 +241,7 @@
                                                 <label for="group_ticketPrice">Ticket Price</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text">$</span>
+                                                        <span class="input-group-text">£</span>
                                                     </div>
                                                     <input type="number" name="group_ticket_price" class="form-control"
                                                         placeholder="Enter Ticket Price">

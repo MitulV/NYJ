@@ -59,6 +59,8 @@ Route::get('/stripe/return',[StripeController::class, 'return'])->name('return')
 Route::get('/payment/success',[UserEventBookingController::class, 'paymentSuccess'])->name('paymentSuccess');
 Route::get('/payment/cancel',[UserEventBookingController::class, 'paymentCancel'])->name('paymentCancel');
 
-Route::get('/stripe/webhook',[WebhookController::class, 'handle'])->name('webhook');
+
+// Stripe Webhook
+Route::post('/webhook',[WebhookController::class, 'handle'])->name('webhook');
 
 Route::get('/stripe/delete-account',[StripeController::class, 'deleteAccount'])->name('delete.account');

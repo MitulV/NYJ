@@ -48,77 +48,79 @@
 
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="progress-container">
-                    <div class="progress" id="progress"></div>
-                    <div class="circle active">1</div>
-                    <div class="circle">2</div>
-                </div>
-
-                @if (auth()->check()){
-                    <form action="{{ route('bookEvent') }}" method="POST">
+            @if (auth()->check())
+                <div class="col-md-6">
+                    <form id="ticketForm" action="{{ route('bookEvent') }}" method="POST">
                         @csrf
-                    <div class="step" id="step2" style="display: none">
-                        <h3>Select ticket</h3>
-                        @foreach ($normalTickets as $ticket)
-                            <div class="d-flex justify-content-between mb-3 input-group-text">
-                                <div>
-                                    <label for="ticket_id_{{ $ticket->id }}" class="fw-bold">
-                                        {{ $ticket->name }}</label> <span class="input-group-text text-danger">
-                                        ${{ $ticket->price }}</span>
-                                </div>
-                                <div class="input-group">
-                                    <div class="d-flex align-items-center">
-                                        <button class="btn btn-outline-secondary rounded-circle" type="button"
-                                            onclick="decrementQuantity(this)">
-                                            -
-                                        </button>
-                                        <input type="text" class="form-control text-center" value="0"
-                                            name="ticket_id_{{ $ticket->id }}" readonly />
-                                        <button class="btn btn-outline-secondary rounded-circle" type="button"
-                                            onclick="incrementQuantity(this)">
-                                            +
-                                        </button>
+                        <input type="hidden" class="form-control" id="event_id" name="event_id"
+                            value="{{ $event->id }}" />
+                        <div class="step" id="step2">
+                            <h3>Select ticket</h3>
+                            @foreach ($normalTickets as $ticket)
+                                <div class="d-flex justify-content-between mb-3 input-group-text">
+                                    <div>
+                                        <label for="ticket_id_{{ $ticket->id }}" class="fw-bold">
+                                            {{ $ticket->name }}</label> <span class="input-group-text text-danger">
+                                            £{{ $ticket->price }}</span>
+                                    </div>
+                                    <div class="input-group">
+                                        <div class="d-flex align-items-center">
+                                            <button class="btn btn-outline-secondary rounded-circle" type="button"
+                                                onclick="decrementQuantity(this)">
+                                                -
+                                            </button>
+                                            <input type="text" class="form-control text-center ticket-quantity" value="0"
+                                                name="ticket_id_{{ $ticket->id }}" readonly />
+                                            <button class="btn btn-outline-secondary rounded-circle" type="button"
+                                                onclick="incrementQuantity(this)">
+                                                +
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        @endforeach
+                            @endforeach
 
-                        @if ($groupTickets)
-                            <h3>Group ticket</h3>
-                        @endif
+                            @if ($groupTickets)
+                                <h3>Group ticket</h3>
+                            @endif
 
-                        @foreach ($groupTickets as $ticket)
-                            <div class="d-flex justify-content-between mb-3 input-group-text">
-                                <div>
-                                    <label for="group_ticket_id_{{ $ticket->id }}" class="fw-bold">Ticket for
-                                        {{ $ticket->group_count }}</label> <span
-                                        class="input-group-text text-danger d-flex justify-content-center">
-                                        $${{ $ticket->price }}</span>
-                                </div>
-                                <div class="input-group">
-                                    <div class="d-flex align-items-center">
-                                        <button class="btn btn-outline-secondary rounded-circle" type="button"
-                                            onclick="decrementQuantity(this)">
-                                            -
-                                        </button>
-                                        <input type="text" class="form-control text-center" value="0"
-                                            name="group_ticket_id_{{ $ticket->id }}" readonly />
-                                        <button class="btn btn-outline-secondary rounded-circle" type="button"
-                                            onclick="incrementQuantity(this)">
-                                            +
-                                        </button>
+                            @foreach ($groupTickets as $ticket)
+                                <div class="d-flex justify-content-between mb-3 input-group-text">
+                                    <div>
+                                        <label for="group_ticket_id_{{ $ticket->id }}" class="fw-bold">Ticket for
+                                            {{ $ticket->group_count }}</label> <span
+                                            class="input-group-text text-danger d-flex justify-content-center">
+                                            £{{ $ticket->price }}</span>
+                                    </div>
+                                    <div class="input-group">
+                                        <div class="d-flex align-items-center">
+                                            <button class="btn btn-outline-secondary rounded-circle" type="button"
+                                                onclick="decrementQuantity(this)">
+                                                -
+                                            </button>
+                                            <input type="text" class="form-control text-center" value="0"
+                                                name="group_ticket_id_{{ $ticket->id }}" readonly />
+                                            <button class="btn btn-outline-secondary rounded-circle" type="button"
+                                                onclick="incrementQuantity(this)">
+                                                +
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        @endforeach
+                            @endforeach
 
-                        <button type="submit" class="btn event-btn">Book</button>
-                    </div>
+                            <button type="button" class="btn event-btn" onclick="validateAndSubmit()">Book</button>
+                        </div>
                     </form>
-                }else{
-
-                    <form action="{{ route('bookEvent') }}" method="POST">
+                </div>
+            @else
+                <div class="col-md-6">
+                    <div class="progress-container">
+                        <div class="progress" id="progress"></div>
+                        <div class="circle active">1</div>
+                        <div class="circle">2</div>
+                    </div>
+                    <form id="ticketForm" action="{{ route('bookEvent') }}" method="POST">
                         @csrf
                         <input type="hidden" class="form-control" id="event_id" name="event_id"
                             value="{{ $event->id }}" />
@@ -145,9 +147,9 @@
                             <button class="btn event-btn" id="next" onclick="showStep(2)">
                                 Create
                             </button>
-                            <p class="mt-3">Already have an account? <a href="#">Login</a></p>
+                            <p class="mt-3">Already have an account? <a href="{{route('login')}}">Login</a></p>
                         </div>
-    
+
                         <!-- Step 2: Select Ticket -->
                         <div class="step" id="step2" style="display: none">
                             <h3>Select ticket</h3>
@@ -156,7 +158,7 @@
                                     <div>
                                         <label for="ticket_id_{{ $ticket->id }}" class="fw-bold">
                                             {{ $ticket->name }}</label> <span class="input-group-text text-danger">
-                                            ${{ $ticket->price }}</span>
+                                                £{{ $ticket->price }}</span>
                                     </div>
                                     <div class="input-group">
                                         <div class="d-flex align-items-center">
@@ -164,7 +166,7 @@
                                                 onclick="decrementQuantity(this)">
                                                 -
                                             </button>
-                                            <input type="text" class="form-control text-center" value="0"
+                                            <input type="text" class="form-control text-center ticket-quantity" value="0"
                                                 name="ticket_id_{{ $ticket->id }}" readonly />
                                             <button class="btn btn-outline-secondary rounded-circle" type="button"
                                                 onclick="incrementQuantity(this)">
@@ -174,11 +176,11 @@
                                     </div>
                                 </div>
                             @endforeach
-    
+
                             @if ($groupTickets)
                                 <h3>Group ticket</h3>
                             @endif
-    
+
                             @foreach ($groupTickets as $ticket)
                                 <div class="d-flex justify-content-between mb-3 input-group-text">
                                     <div>
@@ -203,12 +205,13 @@
                                     </div>
                                 </div>
                             @endforeach
-    
-                            <button type="submit" class="btn event-btn">Book</button>
+
+                            <button type="button" class="btn event-btn" onclick="validateAndSubmit()">Book</button>
                         </div>
                     </form>
-                }
-            </div>
+                </div>
+
+            @endif
         </div>
     </div>
 </body>

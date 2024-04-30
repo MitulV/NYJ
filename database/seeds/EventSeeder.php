@@ -17,7 +17,7 @@ class EventSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             // Generate a start date between now and 1 month in the future
             $startDate = $faker->dateTimeBetween('now', '+1 month');
 
@@ -65,7 +65,7 @@ class EventSeeder extends Seeder
 
             $stripe = new StripeClient(config('stripe.api_keys.secret_key'));
 
-            for ($j = 0; $j < rand(1, 5); $j++) {
+            for ($j = 0; $j < rand(1, 2); $j++) {
 
                 $ticketName = $faker->word();
                 $price = $faker->randomFloat(2, 0, 100);
@@ -74,7 +74,7 @@ class EventSeeder extends Seeder
 
                 $productObj = $stripe->products->create(['name' => $ticketName]);
                 $priceObj = $stripe->prices->create([
-                    'currency' => 'usd',
+                    'currency' => 'GBP',
                     'unit_amount' => $price_in_cents,
                     'product' => $productObj->id
                 ]);

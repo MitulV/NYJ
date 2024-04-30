@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('stripe_checkout_id')->nullable();
             $table->unsignedBigInteger('booking_id');
             $table->unsignedBigInteger('user_id');
-            $table->integer('amount_total')->nullable();
+            $table->decimal('amount_total', 10, 2)->nullable();
             $table->string('status')->nullable();
             $table->string('payment_status');
             $table->timestamps();
