@@ -140,7 +140,7 @@ class EventsController extends Controller
             ]);
         }
 
-        if ($request->has('group_ticket_name')) {
+        if ($request->filled('group_ticket_name')) {
             $price=$request->input('group_ticket_price');
             $price_in_cents = (int)($price* 100);
             $productObj = $stripe->products->create(['name' => $request->input('group_ticket_name')]);

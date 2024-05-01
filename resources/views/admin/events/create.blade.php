@@ -227,13 +227,14 @@
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label for="group_ticketName">Ticket Name</label>
-                                                <input type="text" name="group_ticket_name" class="form-control"
-                                                    placeholder="Enter Ticket Name">
+                                                <input type="text" name="group_ticket_name" id="group_ticket_name"
+                                                    class="form-control" placeholder="Enter Ticket Name">
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label for="group_ticketDescription">Ticket Description</label>
                                                 <input type="text" name="group_ticket_description"
-                                                    class="form-control" placeholder="Enter Ticket Description">
+                                                    id="group_ticket_description" class="form-control"
+                                                    placeholder="Enter Ticket Description">
                                             </div>
                                         </div>
                                         <div class="form-row">
@@ -243,20 +244,23 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text">£</span>
                                                     </div>
-                                                    <input type="number" name="group_ticket_price" class="form-control"
+                                                    <input type="number" name="group_ticket_price"
+                                                        id="group_ticket_price" class="form-control"
                                                         placeholder="Enter Ticket Price">
                                                 </div>
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label for="group_ticketQuantity">Number of Tickets</label>
-                                                <input type="number" name="group_ticket_quantity" class="form-control"
+                                                <input type="number" name="group_ticket_quantity"
+                                                    id="group_ticket_quantity" class="form-control"
                                                     placeholder="Enter Number of Tickets">
                                             </div>
                                         </div>
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label for="group_ticketQuantity">Number of Persons in Group</label>
-                                                <input type="number" name="group_count" class="form-control">
+                                                <input type="number" name="group_count" id="group_count"
+                                                    class="form-control">
                                             </div>
                                         </div>
                                     </div>
@@ -314,6 +318,7 @@
                 var startTime = $('#startTime').val();
                 var endDate = $('#endDate').val();
                 var endTime = $('#endTime').val();
+                var bookingDeadline = $('#booking_deadline').val();
                 var description = $('#shortDescription').val();
                 if (category === '-- Select --' || title.trim() === '' || startDate.trim() === '' ||
                     startTime.trim() === '' || endDate.trim() === '' || endTime.trim() === '' || $(
@@ -321,6 +326,18 @@
                     alert('Please fill out all required fields.');
                     return;
                 }
+
+                // Check if endDate is after startDate
+                if (endDate < startDate || (endDate === startDate && endTime <= startTime)) {
+                    alert('End date and time should be after start date and time.');
+                    return;
+                }
+
+                if (bookingDeadline >= startDate) {
+                    alert('Booking deadline should be before the start date.');
+                    return;
+                }
+
 
                 // Proceed to the next step if all fields are filled
                 stepper.next(); // Assuming you have a stepper object
@@ -374,7 +391,14 @@
                     if (ticketName.trim() === '' || ticketDescription.trim() === '' || ticketPrice
                         .trim() === '' || ticketQuantity.trim() === '') {
                         isValid = false;
-                        alert('Please fill out all required fields in Ticket ' + (index + 1) + '.');
+                        alert('Please fill out all required fields');
+                        return false;
+                    }
+
+                    // Validate that the price is not negative
+                    if (parseFloat(ticketPrice) < 0) {
+                        isValid = false;
+                        alert('Ticket price cannot be negative');
                         return false;
                     }
                 });
@@ -393,12 +417,48 @@
                 var termsConditionsHtml = $('#termsConditions').summernote('code');
                 $('#termsConditions').val(termsConditionsHtml);
 
-
-
                 var additionalInfo = $('#additionalInfo').val();
                 if (additionalInfo.trim() === '') {
                     alert('Please fill out all required fields.');
                     event.preventDefault(); // Prevent default form submission if validation fails
+                    return;
+                }
+
+                var banner1 = $('#banner1').prop('files')[0];
+                var banner2 = $('#banner2').prop('files')[0];
+                if (!banner1 || !banner2) {
+                    alert('Please upload both banner images.');
+                    event.preventDefault(); // Prevent default form submission if validation fails
+                    return;
+                }
+
+                // Validate group ticket fields
+                var group_ticketName = $('#group_ticket_name').val();
+                var group_ticketDescription = $('#group_ticket_description').val();
+                var group_ticketPrice = $('#group_ticket_price').val();
+                var group_ticketQuantity = $('#group_ticket_quantity').val();
+                var group_count = $('#group_count').val();
+
+
+
+                // Check if any of the fields is filled
+                if (group_ticketName.trim() !== '' || group_ticketDescription.trim() !== '' ||
+                    group_ticketPrice
+                    .trim() !== '' || group_ticketQuantity.trim() !== '' || group_count.trim() !== '') {
+                    // Validate if all fields are filled
+                    if (group_ticketName.trim() === '' || group_ticketDescription.trim() === '' ||
+                        group_ticketPrice
+                        .trim() === '' || group_ticketQuantity.trim() === '' || group_count.trim() === '') {
+                        alert('Please fill out all group ticket fields.');
+                        event.preventDefault(); // Prevent default form submission if validation fails
+                        return;
+                    }
+                    // Validate that price is not negative
+                    if (parseFloat(group_ticketPrice) < 0) {
+                        alert('Group ticket price cannot be negative.');
+                        event.preventDefault(); // Prevent default form submission if validation fails
+                        return;
+                    }
                 }
             });
 
@@ -412,6 +472,9 @@
                 };
                 reader.readAsDataURL(file);
             });
+
+
+
 
             $('#longDescription').summernote({
                 height: 150
