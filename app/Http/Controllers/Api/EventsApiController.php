@@ -62,7 +62,7 @@ class EventsApiController extends Controller
     public function checkIn(Request $request, $referenceNumber)
     {
         // Find the booking by its ID
-        $booking = Booking::findOrFail($referenceNumber);
+        $booking = Booking::where('reference_number',$referenceNumber)->first();
 
         // Update the checked_in status to true
         $booking->update(['checked_in' => true]);
