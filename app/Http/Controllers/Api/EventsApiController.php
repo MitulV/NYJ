@@ -28,23 +28,35 @@ class EventsApiController extends Controller
 
     public function guests(Request $request, $eventId)
     {
-        // Retrieve all the bookings for the specified event
-        $bookings = Booking::where('event_id', $eventId)->get();
+        $status = $request->input('status');
 
-        // If there are no bookings for the event, return an empty response
+        $query = Booking::where('event_id', $eventId);
+
+        if ($status) {
+            $query->where('status', $status);
+        }
+
+        $bookings = $query->with('user')->get();
+
         if ($bookings->isEmpty()) {
             return response()->json(['message' => 'No bookings found for this event'], 404);
         }
 
-        // Extract user IDs from bookings
-        $userIds = $bookings->pluck('user_id')->unique();
+        $bookingData = [];
 
-        // Fetch user data for the extracted user IDs along with their booking details
-        $users = User::whereIn('id', $userIds)->with(['bookings' => function ($query) use ($eventId) {
-            $query->where('event_id', $eventId)->select('user_id', 'reference_number', 'status');
-        }])->get();
+        foreach ($bookings as $booking) {
+            $userDetails = [
+                'user_name' => $booking->user->name,
+                'user_email' => $booking->user->email,
+                'booking_reference_number' => $booking->reference_number,
+                'booking_status' => $booking->status,
+                'is_checked_in' => $booking->checked_in
+            ];
+            // Add user details to booking data array
+            $bookingData[] = $userDetails;
+        }
 
-        return response()->json(['data' => $users]);
+        return response()->json(['data' => $bookingData]);
     }
 
     public function checkIn(Request $request, $referenceNumber)

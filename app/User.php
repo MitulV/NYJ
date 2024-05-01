@@ -72,6 +72,12 @@ class User extends Authenticatable
         return $this->hasOne(StripeSetting::class);
     }
 
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class, 'user_id');
+    }
+
+
     public function isAdmin()
     {
         return $this->roles->contains('title', 'Admin');
