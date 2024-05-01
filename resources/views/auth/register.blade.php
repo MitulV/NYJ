@@ -2,13 +2,11 @@
 @section('content')
 <div class="login-box">
     <div class="login-logo">
-        <div class="login-logo">
-            <a href="{{route('home')}}"><img src="{{ asset('img/NYJ_LOGO.png') }}" alt="Logo" height="100" /></a>
-        </div>
-    </div>
+        <a href="{{route('home')}}"><img src="{{ asset('img/NYJ_LOGO.png') }}" alt="Logo" height="200" width="200"/></a> 
+</div>
     <div class="card">
         <div class="card-body login-card-body">
-            <p class="login-box-msg">Register a new membership</p>
+            <p class="login-box-msg">Organizer Registration</p>
             @if(\Session::has('message'))
                 <p class="alert alert-info">
                     {{ \Session::get('message') }}
@@ -64,7 +62,7 @@
 
             <p class="mb-1 mt-2">
                 <a class="" href="{{ route('login') }}">
-                    I already have a membership
+                    I already have an account
                 </a>
             </p>
             <p class="mb-0">

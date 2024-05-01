@@ -6,61 +6,98 @@ const circles = document.querySelectorAll(".circle");
 let currentActive = 1;
 
 next.addEventListener("click", () => {
-  currentActive++;
+    if(!validateUserForm()){
+        return false;;
+    }
+    currentActive++;
 
-  if (currentActive > circles.length) {
-    currentActive = circles.length;
-  }
+    if (currentActive > circles.length) {
+        currentActive = circles.length;
+    }
 
-  update();
+    update();
 });
 
 prev.addEventListener("click", () => {
-  currentActive--;
+    currentActive--;
 
-  if (currentActive < 1) {
-    currentActive = 1;
-  }
+    if (currentActive < 1) {
+        currentActive = 1;
+    }
 
-  update();
+    update();
 });
 
 function update() {
-  circles.forEach((circle, idx) => {
-    if (idx < currentActive) {
-      circle.classList.add("active");
+    circles.forEach((circle, idx) => {
+        if (idx < currentActive) {
+            circle.classList.add("active");
+        } else {
+            circle.classList.remove("active");
+        }
+    });
+
+    const actives = document.querySelectorAll(".active");
+
+    progress.style.width =
+        ((actives.length - 1) / (circles.length - 1)) * 100 + "%";
+
+    if (currentActive === 1) {
+        prev.disabled = true;
+    } else if (currentActive === circles.length) {
+        next.disabled = true;
     } else {
-      circle.classList.remove("active");
+        prev.disabled = false;
+        next.disabled = false;
     }
-  });
+}
 
-  const actives = document.querySelectorAll(".active");
+function validateUserForm(){
 
-  progress.style.width =
-    ((actives.length - 1) / (circles.length - 1)) * 100 + "%";
+    var name = document.getElementById("name").value;
+        var email = document.getElementById("email").value;
+        var password = document.getElementById("password").value;
+        var confirmPassword = document.getElementById("confirmPassword").value;
 
-  if (currentActive === 1) {
-    prev.disabled = true;
-  } else if (currentActive === circles.length) {
-    next.disabled = true;
-  } else {
-    prev.disabled = false;
-    next.disabled = false;
-  }
+        if (name.trim() === "") {
+            return false;
+        }
+
+        if (email.trim() === "") {
+            return false;
+        }
+
+        if (password.trim() === "") {
+            return false;
+        }
+
+        if (confirmPassword.trim() === "") {
+            return false;
+        }
+
+        if (password !== confirmPassword) {
+            return false;
+        }
+
+        return true;
 }
 
 function showStep(step) {
+    if(step==2){
+        if(!validateUserForm()){
+            return false;;
+        }
+    }
     // Hide all steps
-    document.querySelectorAll('.step').forEach(function(el) {
-      el.style.display = 'none';
+    document.querySelectorAll(".step").forEach(function (el) {
+        el.style.display = "none";
     });
 
     // Show the selected step
-    document.getElementById('step' + step).style.display = 'block';
-  }
+    document.getElementById("step" + step).style.display = "block";
+}
 
-
-  function incrementQuantity(button) {
+function incrementQuantity(button) {
     var input = button.parentElement.querySelector('input[type="text"]');
     var value = parseInt(input.value);
     input.value = value + 1;
@@ -75,14 +112,14 @@ function decrementQuantity(button) {
 }
 
 function validateAndSubmit() {
-  var ticketQuantities = document.querySelectorAll('.ticket-quantity');
-  var ticketCount = 0;
-  ticketQuantities.forEach(function(ticket) {
-      ticketCount += parseInt(ticket.value);
-  });
-  if (ticketCount === 0) {
-      alert('Please select at least one ticket.');
-  } else {
-      document.getElementById('ticketForm').submit();
-  }
+    var ticketQuantities = document.querySelectorAll(".ticket-quantity");
+    var ticketCount = 0;
+    ticketQuantities.forEach(function (ticket) {
+        ticketCount += parseInt(ticket.value);
+    });
+    if (ticketCount === 0) {
+        alert("Please select at least one ticket.");
+    } else {
+        document.getElementById("ticketForm").submit();
+    }
 }

@@ -13,7 +13,7 @@
 
 <body>
     <nav class="navbar navbar-expand-lg  sticky-top-navbar">
-        <a href="{{route('home')}}"><img src="{{ asset('img/NYJ_LOGO.png') }}" alt="Logo" height="100" /></a>
+        <a href="{{ route('home') }}"><img src="{{ asset('img/NYJ_LOGO.png') }}" alt="Logo" height="100" /></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -104,10 +104,11 @@
             <div class="navbar-nav me-auto mb-2 mb-lg-0 row">
                 @foreach ($categories as $category)
                     <div class="nav-item col-md-2 text-center">
-                      @php
-                        $urlCategory = request()->query('category');
-                    @endphp
-                        <a class="nav-link2 active" aria-current="page" href="" style="color: {{ $urlCategory && $urlCategory === $category->name ? 'rgb(13, 211, 211)' : 'inherit' }}; border-bottom: {{ $urlCategory && $urlCategory === $category->name ? '2px solid rgb(13, 211, 211)' : 'none' }}">{{ $category->name }}</a>
+                        @php
+                            $urlCategory = request()->query('category');
+                        @endphp
+                        <a class="nav-link2 active" aria-current="page" href=""
+                            style="color: {{ $urlCategory && $urlCategory === $category->name ? 'rgb(13, 211, 211)' : 'inherit' }}; border-bottom: {{ $urlCategory && $urlCategory === $category->name ? '2px solid rgb(13, 211, 211)' : 'none' }}">{{ $category->name }}</a>
                     </div>
                 @endforeach
             </div>
@@ -120,7 +121,7 @@
                 <div class="col-md-4 cont-cent">
                     <a href="{{ route('eventDetails', ['eventId' => $event->id]) }}" style="text-decoration: none;">
                         <div class="card">
-                            <img src="https://www.eventbookings.com/upload/orgs/5ae14e2960a3f549698747808da9e627/events/c4652f20-ac4b-497f-b682-ac51e3b27561.jpg?w=1250&h=572&fit=crop-center&q=100&s=a1bbe11190ee74d492fd38e5e6fd9d12"
+                                <img src="{{$event->image1}}"
                                 class="card-img-top" alt="..." />
                             <div class="card-body">
                                 <div class="row">
@@ -131,7 +132,14 @@
 
                                 <div class="row">
                                     <div class="col">
-                                        <p class="card-text" style="font-weight: 700">AUD $2000</p>
+
+                                        @if ($event->tickets()->exists())
+                                            <p class="card-text" style="font-weight: 700">GBP
+                                                {{ $event->tickets()->first()->price }}</p>
+                                        @else
+                                            <p class="card-text" style="font-weight: 700">No tickets available</p>
+                                        @endif
+
                                         {{ \Illuminate\Support\Carbon::parse($event->start_date)->format('l jS F') }}
 
                                     </div>
@@ -227,27 +235,27 @@
         </footer>
 </body>
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-      // Get all category links
-      const categoryLinks = document.querySelectorAll('.nav-link2');
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get all category links
+        const categoryLinks = document.querySelectorAll('.nav-link2');
 
-      // Attach click event listener to each category link
-      categoryLinks.forEach(function (link) {
-          link.addEventListener('click', function (event) {
-              event.preventDefault(); // Prevent default link behavior
-              
-              // Get the category name from the link
-              const categoryName = link.innerText.trim();
+        // Attach click event listener to each category link
+        categoryLinks.forEach(function(link) {
+            link.addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent default link behavior
 
-              // Construct the new URL with the category parameter
-              const url = new URL(window.location.href);
-              url.searchParams.set('category', categoryName);
+                // Get the category name from the link
+                const categoryName = link.innerText.trim();
 
-              // Navigate to the new URL
-              window.location.href = url.toString();
-          });
-      });
-  });
+                // Construct the new URL with the category parameter
+                const url = new URL(window.location.href);
+                url.searchParams.set('category', categoryName);
+
+                // Navigate to the new URL
+                window.location.href = url.toString();
+            });
+        });
+    });
 </script>
 
 

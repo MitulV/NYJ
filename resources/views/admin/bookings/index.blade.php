@@ -17,7 +17,7 @@
     @endif
     <div class="card">
         <div class="card-header">
-            {{ trans('cruds.city.title_singular') }} {{ trans('global.list') }}
+            Bookings {{ trans('global.list') }}
         </div>
 
         <div class="card-body">
@@ -40,26 +40,23 @@
                                 <td></td>
                                 <td>{{ $booking->user->name ?? '' }}</td>
                                 <td>{{ $booking->amount ?? '' }}</td>
-                                <td>{{ $booking->event->name ?? '' }}</td>
+                                <td>{{ $booking->event->title ?? '' }}</td>
                                 <td>{{ $booking->reference_number ?? '' }}</td>
                                 <td>{{ $booking->status ?? '' }}</td>
                                 <td>
 
                                     <a class="btn btn-xs btn-primary"
-                                        href="{{ route('admin.cities.show', $booking->id) }}">{{ trans('global.view') }}</a>
-
-                                    <a class="btn btn-xs btn-info"
-                                        href="{{ route('admin.cities.edit', $booking->id) }}">{{ trans('global.edit') }}</a>
+                                        href="{{ route('admin.bookings.show', $booking->id) }}">{{ trans('global.view') }}</a>
 
 
-                                    <form action="{{ route('admin.cities.destroy', $booking->id) }}" method="POST"
+                                    {{-- <form action="{{ route('admin.cities.destroy', $booking->id) }}" method="POST"
                                         onsubmit="return confirm('{{ trans('global.areYouSure') }}');"
                                         style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-danger"
                                             value="{{ trans('global.delete') }}">
-                                    </form>
+                                    </form> --}}
 
                                 </td>
                             </tr>

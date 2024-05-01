@@ -37,7 +37,7 @@ class HomeController extends Controller
         }
 
         $events = $events->get();
-
+        
         $categories = Category::all();
         return view('events', compact('events', 'categories'));
     }

@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\RoundBlockSizeMode;
+use Endroid\QrCode\Writer\PngWriter;
 
 class BookingController extends Controller
 {
@@ -19,12 +24,12 @@ class BookingController extends Controller
         $user = auth()->user();
         
         if ($user->isAdmin()) {
-            $bookings = Booking::all();
+            $bookings = Booking::with('event')->get();
         } elseif ($user->isOrganizer()) {
             $organizerId = $user->id;
             $bookings = Booking::whereHas('event', function ($query) use ($organizerId) {
                 $query->where('organizer_id', $organizerId);
-            })->get();
+            })->with('event')->get();
         }    
 
         return view('admin.bookings.index', compact('bookings'));
@@ -84,7 +89,24 @@ class BookingController extends Controller
     {
         abort_if(Gate::denies('Bookings'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return view('admin.bookings.show', compact('booking'));
+        $totalTicketQuantity = $booking->tickets()->sum('booking_tickets.quantity');
+
+        // Generate QR code
+        $result = Builder::create()
+            ->writer(new PngWriter())
+            ->writerOptions([])
+            ->data($booking->reference_number)
+            ->encoding(new Encoding('UTF-8'))
+            ->errorCorrectionLevel(ErrorCorrectionLevel::High)
+            ->size(300)
+            ->margin(10)
+            ->roundBlockSizeMode(RoundBlockSizeMode::Margin)
+            ->build();
+
+        $qrCodeImage = base64_encode($result->getString());
+
+        $booking->load('event');
+        return view('admin.bookings.show', compact('booking', 'totalTicketQuantity', 'qrCodeImage'));
     }
 
     public function destroy(Booking $booking)

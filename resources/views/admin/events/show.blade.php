@@ -139,7 +139,7 @@
                                     <div class="form-group col-md-4" id="minAgeDiv">
                                         <label for="minAge">Minimum Age</label>
                                         <input type="number" name="min_age" class="form-control" id="minAge"
-                                            value="$event->min_age">
+                                            value="{{$event->min_age}}" disabled>
                                     </div>
                                 @endif
 
@@ -147,7 +147,7 @@
                                     <div class="form-group col-md-4" id="maxAgeDiv">
                                         <label for="maxAge">Maximum Age</label>
                                         <input type="number" name="max_age" class="form-control" id="maxAge"
-                                            value="$event->max_age">
+                                            value="{{$event->max_age}}" disabled>
                                     </div>
                                 @endif
                             </div>
@@ -175,7 +175,8 @@
                                             <label for="ticketPrice">Ticket Price</label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text">$</span>
+                                                    <span class="input-group-text">£
+                                                    </span>
                                                 </div>
                                                 <input type="number" name="ticket_price[]" class="form-control"
                                                     placeholder="Enter Ticket Price" value="{{ $ticket->price }}" disabled>
@@ -228,30 +229,6 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
-            // Initially hide both Minimum Age and Maximum Age inputs
-            $('#minAgeDiv').hide();
-            $('#maxAgeDiv').hide();
-
-            // Event listener for Age Restrictions dropdown change
-            $('#ageRestrictions').change(function() {
-                var selectedOption = $(this).val();
-
-                // Hide both inputs if "None" is selected
-                if (selectedOption === 'None') {
-                    $('#minAgeDiv').hide();
-                    $('#maxAgeDiv').hide();
-                }
-                // Show only Minimum Age input if "Minimum Age" is selected
-                else if (selectedOption === 'Minimum Age') {
-                    $('#minAgeDiv').show();
-                    $('#maxAgeDiv').hide();
-                }
-                // Show only Maximum Age input if "Maximum Age" is selected
-                else if (selectedOption === 'Maximum Age') {
-                    $('#minAgeDiv').hide();
-                    $('#maxAgeDiv').show();
-                }
-            });
 
             $('#nextButton1').click(function() {
                 stepper.next(); // Assuming you have a stepper object

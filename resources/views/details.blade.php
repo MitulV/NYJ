@@ -64,7 +64,7 @@
                         <!-- Location Column -->
                         <div class="col-md-5 location-column">
                             <h4 class="info-title">Location</h4>
-                            <p>Scots Presbyterian Church Sydney, 44 Margaret St, Sydney, 2000, Australia</p>
+                            <p>{{ $event->address }}</p>
                         </div>
                         <!-- Date Column -->
                         <div class="col-md-2 date-column">
@@ -84,7 +84,7 @@
             <div class="event-banner-wrap ">
                 <div class="banner-thumb full-width full-height border-0">
                     <a href="#">
-                        <img src="https://www.eventbookings.com/upload/orgs/5ae14e2960a3f549698747808da9e627/events/c4652f20-ac4b-497f-b682-ac51e3b27561.jpg?w=1250&h=572&fit=crop-center&q=100&s=a1bbe11190ee74d492fd38e5e6fd9d12"
+                        <img src="{{$event->image1}}"
                             class="img-cover av-event-image" alt="banner"> </a>
                 </div>
             </div>
@@ -95,8 +95,7 @@
                 <div class="event-details mt-4">
                     <h2>About This Event</h2>
                     <p>{{ $event->short_description }}</p>
-                    <p>This time bigger and better, we are so excited to have some of Australia's leading choreographers
-                        and dancers coming to inspire our dancers!</p>
+                    <p>{{ $event->long_description }}</p>
                 </div>
 
                 <div class="location-details">
@@ -220,7 +219,14 @@
 
     <nav class="navbar navbar-expand-lg sticky-bottom-navbar d-flex py-4 px-5 align-items-end justify-content-between">
         <div class="d-flex align-items-center justify-content-center">
-            <h2>GBP {{ $event->tickets()->first()->price }}</h2>
+            
+            @if ($event->tickets()->exists())
+                <h2>GBP
+                    {{ $event->tickets()->first()->price }}
+                </h2>
+            @else
+                <h2>No tickets available</h2>
+            @endif
         </div>
 
 

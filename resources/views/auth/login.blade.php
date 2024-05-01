@@ -2,9 +2,7 @@
 @section('content')
 <div class="login-box">
     <div class="login-logo">
-        <div class="login-logo">
-            <a href="{{route('home')}}"><img src="{{ asset('img/NYJ_LOGO.png') }}" alt="Logo" height="100" /></a>
-        </div>
+            <a href="{{route('home')}}"><img src="{{ asset('img/NYJ_LOGO.png') }}" alt="Logo" height="200" width="200"/></a> 
     </div>
     <div class="card">
         <div class="card-body login-card-body">
@@ -60,7 +58,7 @@
             </p>
             <p class="mb-1 mt-2">
                 <a class="" href="{{ route('register') }}">
-                    {{ trans('global.register_account') }}
+                    Register a new Organizer Account
                 </a>
             </p>
             <p class="mb-0">

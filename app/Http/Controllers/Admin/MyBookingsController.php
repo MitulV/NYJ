@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Booking;
 use App\Http\Controllers\Controller;
-use App\Mail\BookingConfirmation;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Response;
 use Endroid\QrCode\Builder\Builder;
