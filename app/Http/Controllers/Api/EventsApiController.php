@@ -10,21 +10,48 @@ use Illuminate\Http\Request;
 
 class EventsApiController extends Controller
 {
-    public function index(Request $request)
+    public function events(Request $request)
     {
         /** @var \App\User $user */
         $user = auth()->user();
 
+        // Retrieve status and timeline filters from the request, if provided
+        $status = $request->input('status');
+        $timeline = $request->input('timeline');
+
+        // Query events based on user role and filters
         if ($user->isAdmin()) {
-            $events = Event::all();
+            $eventsQuery = Event::query();
         } elseif ($user->isOrganizer()) {
-            $events = Event::where('organizer_id', $user->id)->get();
+            $eventsQuery = Event::where('organizer_id', $user->id);
         } else {
             return response()->json(['error' => 'Invalid user'], 401);
         }
 
+        // Apply status filter if provided
+        if ($status) {
+            $eventsQuery->where('status', $status);
+        }
+
+        // Apply timeline filter if provided
+        if ($timeline) {
+            $currentDate = now()->toDateString();
+            if ($timeline === 'future') {
+                $eventsQuery->where('start_date', '>=', $currentDate);
+            } elseif ($timeline === 'past') {
+                $eventsQuery->where('start_date', '<', $currentDate);
+            } else {
+                return response()->json(['error' => 'Invalid timeline filter value'], 400);
+            }
+        }
+
+        // Retrieve events based on the query
+        $events = $eventsQuery->get();
+
         return response()->json(['data' => $events], 200);
     }
+
+
 
     public function guests(Request $request, $eventId)
     {
@@ -62,7 +89,7 @@ class EventsApiController extends Controller
     public function checkIn(Request $request, $referenceNumber)
     {
         // Find the booking by its ID
-        $booking = Booking::where('reference_number',$referenceNumber)->first();
+        $booking = Booking::where('reference_number', $referenceNumber)->first();
 
         // Update the checked_in status to true
         $booking->update(['checked_in' => true]);

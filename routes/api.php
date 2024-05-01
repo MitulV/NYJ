@@ -9,7 +9,7 @@ Route::post('login',[AuthApiController::class,'login']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::post('logout',[AuthApiController::class,'logout']);
-    Route::get('events',[EventsApiController::class,'index']);
+    Route::get('events',[EventsApiController::class,'events']);
 
     Route::get('guests/{eventId}',[EventsApiController::class,'guests']);
     Route::post('bookings/{referenceNumber}/checkin', [EventsApiController::class, 'checkIn']);
