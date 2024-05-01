@@ -91,6 +91,10 @@ class EventsApiController extends Controller
         // Find the booking by its ID
         $booking = Booking::where('reference_number', $referenceNumber)->first();
 
+        if ($booking->checked_in) {
+            return response()->json(['message' => 'User already checked in']);
+        }
+        
         // Update the checked_in status to true
         $booking->update(['checked_in' => true]);
 
