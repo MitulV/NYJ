@@ -69,8 +69,8 @@
                                                 onclick="decrementQuantity(this)">
                                                 -
                                             </button>
-                                            <input type="text" class="form-control text-center ticket-quantity" value="0"
-                                                name="ticket_id_{{ $ticket->id }}" readonly />
+                                            <input type="text" class="form-control text-center ticket-quantity"
+                                                value="0" name="ticket_id_{{ $ticket->id }}" readonly />
                                             <button class="btn btn-outline-secondary rounded-circle" type="button"
                                                 onclick="incrementQuantity(this)">
                                                 +
@@ -109,7 +109,9 @@
                                 </div>
                             @endforeach
 
-                            <button type="button" class="btn event-btn" onclick="validateAndSubmit()">Book</button>
+                            @if (auth()->guest() || (!auth()->user()->isOrganizer() && !auth()->user()->isAdmin()))
+                                <button type="button" class="btn event-btn" onclick="validateAndSubmit()">Book</button>
+                            @endif
                         </div>
                     </form>
                 </div>
@@ -129,25 +131,26 @@
                             <h3>Account</h3>
                             <div class="mb-3">
                                 <label for="name">Name</label>
-                                <input type="text" class="form-control" id="name" name="name" required/>
+                                <input type="text" class="form-control" id="name" name="name" required />
                             </div>
                             <div class="mb-3">
                                 <label for="email">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" required/>
+                                <input type="email" class="form-control" id="email" name="email" required />
                             </div>
                             <div class="mb-3">
                                 <label for="password">Password</label>
-                                <input type="password" class="form-control" id="password" name="password" required/>
+                                <input type="password" class="form-control" id="password" name="password"
+                                    required />
                             </div>
                             <div class="mb-3">
                                 <label for="confirmPassword">Confirm Password</label>
                                 <input type="password" class="form-control" id="confirmPassword"
-                                    name="password_confirmation" required/>
+                                    name="password_confirmation" required />
                             </div>
                             <button class="btn event-btn" id="next" onclick="showStep(2)">
                                 Create
                             </button>
-                            <p class="mt-3">Already have an account? <a href="{{route('login')}}">Login</a></p>
+                            <p class="mt-3">Already have an account? <a href="{{ route('login') }}">Login</a></p>
                         </div>
 
                         <!-- Step 2: Select Ticket -->
@@ -158,7 +161,7 @@
                                     <div>
                                         <label for="ticket_id_{{ $ticket->id }}" class="fw-bold">
                                             {{ $ticket->name }}</label> <span class="input-group-text text-danger">
-                                                £{{ $ticket->price }}</span>
+                                            £{{ $ticket->price }}</span>
                                     </div>
                                     <div class="input-group">
                                         <div class="d-flex align-items-center">
@@ -166,8 +169,8 @@
                                                 onclick="decrementQuantity(this)">
                                                 -
                                             </button>
-                                            <input type="text" class="form-control text-center ticket-quantity" value="0"
-                                                name="ticket_id_{{ $ticket->id }}" readonly />
+                                            <input type="text" class="form-control text-center ticket-quantity"
+                                                value="0" name="ticket_id_{{ $ticket->id }}" readonly />
                                             <button class="btn btn-outline-secondary rounded-circle" type="button"
                                                 onclick="incrementQuantity(this)">
                                                 +
@@ -206,7 +209,11 @@
                                 </div>
                             @endforeach
 
-                            <button type="button" class="btn event-btn" onclick="validateAndSubmit()">Book</button>
+                            @if (auth()->guest() || (!auth()->user()->isOrganizer() && !auth()->user()->isAdmin()))
+                                <button type="button" class="btn event-btn"
+                                    onclick="validateAndSubmit()">Book</button>
+                            @endif
+
                         </div>
                     </form>
                 </div>

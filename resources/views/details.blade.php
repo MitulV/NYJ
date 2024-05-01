@@ -84,8 +84,7 @@
             <div class="event-banner-wrap ">
                 <div class="banner-thumb full-width full-height border-0">
                     <a href="#">
-                        <img src="{{$event->image1}}"
-                            class="img-cover av-event-image" alt="banner"> </a>
+                        <img src="{{ $event->image1 }}" class="img-cover av-event-image" alt="banner"> </a>
                 </div>
             </div>
             <div class="details-section mt-6">
@@ -219,7 +218,7 @@
 
     <nav class="navbar navbar-expand-lg sticky-bottom-navbar d-flex py-4 px-5 align-items-end justify-content-between">
         <div class="d-flex align-items-center justify-content-center">
-            
+
             @if ($event->tickets()->exists())
                 <h2>GBP
                     {{ $event->tickets()->first()->price }}
@@ -229,8 +228,11 @@
             @endif
         </div>
 
+        @if (auth()->guest() || (!auth()->user()->isOrganizer() && !auth()->user()->isAdmin()))
+            <a href="{{ route('registerUser.index', ['event_id' => $event->id]) }}" class="event-btn">Purchase
+                Ticket</a>
+        @endif
 
-        <a href="{{ route('registerUser.index', ['event_id' => $event->id]) }}" class="event-btn">Purchase Ticket</a>
 
     </nav>
 
