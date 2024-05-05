@@ -1,4 +1,4 @@
-const mobileInput = document.getElementById("mobile");
+const mobileInput = document.getElementById('mobile');
 
 // Add event listener for input
 mobileInput.addEventListener("input", function(event) {
@@ -16,19 +16,6 @@ const next = document.querySelector("#next");
 const circles = document.querySelectorAll(".circle");
 
 let currentActive = 1;
-
-next.addEventListener("click", () => {
-    if(!validateUserForm()){
-        return false;;
-    }
-    currentActive++;
-
-    if (currentActive > circles.length) {
-        currentActive = circles.length;
-    }
-
-    update();
-});
 
 prev.addEventListener("click", () => {
     currentActive--;
@@ -71,10 +58,12 @@ function validateUserForm(){
        
 
         if (name.trim() === "") {
+            alert('Please enter valid Name');
             return false;
         }
 
         if (email.trim() === "") {
+            alert('Please enter valid Email');
             return false;
         }
 
@@ -84,7 +73,7 @@ function validateUserForm(){
 function showStep(step) {
     if(step==2){
         if(!validateUserForm()){
-            return false;;
+            return false;
         }
     }
     // Hide all steps
@@ -94,6 +83,14 @@ function showStep(step) {
 
     // Show the selected step
     document.getElementById("step" + step).style.display = "block";
+
+    currentActive++;
+
+    if (currentActive > circles.length) {
+        currentActive = circles.length;
+    }
+
+    update();
 }
 
 function incrementQuantity(button) {

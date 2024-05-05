@@ -60,15 +60,20 @@
                         <div class="step" id="step1">
                             <h3>Account</h3>
                             <div class="mb-3">
-                                <label for="name">Name</label>
+                                <label for="name">Name*</label>
                                 <input type="text" class="form-control" id="name" name="name" required />
                             </div>
                             <div class="mb-3">
-                                <label for="email">Email</label>
+                                <label for="email">Email*</label>
                                 <input type="email" class="form-control" id="email" name="email" required />
                             </div>
+
+                            <div class="mb-3">
+                                <label for="mobile">Mobile</label>
+                                <input type="text" class="form-control" id="mobile" name="mobile" required />
+                            </div>
                             
-                            <button class="btn event-btn" id="next" onclick="showStep(2)">
+                            <button type="button" class="btn event-btn" id="next" onclick="showStep(2)">
                                 Create
                             </button>
                             

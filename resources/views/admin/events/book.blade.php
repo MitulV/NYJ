@@ -73,7 +73,7 @@
                                 <input type="text" class="form-control" id="mobile" name="mobile" required />
                             </div>
                             
-                            <button class="btn event-btn" id="next" onclick="showStep(2)">
+                            <button type="button" class="btn event-btn" id="next" onclick="showStep(2)">
                                 Create
                             </button>
                             

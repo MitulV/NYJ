@@ -39,7 +39,7 @@
     <body>
       <div class="card">
       <div style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto;">
-        <i class="checkmark">✓</i>
+        <i class="checkmark">X</i>
       </div>
         <h1>Failure</h1> 
         <p>Your Payment has been failed;<br/>
