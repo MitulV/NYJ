@@ -373,23 +373,23 @@ class EventsController extends Controller
         'status' => 'Complete'
     ]);
 
-    $result = Builder::create()
-                    ->writer(new PngWriter())
-                    ->writerOptions([])
-                    ->data($booking->reference_number)
-                    ->encoding(new Encoding('UTF-8'))
-                    ->errorCorrectionLevel(ErrorCorrectionLevel::High)
-                    ->size(300)
-                    ->margin(10)
-                    ->roundBlockSizeMode(RoundBlockSizeMode::Margin)
-                    ->build();
+    // $result = Builder::create()
+    //                 ->writer(new PngWriter())
+    //                 ->writerOptions([])
+    //                 ->data($booking->reference_number)
+    //                 ->encoding(new Encoding('UTF-8'))
+    //                 ->errorCorrectionLevel(ErrorCorrectionLevel::High)
+    //                 ->size(300)
+    //                 ->margin(10)
+    //                 ->roundBlockSizeMode(RoundBlockSizeMode::Margin)
+    //                 ->build();
 
-                $qrCodeImage = base64_encode($result->getString());
+    // $qrCodeImage = base64_encode($result->getString());
 
-                $totalTicketQuantity = $booking->tickets()->sum('booking_tickets.quantity');
+    // $totalTicketQuantity = $booking->tickets()->sum('booking_tickets.quantity');
 
-                $booking->load('event');
-                Mail::to($user->email)->send(new BookingConfirmation($booking, $totalTicketQuantity, $qrCodeImage));
+    // $booking->load('event');
+    // Mail::to($user->email)->send(new BookingConfirmation($booking, $totalTicketQuantity, $qrCodeImage));
    
     return redirect()->route('admin.bookings.index')->with('payment_success', 'Your booking has been confirmed.');
 
