@@ -63,7 +63,7 @@ class UserEventBookingController extends Controller
       'booking_date_time' => now(),
     ]);
 
-    foreach ($request->except('_token', 'event_id', 'name', 'email', 'password', 'password_confirmation') as $ticketId => $quantity) {
+    foreach ($request->except('_token', 'event_id', 'name', 'email') as $ticketId => $quantity) {
       // Ensure the request parameter represents a ticket ID
       if (Str::startsWith($ticketId, 'ticket_id_')) {
         // Extract the ticket ID from the parameter name
