@@ -10,7 +10,6 @@ use App\Ticket;
 use App\Transaction;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Stripe\StripeClient;
 use Illuminate\Support\Str;
@@ -40,20 +39,16 @@ class UserEventBookingController extends Controller
 
   public function bookEvent(Request $request)
   {
-
-    $user=null;
-    if (!Auth::check()) {
+    $user = User::where('email', $request->email)->first();
+    if (!$user) {
       $user = User::create([
         'name' => $request->name,
         'email' => $request->email,
-        'password' => Hash::make($request->password),
+        'mobile' => $request->mobile,
+        'password' => Hash::make('Welcome@123'),
       ]);
 
       $user->roles()->attach(3);
-
-      Auth::login($user);
-    }else{
-      $user = auth()->user();
     }
 
     $lineItems = [];
@@ -100,16 +95,13 @@ class UserEventBookingController extends Controller
 
     $event = Event::find($request->event_id);
 
-    $checkoutSessionUrl = $this->createCheckoutSession($lineItems, $event, $booking);
+    $checkoutSessionUrl = $this->createCheckoutSession($lineItems, $event, $booking,$user);
 
     return redirect($checkoutSessionUrl);
   }
 
-  public function createCheckoutSession($lineItems, $event, $booking)
+  public function createCheckoutSession($lineItems, $event, $booking,$user)
   {
-    /** @var \App\User $user */
-    $user = auth()->user();
-
     $organizer = User::find($event->organizer_id);
     $stripeSettings = $organizer->stripeSettings;
     $stripe = new StripeClient(config('stripe.api_keys.secret_key'));
@@ -149,11 +141,11 @@ class UserEventBookingController extends Controller
 
   public function paymentSuccess()
   {
-    return redirect()->route('admin.mybookings.index')->with('payment_success', 'Your booking has been confirmed.');
+    return view('payment-success');
   }
 
   public function paymentCancel()
   {
-    return redirect()->route('admin.mybookings.index')->with('payment_fail', 'Your  Payment has been Failed.');
+    return view('payment-failure');
   }
 }

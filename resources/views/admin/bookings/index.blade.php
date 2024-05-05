@@ -1,5 +1,19 @@
 @extends('layouts.admin')
 @section('content')
+@if (session('payment_success'))
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close text-light" data-dismiss="alert" aria-hidden="true">×</button>
+            <h5><i class="icon fas fa-check"></i> Payment successful!</h5>
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session('payment_fail'))
+        <div class="alert alert-danger alert-dismissible">
+            <h5><i class="icon fas fa-info"></i> Payment Failed!</h5>
+            {{ session('payment_fail') }}
+        </div>
+    @endif
     @if (auth()->user()->isOrganizer() && !auth()->user()->stripeSettings()->exists())
         <div class="alert alert-danger alert-dismissible">
             <h5><i class="icon fas fa-info"></i> Warning!</h5>

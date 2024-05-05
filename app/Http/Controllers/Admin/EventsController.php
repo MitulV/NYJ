@@ -2,17 +2,28 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Booking;
+use App\BookingTicket;
 use App\Category;
 use App\City;
 use App\Event;
 use App\Http\Controllers\Controller;
+use App\Mail\BookingConfirmation;
 use App\Ticket;
+use App\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 use Stripe\StripeClient;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\RoundBlockSizeMode;
+use Endroid\QrCode\Writer\PngWriter;
+use Illuminate\Support\Facades\Mail;
 
 class EventsController extends Controller
 {
@@ -264,8 +275,6 @@ class EventsController extends Controller
                 ]);
             }
         }
-
-
         return redirect()->route('admin.events.index');
     }
 
@@ -301,5 +310,88 @@ class EventsController extends Controller
         Event::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
+    }
+
+    public function book(Request $request)
+    {
+    $eventId = $request->input('event_id');
+    $event = Event::find($eventId);
+    $tickets = $event->tickets;
+
+    $normalTickets = $tickets->where('is_group_ticket', false)->values()->all();
+    $groupTickets = $tickets->where('is_group_ticket', true)->values()->all();
+
+    return view('admin.events.book', compact('event', 'normalTickets', 'groupTickets'));
+    }
+
+    public function handleBooking(Request $request)
+    {
+       
+    $user = User::where('email', $request->email)->first();
+    if (!$user) {
+      $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'mobile' => $request->mobile,
+        'password' => Hash::make('Welcome@123'),
+      ]);
+
+      $user->roles()->attach(3);
+    }
+
+    $totalAmount = 0;
+
+    // Create the booking
+    $booking = Booking::create([
+        'event_id' => $request->event_id,
+        'user_id' => $user->id,
+        'status' => 'Pending',
+        'is_offline' => true,
+        'payment_mode'=>$request->payment_mode,
+        'amount' => $totalAmount,
+        'booking_date_time' => now(),
+      ]);
+
+    foreach ($request->except('_token', 'event_id', 'name', 'email', 'mobile', 'payment_mode') as $ticketId => $quantity) {
+        $ticketId = substr($ticketId, strlen('ticket_id_'));
+
+        $ticket = Ticket::findOrFail($ticketId);
+        if ($quantity > 0) {
+            $amount = $ticket->price * $quantity;
+          $totalAmount += $amount;
+
+          BookingTicket::create([
+            'booking_id' => $booking->id,
+            'ticket_id' => $ticketId,
+            'quantity' => $quantity,
+          ]);
+        }
+    }
+
+    $booking->update([
+        'amount' => $totalAmount,
+        'status' => 'Complete'
+    ]);
+
+    $result = Builder::create()
+                    ->writer(new PngWriter())
+                    ->writerOptions([])
+                    ->data($booking->reference_number)
+                    ->encoding(new Encoding('UTF-8'))
+                    ->errorCorrectionLevel(ErrorCorrectionLevel::High)
+                    ->size(300)
+                    ->margin(10)
+                    ->roundBlockSizeMode(RoundBlockSizeMode::Margin)
+                    ->build();
+
+                $qrCodeImage = base64_encode($result->getString());
+
+                $totalTicketQuantity = $booking->tickets()->sum('booking_tickets.quantity');
+
+                $booking->load('event');
+                Mail::to($user->email)->send(new BookingConfirmation($booking, $totalTicketQuantity, $qrCodeImage));
+   
+    return redirect()->route('admin.bookings.index')->with('payment_success', 'Your booking has been confirmed.');
+
     }
 }

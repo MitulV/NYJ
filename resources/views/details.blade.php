@@ -35,8 +35,6 @@
             <div class="d-flex">
                 @if (auth()->check())
                     <a href="{{ route('login') }}" class="nav-link me-3">{{ auth()->user()->name }}</a>
-                @else
-                    <a href="{{ route('login') }}" class="nav-link me-3">Greeting, Sign In</a>
                 @endif
 
                 <a href="{{ route('register') }}" class="event-btn me-3">Create Event</a>

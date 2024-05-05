@@ -14,23 +14,7 @@ class CitySeeder extends Seeder
             ['name' => 'Mumbai'],
             ['name' => 'Delhi'],
             ['name' => 'Bangalore'],
-            ['name' => 'Hyderabad'],
-            ['name' => 'Ahmedabad'],
-            ['name' => 'Chennai'],
-            ['name' => 'Kolkata'],
-            ['name' => 'Surat'],
-            ['name' => 'Pune'],
-            ['name' => 'Jaipur'],
-            ['name' => 'Lucknow'],
-            ['name' => 'Kanpur'],
-            ['name' => 'Nagpur'],
-            ['name' => 'Indore'],
-            ['name' => 'Thane'],
-            ['name' => 'Bhopal'],
-            ['name' => 'Visakhapatnam'],
-            ['name' => 'Patna'],
-            ['name' => 'Vadodara'],
-            ['name' => 'Ghaziabad']
+            ['name' => 'Hyderabad']
         ];
 
         City::insert($cities);

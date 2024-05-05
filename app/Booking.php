@@ -18,6 +18,8 @@ class Booking extends Model
         'amount',
         'status',
         'booking_date_time',
+        'is_offline',
+        'payment_mode',
         'checked_in',
     ];
 

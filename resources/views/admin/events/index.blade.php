@@ -75,6 +75,12 @@
                                 </td>
                                 <td>
 
+                                    @if ($event->status === 'Published')
+                                        <a class="btn btn-xs btn-success" href="{{ route('admin.events.book', ['event_id' => $event->id]) }}">
+                                            Book
+                                        </a>
+                                    @endif
+
                                     <a class="btn btn-xs btn-primary" href="{{ route('admin.events.show', $event->id) }}">
                                         {{ trans('global.view') }}
                                     </a>

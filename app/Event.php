@@ -46,11 +46,6 @@ class Event extends Model
         return $this->belongsTo(City::class); // Add relationship to City model
     }
 
-    public function eventImages()
-    {
-        return $this->hasMany(EventImage::class);
-    }
-
     public function tickets()
     {
         return $this->hasMany(Ticket::class);

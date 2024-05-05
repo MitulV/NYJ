@@ -52,6 +52,17 @@
                             <th>Booking Payment Status</th>
                             <td>{{ $booking->status }}</td>
                         </tr>
+                        @if ($booking->is_offline)
+                            <tr>
+                                <th>Payment Mode</th>
+                                <td>Offline, {{ $booking->payment_mode }}</td>
+                            </tr>
+                        @else
+                            <tr>
+                                <th>Payment Mode</th>
+                                <td>Online</td>
+                            </tr>
+                        @endif
                         <tr>
                             <th>Event Date & Time</th>
                             <td>{{ \Carbon\Carbon::parse($booking->event->start_date)->format('d F Y') }}

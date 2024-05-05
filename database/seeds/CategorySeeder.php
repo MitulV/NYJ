@@ -20,17 +20,7 @@ class CategorySeeder extends Seeder
             ['name' => 'Fashion'],
             ['name' => 'Health'],
             ['name' => 'Education'],
-            ['name' => 'Travel'],
-            ['name' => 'Family'],
-            ['name' => 'Community'],
-            ['name' => 'Film & Media'],
-            ['name' => 'Government'],
-            ['name' => 'Hobbies'],
-            ['name' => 'Science & Tech'],
-            ['name' => 'Charity & Causes'],
-            ['name' => 'Religion'],
-            ['name' => 'Auto, Boat & Air'],
-            ['name' => 'Home & Lifestyle']
+            ['name' => 'Travel']
         ];
         
         Category::insert($categories);

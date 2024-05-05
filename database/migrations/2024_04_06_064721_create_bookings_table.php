@@ -19,6 +19,8 @@ return new class extends Migration
             $table->decimal('amount', 10, 2);
             $table->string('status');
             $table->dateTime('booking_date_time');
+            $table->boolean('is_offline')->default(true);
+            $table->string('payment_mode')->nullable();
             $table->boolean('checked_in')->default(false);
             $table->timestamps();
         });

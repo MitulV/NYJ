@@ -1,3 +1,15 @@
+const mobileInput = document.getElementById("mobile");
+
+// Add event listener for input
+mobileInput.addEventListener("input", function(event) {
+    // Remove non-numeric characters from the input value
+    const sanitizedValue = event.target.value.replace(/\D/g, "");
+
+    // Update the input value with the sanitized value
+    event.target.value = sanitizedValue;
+});
+
+
 const progress = document.querySelector("#progress");
 const prev = document.querySelector("#prev");
 const next = document.querySelector("#next");
@@ -55,27 +67,14 @@ function update() {
 function validateUserForm(){
 
     var name = document.getElementById("name").value;
-        var email = document.getElementById("email").value;
-        var password = document.getElementById("password").value;
-        var confirmPassword = document.getElementById("confirmPassword").value;
+    var email = document.getElementById("email").value;
+       
 
         if (name.trim() === "") {
             return false;
         }
 
         if (email.trim() === "") {
-            return false;
-        }
-
-        if (password.trim() === "") {
-            return false;
-        }
-
-        if (confirmPassword.trim() === "") {
-            return false;
-        }
-
-        if (password !== confirmPassword) {
             return false;
         }
 

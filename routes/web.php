@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\EventsController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\UserEventBookingController;
 use App\Http\Controllers\WebhookController;
@@ -30,7 +31,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     // Events
     Route::delete('events/destroy', 'EventsController@massDestroy')->name('events.massDestroy');
+    Route::get('events/book','EventsController@book')->name('events.book');
+    Route::post('events/handle-booking','EventsController@handleBooking')->name('events.handleBooking');
     Route::resource('events', 'EventsController');
+    
 
     // Categories
     Route::delete('categories/destroy', 'CategoriesController@massDestroy')->name('categories.massDestroy');
