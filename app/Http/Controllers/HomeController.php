@@ -15,7 +15,7 @@ class HomeController extends Controller
 
     public function events(Request $request)
     {
-        $events = Event::where('status', 'Published');
+        $events = Event::where('status', 'Published')->whereDate('start_date', '>=', now());;
 
         if ($request->filled('location')) {
             $location = $request->input('location');

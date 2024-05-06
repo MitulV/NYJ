@@ -86,9 +86,15 @@
                                 <div class="d-flex justify-content-between mb-3 input-group-text">
                                     <div>
                                         <label for="ticket_id_{{ $ticket->id }}" class="fw-bold">
-                                            {{ $ticket->name }}</label> <span class="input-group-text text-danger">
-                                            £{{ $ticket->price }}</span>
+                                            {{ $ticket->name }}
+                                        </label> 
+                                        <span class="input-group-text text-danger">
+                                            £{{ $ticket->price }}
+                                        </span>
                                     </div>
+                                    @if ($ticket->quantity == $ticket->total_booked_tickets)
+                                        <h5>All Tickets Booked</h5>
+                                   @else
                                     <div class="input-group">
                                         <div class="d-flex align-items-center">
                                             <button class="btn btn-outline-secondary rounded-circle" type="button"
@@ -98,11 +104,12 @@
                                             <input type="text" class="form-control text-center ticket-quantity"
                                                 value="0" name="ticket_id_{{ $ticket->id }}" readonly />
                                             <button class="btn btn-outline-secondary rounded-circle" type="button"
-                                                onclick="incrementQuantity(this)">
+                                                onclick="incrementQuantity(this, {{ $ticket->quantity }}, {{ $ticket->total_booked_tickets }})">
                                                 +
                                             </button>
                                         </div>
                                     </div>
+                                    @endif
                                 </div>
                             @endforeach
 
@@ -127,7 +134,7 @@
                                             <input type="text" class="form-control text-center" value="0"
                                                 name="group_ticket_id_{{ $ticket->id }}" readonly />
                                             <button class="btn btn-outline-secondary rounded-circle" type="button"
-                                                onclick="incrementQuantity(this)">
+                                                onclick="incrementQuantity(this, {{ $ticket->quantity }}, {{ $ticket->total_booked_tickets }})">
                                                 +
                                             </button>
                                         </div>

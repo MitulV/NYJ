@@ -106,7 +106,7 @@
                                             <input type="text" class="form-control text-center ticket-quantity"
                                                 value="0" name="ticket_id_{{ $ticket->id }}" readonly />
                                             <button class="btn btn-outline-secondary rounded-circle" type="button"
-                                                onclick="incrementQuantity(this)">
+                                                onclick="incrementQuantity(this, {{ $ticket->quantity }}, {{ $ticket->total_booked_tickets }})">
                                                 +
                                             </button>
                                         </div>
@@ -135,7 +135,7 @@
                                             <input type="text" class="form-control text-center" value="0"
                                                 name="group_ticket_id_{{ $ticket->id }}" readonly />
                                             <button class="btn btn-outline-secondary rounded-circle" type="button"
-                                                onclick="incrementQuantity(this)">
+                                                onclick="incrementQuantity(this, {{ $ticket->quantity }}, {{ $ticket->total_booked_tickets }})">
                                                 +
                                             </button>
                                         </div>

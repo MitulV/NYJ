@@ -361,17 +361,35 @@
                 }
 
                 // Validate age restrictions
-                if (ageRestrictions === 'Minimum Age' && minAge.trim() === '') {
-                    alert('Please fill out the Minimum Age field.');
-                    return;
-                }
-                if (ageRestrictions === 'Maximum Age' && maxAge.trim() === '') {
-                    alert('Please fill out the Maximum Age field.');
-                    return;
+                if (ageRestrictions === 'Minimum Age') {
+                    if (minAge.trim() === '') {
+                        alert('Please fill out the Minimum Age field.');
+                        return;
+                    }
+
+                    if (parseFloat(minAge) < 0) {
+                        alert('Minimum Age cannot be negative.');
+                        event.preventDefault(); // Prevent default form submission if validation fails
+                        return;
+                    }
+
                 }
 
-                // Proceed to the next step if all fields are filled
-                stepper.next(); // Assuming you have a stepper object
+                if (ageRestrictions === 'Maximum Age') {
+                    if (maxAge.trim() === '') {
+                        alert('Please fill out the Maximum Age field.');
+                        return;
+                    }
+
+                    if (parseFloat(maxAge) < 0) {
+                        alert('Maximum Age cannot be negative.');
+                        event.preventDefault(); // Prevent default form submission if validation fails
+                        return;
+                    }
+
+                }
+
+                stepper.next();
             });
 
             $('#nextButton3').click(function() {
@@ -456,6 +474,18 @@
                     // Validate that price is not negative
                     if (parseFloat(group_ticketPrice) < 0) {
                         alert('Group ticket price cannot be negative.');
+                        event.preventDefault(); // Prevent default form submission if validation fails
+                        return;
+                    }
+
+                    if (parseFloat(group_ticketQuantity) < 0) {
+                        alert('Group ticket Number of Tickets cannot be negative.');
+                        event.preventDefault(); // Prevent default form submission if validation fails
+                        return;
+                    }
+
+                    if (parseFloat(group_count) < 0) {
+                        alert('Group ticket Number of Persons in Group cannot be negative.');
                         event.preventDefault(); // Prevent default form submission if validation fails
                         return;
                     }

@@ -93,11 +93,19 @@ function showStep(step) {
     update();
 }
 
-function incrementQuantity(button) {
+function incrementQuantity(button, quantity, totalBookedTickets) {
     var input = button.parentElement.querySelector('input[type="text"]');
     var value = parseInt(input.value);
-    input.value = value + 1;
+    var remainingTickets = quantity - totalBookedTickets;
+    if (value < remainingTickets) {
+        input.value = value + 1;
+    } else if (value === remainingTickets) {
+        alert(remainingTickets + ' tickets are available.');
+    } else {
+        alert('Maximum tickets for this type have been reached.');
+    }
 }
+
 
 function decrementQuantity(button) {
     var input = button.parentElement.querySelector('input[type="text"]');

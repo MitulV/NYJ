@@ -316,13 +316,23 @@ class EventsController extends Controller
     {
     $eventId = $request->input('event_id');
     $event = Event::find($eventId);
-    $tickets = $event->tickets;
+    $tickets = $event->tickets->map(function ($ticket) {
+        $totalBookedTickets = $this->calculateTotalBookedTicketsForTicket($ticket->id); // Calculate total booked tickets for this ticket
+        $ticket->total_booked_tickets = $totalBookedTickets; // Add total booked tickets to the ticket object
+        return $ticket;
+    });
 
     $normalTickets = $tickets->where('is_group_ticket', false)->values()->all();
     $groupTickets = $tickets->where('is_group_ticket', true)->values()->all();
 
     return view('admin.events.book', compact('event', 'normalTickets', 'groupTickets'));
     }
+
+    public function calculateTotalBookedTicketsForTicket($ticketId){
+        $totalBookedTickets = BookingTicket::where('ticket_id', $ticketId)->sum('quantity');
+        
+        return $totalBookedTickets;
+      }
 
     public function handleBooking(Request $request)
     {
