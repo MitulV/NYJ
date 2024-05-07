@@ -419,6 +419,11 @@
                         alert('Ticket price cannot be negative');
                         return false;
                     }
+                    if (parseFloat(ticketQuantity) < 0) {
+                        isValid = false;
+                        alert('Number of Tickets cannot be negative');
+                        return false;
+                    }
                 });
 
                 if (isValid) {
