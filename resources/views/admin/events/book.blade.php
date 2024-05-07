@@ -122,9 +122,9 @@
                                 <div class="d-flex justify-content-between mb-3 input-group-text">
                                     <div>
                                         <label for="group_ticket_id_{{ $ticket->id }}" class="fw-bold">Ticket for
-                                            {{ $ticket->group_count }}</label> <span
+                                            {{ $ticket->group_count }} Persons</label> <span
                                             class="input-group-text text-danger d-flex justify-content-center">
-                                            $${{ $ticket->price }}</span>
+                                            £{{ $ticket->price }}</span>
                                     </div>
                                     <div class="input-group">
                                         <div class="d-flex align-items-center">
