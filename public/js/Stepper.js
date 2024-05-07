@@ -55,6 +55,7 @@ function validateUserForm(){
 
     var name = document.getElementById("name").value;
     var email = document.getElementById("email").value;
+    var mobile = document.getElementById("mobile").value;
        
 
         if (name.trim() === "") {
@@ -62,8 +63,13 @@ function validateUserForm(){
             return false;
         }
 
-        if (email.trim() === "") {
+        if (email.trim() === "" || !/\S+@\S+\.\S+/.test(email)) {
             alert('Please enter valid Email');
+            return false;
+        }
+
+        if (mobile.trim() === "" || !/^\d{10}$/.test(mobile.trim())) {
+            alert('Please enter valid 10-digit Mobile');
             return false;
         }
 
@@ -100,7 +106,11 @@ function incrementQuantity(button, quantity, totalBookedTickets) {
     if (value < remainingTickets) {
         input.value = value + 1;
     } else if (value === remainingTickets) {
-        alert(remainingTickets + ' tickets are available.');
+        if (remainingTickets === 0) {
+            alert('Booking is full for this ticket');
+        } else {
+            alert(remainingTickets + ' tickets are available.');
+        }
     } else {
         alert('Maximum tickets for this type have been reached.');
     }

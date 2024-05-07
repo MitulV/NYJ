@@ -69,7 +69,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="mobile">Mobile</label>
+                                <label for="mobile">Mobile*</label>
                                 <input type="text" class="form-control" id="mobile" name="mobile" required />
                             </div>
                             

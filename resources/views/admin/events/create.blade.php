@@ -321,7 +321,7 @@
                 var bookingDeadline = $('#booking_deadline').val();
                 var description = $('#shortDescription').val();
                 if (category === '-- Select --' || title.trim() === '' || startDate.trim() === '' ||
-                    startTime.trim() === '' || endDate.trim() === '' || endTime.trim() === '' || $(
+                    startTime.trim() === '' || endDate.trim() === '' || endTime.trim() === '' || bookingDeadline.trim() === '' || $(
                         '#shortDescription').summernote('isEmpty')) {
                     alert('Please fill out all required fields.');
                     return;

@@ -25,7 +25,14 @@ class HomeController
                 'totalTicketsSold' => Booking::where('status', 'complete')->with('tickets')->get()->sum(function ($booking) {
                     return $booking->tickets->sum('pivot.quantity');
                 }),
-                'upcomingEvents' => Event::where('start_date', '>', now())->count(),
+                'upcomingEvents' => Event::where(function ($query) {
+                    $query->where('start_date', '>', now())
+                        ->orWhere(function ($query) {
+                            $query->where('start_date', '=', now()->format('Y-m-d'))
+                                ->where('start_time', '>', now()->format('H:i:s'));
+                        });
+                })->count(),
+
                 'totalRevenue' => Booking::where('status', 'complete')->sum('amount')
             ];
 
@@ -45,8 +52,15 @@ class HomeController
                     return $booking->tickets->sum('pivot.quantity');
                 }),
                 'upcomingEvents' => Event::where('organizer_id', $organizerId)
-                    ->where('start_date', '>', now())
+                    ->where(function ($query) {
+                        $query->where('start_date', '>', now())
+                            ->orWhere(function ($query) {
+                                $query->where('start_date', '=', now()->format('Y-m-d'))
+                                    ->where('start_time', '>', now()->format('H:i:s'));
+                            });
+                    })
                     ->count(),
+
                 'totalRevenue' => Booking::whereHas('event', function ($query) use ($organizerId) {
                     $query->where('organizer_id', $organizerId);
                 })->where('status', 'complete')->sum('amount')
