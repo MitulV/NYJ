@@ -126,7 +126,7 @@ function decrementQuantity(button) {
     }
 }
 
-function validateAndSubmit() {
+function validateAndSubmit(booking_deadline) {
     var ticketQuantities = document.querySelectorAll(".ticket-quantity");
     var ticketCount = 0;
     ticketQuantities.forEach(function (ticket) {
@@ -134,7 +134,10 @@ function validateAndSubmit() {
     });
     if (ticketCount === 0) {
         alert("Please select at least one ticket.");
-    } else {
+    }else if (new Date(booking_deadline) < new Date()) {
+        alert('Booking has been closed.');
+    }
+    else {
         document.getElementById("ticketForm").submit();
     }
 }

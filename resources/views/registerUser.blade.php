@@ -144,7 +144,7 @@
 
                             @if (auth()->guest() || (!auth()->user()->isOrganizer() && !auth()->user()->isAdmin()))
                                 <button type="button" class="btn event-btn"
-                                    onclick="validateAndSubmit()">Book</button>
+                                    onclick="validateAndSubmit({{$event->booking_deadline}})">Book</button>
                             @endif
 
                         </div>

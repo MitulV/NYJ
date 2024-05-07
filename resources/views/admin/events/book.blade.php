@@ -151,7 +151,8 @@
 
                             @if (auth()->check() && auth()->user()->isOrganizer())
                                 <button type="button" class="btn event-btn"
-                                    onclick="validateAndSubmit()">Book</button>
+                                    onclick="validateAndSubmit({{$event->booking_deadline}})">Book
+                                </button>
                             @endif
 
                         </div>
