@@ -68,10 +68,11 @@ function validateUserForm(){
             return false;
         }
 
-        if (mobile.trim() === "" || !/^\d{10}$/.test(mobile.trim())) {
-            alert('Please enter valid 10-digit Mobile');
+        if (mobile.trim() === "" || !/^\d{8,12}$/.test(mobile.trim())) {
+            alert('Please enter a valid mobile number');
             return false;
         }
+        
 
         return true;
 }
