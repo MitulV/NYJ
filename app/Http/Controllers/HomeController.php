@@ -22,8 +22,7 @@ class HomeController extends Controller
                              $query->whereDate('start_date', now()->format('Y-m-d'))
                                    ->whereTime('start_time', '>=', now()->format('H:i:s'));
                          });
-               })
-               ->get();
+               });
 
         if ($request->filled('location')) {
             $location = $request->input('location');

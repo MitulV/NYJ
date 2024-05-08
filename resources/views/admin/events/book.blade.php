@@ -127,7 +127,7 @@
                             @foreach ($groupTickets as $ticket)
                                 <div class="d-flex justify-content-between mb-3 input-group-text">
                                     <div>
-                                        <label for="group_ticket_id_{{ $ticket->id }}" class="fw-bold">Ticket for
+                                        <label for="ticket_id_{{ $ticket->id }}" class="fw-bold">Ticket for
                                             {{ $ticket->group_count }} Persons</label> <span
                                             class="input-group-text text-danger d-flex justify-content-center">
                                             £{{ $ticket->price }}</span>
@@ -139,7 +139,7 @@
                                                 -
                                             </button>
                                             <input type="text" class="form-control text-center" value="0"
-                                                name="group_ticket_id_{{ $ticket->id }}" readonly />
+                                                name="ticket_id_{{ $ticket->id }}" readonly />
                                             <button class="btn btn-outline-secondary rounded-circle" type="button"
                                                 onclick="incrementQuantity(this, {{ $ticket->quantity }}, {{ $ticket->total_booked_tickets }})">
                                                 +
@@ -151,7 +151,7 @@
 
                             @if (auth()->check() && auth()->user()->isOrganizer())
                                 <button type="button" class="btn event-btn"
-                                    onclick="validateAndSubmit({{$event->booking_deadline}})">Book
+                                    onclick="validateAndSubmit('{{$event->booking_deadline}}')">Book
                                 </button>
                             @endif
 

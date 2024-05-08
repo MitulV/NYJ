@@ -120,10 +120,10 @@
                             @foreach ($groupTickets as $ticket)
                                 <div class="d-flex justify-content-between mb-3 input-group-text">
                                     <div>
-                                        <label for="group_ticket_id_{{ $ticket->id }}" class="fw-bold">Ticket for
+                                        <label for="ticket_id_{{ $ticket->id }}" class="fw-bold">Ticket for
                                             {{ $ticket->group_count }} Persons</label> <span
                                             class="input-group-text text-danger d-flex justify-content-center">
-                                            $${{ $ticket->price }}</span>
+                                            £{{ $ticket->price }}</span>
                                     </div>
                                     <div class="input-group">
                                         <div class="d-flex align-items-center">
@@ -131,8 +131,8 @@
                                                 onclick="decrementQuantity(this)">
                                                 -
                                             </button>
-                                            <input type="text" class="form-control text-center" value="0"
-                                                name="group_ticket_id_{{ $ticket->id }}" readonly />
+                                            <input type="text" class="form-control text-center ticket-quantity" value="0"
+                                                name="ticket_id_{{ $ticket->id }}" readonly />
                                             <button class="btn btn-outline-secondary rounded-circle" type="button"
                                                 onclick="incrementQuantity(this, {{ $ticket->quantity }}, {{ $ticket->total_booked_tickets }})">
                                                 +
@@ -144,7 +144,7 @@
 
                             @if (auth()->guest() || (!auth()->user()->isOrganizer() && !auth()->user()->isAdmin()))
                                 <button type="button" class="btn event-btn"
-                                    onclick="validateAndSubmit({{$event->booking_deadline}})">Book</button>
+                                    onclick="validateAndSubmit('{{$event->booking_deadline}}')">Book</button>
                             @endif
 
                         </div>

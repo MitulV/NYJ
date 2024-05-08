@@ -76,10 +76,19 @@
                                 <td>
 
                                     @if ($event->status === 'Published')
-                                        <a class="btn btn-xs btn-success" href="{{ route('admin.events.book', ['event_id' => $event->id]) }}">
+                                        @php
+                                            $startDateTime = $event->start_date . ' ' . $event->start_time;
+                                            $now = now();
+                                            $isPastEvent = $now > $startDateTime;
+                                        @endphp
+
+                                        <a class="btn btn-xs btn-{{ $isPastEvent ? 'secondary' : 'success' }}"
+                                            href="{{ $isPastEvent ? '#' : route('admin.events.book', ['event_id' => $event->id]) }}"
+                                            {{ $isPastEvent ? 'disabled' : '' }}>
                                             Book
                                         </a>
                                     @endif
+
 
                                     <a class="btn btn-xs btn-primary" href="{{ route('admin.events.show', $event->id) }}">
                                         {{ trans('global.view') }}
