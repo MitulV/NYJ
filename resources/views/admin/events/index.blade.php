@@ -75,7 +75,7 @@
                                 </td>
                                 <td>
 
-                                    @if ($event->status === 'Published')
+                                    @if (auth()->user()->isOrganizer() && $event->status === 'Published')
                                         @php
                                             $startDateTime = $event->start_date . ' ' . $event->start_time;
                                             $now = now();
@@ -94,14 +94,14 @@
                                         {{ trans('global.view') }}
                                     </a>
 
-                                    @if ($event->status === 'Draft')
+                                    @if (auth()->user()->isOrganizer() && $event->status === 'Draft')
                                         <a class="btn btn-xs btn-info" href="{{ route('admin.events.edit', $event->id) }}">
                                             {{ trans('global.edit') }}
                                         </a>
                                     @endif
 
 
-                                    @if ($event->bookings->count() === 0)
+                                    @if (auth()->user()->isOrganizer() && $event->bookings->count() === 0)
                                         <form action="{{ route('admin.events.destroy', $event->id) }}" method="POST"
                                             onsubmit="return confirm('{{ trans('global.areYouSure') }}');"
                                             style="display: inline-block;">

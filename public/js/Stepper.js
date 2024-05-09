@@ -132,9 +132,11 @@ function validateAndSubmit(booking_deadline) {
     ticketQuantities.forEach(function (ticket) {
         ticketCount += parseInt(ticket.value);
     });
+    console.log('booking_deadline_z - ',new Date(booking_deadline + 'Z'));
+    console.log('new Date() -',new Date());
     if (ticketCount === 0) {
         alert("Please select at least one ticket.");
-    }else if (new Date(booking_deadline) < new Date()) {
+    }else if (new Date(booking_deadline + 'Z') < new Date()) {
         alert('Booking has been closed.');
     }
     else {
