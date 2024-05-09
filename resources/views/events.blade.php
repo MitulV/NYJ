@@ -115,41 +115,45 @@
 
     <div class="container mt-4">
         <div class="row">
-            @foreach ($events as $event)
-                <div class="col-md-4 cont-cent">
-                    <a href="{{ route('eventDetails', ['eventId' => $event->id]) }}" style="text-decoration: none;">
-                        <div class="card">
-                                <img src="{{$event->image1}}"
-                                class="card-img-top" alt="..." />
-                            <div class="card-body">
-                                <div class="row">
-                                    <h5 class="card-title" style="font-weight: 700">
-                                        {{ $event->title }}
-                                    </h5>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col">
-
-                                        @if ($event->tickets()->exists())
-                                            <p class="card-text" style="font-weight: 700">GBP
-                                                {{ $event->tickets()->first()->price }}</p>
-                                        @else
-                                            <p class="card-text" style="font-weight: 700">No tickets available</p>
-                                        @endif
-
-                                        {{ \Illuminate\Support\Carbon::parse($event->start_date)->format('l jS F') }}
-
+            @empty($events)
+                <h1>No Events Available at this moment.</h1>
+            @else    
+                @foreach ($events as $event)
+                    <div class="col-md-4 cont-cent">
+                        <a href="{{ route('eventDetails', ['eventId' => $event->id]) }}" style="text-decoration: none;">
+                            <div class="card">
+                                    <img src="{{$event->image1}}"
+                                    class="card-img-top" alt="..." />
+                                <div class="card-body">
+                                    <div class="row">
+                                        <h5 class="card-title" style="font-weight: 700">
+                                            {{ $event->title }}
+                                        </h5>
                                     </div>
-                                    <div class="col">
-                                        <p class="card-text"></p>
+
+                                    <div class="row">
+                                        <div class="col">
+
+                                            @if ($event->tickets()->exists())
+                                                <p class="card-text" style="font-weight: 700">GBP
+                                                    {{ $event->tickets()->first()->price }}</p>
+                                            @else
+                                                <p class="card-text" style="font-weight: 700">No tickets available</p>
+                                            @endif
+
+                                            {{ \Illuminate\Support\Carbon::parse($event->start_date)->format('l jS F') }}
+
+                                        </div>
+                                        <div class="col">
+                                            <p class="card-text"></p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </a>
-                </div>
-            @endforeach
+                        </a>
+                    </div>
+                @endforeach
+            @endempty
             <!-- Add more cards here -->
         </div>
         <div class="down-arrow">

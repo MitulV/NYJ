@@ -12,9 +12,9 @@ class DatabaseSeeder extends Seeder
             PermissionRoleTableSeeder::class,
             UsersTableSeeder::class,
             RoleUserTableSeeder::class,
-            CitySeeder::class,
-            CategorySeeder::class,
-            EventSeeder::class      
+            // CitySeeder::class,
+            // CategorySeeder::class,
+            // EventSeeder::class      
         ]);
     }
 }
