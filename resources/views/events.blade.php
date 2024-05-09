@@ -114,55 +114,55 @@
     </nav>
 
     <div class="container mt-4">
-        <div class="row">
-            @empty($events)
-                <h1>No Events Available at this moment.</h1>
-            @else    
-                @foreach ($events as $event)
-                    <div class="col-md-4 cont-cent">
-                        <a href="{{ route('eventDetails', ['eventId' => $event->id]) }}" style="text-decoration: none;">
-                            <div class="card">
-                                    <img src="{{$event->image1}}"
-                                    class="card-img-top" alt="..." />
-                                <div class="card-body">
-                                    <div class="row">
-                                        <h5 class="card-title" style="font-weight: 700">
-                                            {{ $event->title }}
-                                        </h5>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col">
-
-                                            @if ($event->tickets()->exists())
-                                                <p class="card-text" style="font-weight: 700">GBP
-                                                    {{ $event->tickets()->first()->price }}</p>
-                                            @else
-                                                <p class="card-text" style="font-weight: 700">No tickets available</p>
-                                            @endif
-
-                                            {{ \Illuminate\Support\Carbon::parse($event->start_date)->format('l jS F') }}
-
+        @if($events->count() === 0)
+            <div class="text-center">
+            <h1>No Events Available at this moment.</h1>
+            </div>
+        @else   
+            <div class="row"> 
+                    @foreach ($events as $event)
+                        <div class="col-md-4 cont-cent">
+                            <a href="{{ route('eventDetails', ['eventId' => $event->id]) }}" style="text-decoration: none;">
+                                <div class="card">
+                                        <img src="{{$event->image1}}"
+                                        class="card-img-top" alt="..." />
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <h5 class="card-title" style="font-weight: 700">
+                                                {{ $event->title }}
+                                            </h5>
                                         </div>
-                                        <div class="col">
-                                            <p class="card-text"></p>
+
+                                        <div class="row">
+                                            <div class="col">
+
+                                                @if ($event->tickets()->exists())
+                                                    <p class="card-text" style="font-weight: 700">GBP
+                                                        {{ $event->tickets()->first()->price }}</p>
+                                                @else
+                                                    <p class="card-text" style="font-weight: 700">No tickets available</p>
+                                                @endif
+
+                                                {{ \Illuminate\Support\Carbon::parse($event->start_date)->format('l jS F') }}
+
+                                            </div>
+                                            <div class="col">
+                                                <p class="card-text"></p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </a>
-                    </div>
-                @endforeach
-            @endempty
-            <!-- Add more cards here -->
-        </div>
-        <div class="down-arrow">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                <path
-                    d="M12 17.27L5.61 10.89a.996.996 0 0 1 0-1.41L6.7 8.11a.996.996 0 0 1 1.41 0L12 12.36l3.89-3.89a.996.996 0 0 1 1.41 0l1.09 1.09a.996.996 0 0 1 0 1.41L12 17.27z" />
-            </svg>
-        </div>
-
+                            </a>
+                        </div>
+                    @endforeach
+            </div>
+            <div class="down-arrow">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M12 17.27L5.61 10.89a.996.996 0 0 1 0-1.41L6.7 8.11a.996.996 0 0 1 1.41 0L12 12.36l3.89-3.89a.996.996 0 0 1 1.41 0l1.09 1.09a.996.996 0 0 1 0 1.41L12 17.27z" />
+                </svg>
+            </div>
+        @endif    
         <footer class="footer">
             <div class="container">
                 <div class="row gap">
