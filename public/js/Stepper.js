@@ -132,12 +132,15 @@ function validateAndSubmit(booking_deadline) {
     ticketQuantities.forEach(function (ticket) {
         ticketCount += parseInt(ticket.value);
     });
-    console.log('booking_deadline_z - ',new Date(booking_deadline + 'Z'));
-    console.log('new Date() -',new Date());
     
+    var bookingDeadlineDate = new Date(booking_deadline);
+    var bookingDeadlineDateOnly = new Date(bookingDeadlineDate.getFullYear(), bookingDeadlineDate.getMonth(), bookingDeadlineDate.getDate());
+    var currentDate = new Date();
+    var currentDateOnly = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+
     if (ticketCount === 0) {
         alert("Please select at least one ticket.");
-    }else if (new Date(booking_deadline + 'Z') < new Date()) {
+    }else if (currentDateOnly > bookingDeadlineDateOnly) {
         alert('Booking has been closed.');
     }
     else {
