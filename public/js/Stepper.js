@@ -134,6 +134,7 @@ function validateAndSubmit(booking_deadline) {
     });
     console.log('booking_deadline_z - ',new Date(booking_deadline + 'Z'));
     console.log('new Date() -',new Date());
+    
     if (ticketCount === 0) {
         alert("Please select at least one ticket.");
     }else if (new Date(booking_deadline + 'Z') < new Date()) {
