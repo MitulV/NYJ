@@ -144,6 +144,38 @@ function validateAndSubmit(booking_deadline) {
         alert('Booking has been closed.');
     }
     else {
-        document.getElementById("ticketForm").submit();
+        var email = document.getElementById("email").value;
+        validateUser(email).then(function(isValidUser) {
+            if (isValidUser) {
+                document.getElementById("ticketForm").submit();
+            } else {
+                alert("You cannot book the tickets as you are an organizer or admin.");
+            }
+        }).catch(function(error) {
+            alert(error);
+        });
     }
 }
+
+
+function validateUser(email) {
+    return new Promise(function(resolve, reject) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/booking/is-valid-user");
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                resolve(response.isValidUser);
+            } else {
+                resolve(false); // If not valid, return false
+            }
+        };
+        xhr.onerror = function() {
+            console.error(xhr.statusText);
+            resolve(false); // If error, return false
+        };
+        xhr.send(JSON.stringify({ email: email }));
+    });
+}
+

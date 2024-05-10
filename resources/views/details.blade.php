@@ -69,11 +69,22 @@
                             <h4 class="info-title">Date</h4>
                             <p>{{ Carbon\Carbon::parse($event->start_date)->format('l, M d') }}</p>
                         </div>
+                        
                         <!-- Time Column -->
-                        {{-- <div class="col-md-3 time-column">
-                            <h4 class="info-title">Time (AEST)</h4>
-                            <p>{{ $start_formatted }} - {{ $end_formatted }} ({{ $duration_hours }}h)</p>
-                        </div> --}}
+<div class="col-md-3 time-column">
+    <h4 class="info-title">Time</h4>
+    <?php
+    // Convert UTC time to UK timezone
+    $utc_time = new DateTime($event->start_time, new DateTimeZone('UTC'));
+    $uk_timezone = new DateTimeZone('Europe/London');
+    $utc_time->setTimezone($uk_timezone);
+    
+    // Format the time to show only hours and minutes
+    $formatted_time = $utc_time->format('H:i A');
+    ?>
+    <p>{{ $formatted_time }}</p>
+</div>
+
                         <!-- Buttons Section Column -->
 
                     </div>

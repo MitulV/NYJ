@@ -158,4 +158,19 @@ class UserEventBookingController extends Controller
   {
     return view('payment-failure');
   }
+
+  public function isValidUser(Request $request)
+    {
+        $email = $request->input('email');
+
+        $user = User::where('email', $email)->first();
+
+        if ($user) {
+            // Check if the user is neither an admin nor an organizer
+            $isValidUser = !$user->isAdmin() && !$user->isOrganizer();
+            return response()->json(['isValidUser' => $isValidUser], $isValidUser ? 200 : 403);
+        } else {
+          return response()->json(['isValidUser' => true], 200);
+        }
+    }
 }

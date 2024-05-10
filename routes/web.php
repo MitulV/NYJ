@@ -52,6 +52,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('my-bookings/{booking}', 'MyBookingsController@show')->name('mybookings.show');
 });
 
+Route::post('/booking/is-valid-user', 'UserEventBookingController@isValidUser')->name('isValidUser');
+
+
 Route::get('/events', 'HomeController@events')->name('events');
 Route::get('/pricing', 'HomeController@pricing')->name('pricing');
 Route::get('/stepper', 'HomeController@stepper')->name('stepper');
