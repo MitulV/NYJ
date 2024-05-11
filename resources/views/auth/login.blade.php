@@ -1,10 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.appnew')
 @section('content')
 <div class="login-box">
-    <div class="login-logo">
+    
+    <div class="card" style="margin-top: 50px">
+        <div class="login-logo">
             <a href="{{route('home')}}"><img src="{{ asset('img/NYJ_LOGO.png') }}" alt="Logo" height="200" width="200"/></a> 
-    </div>
-    <div class="card">
+        </div>
         <div class="card-body login-card-body">
             <p class="login-box-msg">Sign in to start your session</p>
             @if(\Session::has('message'))
