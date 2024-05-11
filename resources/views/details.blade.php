@@ -102,8 +102,8 @@
 
                 <div class="event-details mt-4">
                     <h2>About This Event</h2>
-                    <p>{!! htmlspecialchars($event->short_description) !!}</p>
-                    <p>{!! htmlspecialchars($event->long_description) !!}</p>
+                    <p>{!! htmlspecialchars_decode($event->short_description) !!}</p>
+                    <p>{!! htmlspecialchars_decode($event->long_description) !!}</p>
                 </div>
 
                 {{-- <div class="location-details">
@@ -130,7 +130,7 @@
             <div class="terms-section">
 
                 <h1 class="mt-5 mb-4">Terms and Conditions</h1>
-                <div class="terms-header">{!! htmlspecialchars($event->terms_and_conditions) !!}</div>
+                <div class="terms-header">{!! htmlspecialchars_decode($event->terms_and_conditions) !!}</div>
                 {{-- <div class="terms-header">General Terms</div>
                 <ul class="terms-list">
                     <li>These terms and conditions outline the rules and regulations for the use of our website.</li>
