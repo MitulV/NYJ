@@ -167,50 +167,29 @@
             <div class="container">
                 <div class="row gap">
                     <div class="col-md-2 col-sm-6">
-                        <img src="https://www.eventbookings.com/wp-content/uploads/2020/10/footer-logo.png"
-                            alt="Company Logo" />
+                        <img src="{{ asset('img/NYJ_LOGO.png') }}" alt="Company Logo"  height="200" />
                     </div>
                     <div class="col-md-2 col-sm-6">
                         <h5>Product</h5>
                         <ul>
-                            <li>Features</li>
-                            <li>Sell Event Tickets</li>
+                            <a href="{{ route('register') }}" style="text-decoration: none">
+                            <li >Sell Event Tickets</li>
+                            </a>
+                            <a href="{{ route('register') }}" style="text-decoration: none">
                             <li>Event Registration</li>
-                            <li>Enterprise</li>
-                            <li>Explore Events</li>
+                            </a>
                         </ul>
                     </div>
                     <div class="col-md-2 col-sm-6">
                         <h5>Pricing</h5>
                         <ul>
-                            <li>NYJ Events</li>
-                            <li>About Us</li>
-                            <li>Blog</li>
-                            <li>Sign Up</li>
-                            <li>Sign In</li>
-                        </ul>
-                    </div>
-                    <div class="col-md-2 col-sm-6">
-                        <h5>Affiliate</h5>
-                        <ul>
-                            <li>Help & Support</li>
-                            <li>Help Center</li>
-                            <li>Contact Us</li>
-                            <li>Developers</li>
-                            <li>Compare</li>
-                        </ul>
-                    </div>
-                    <div class="col-md-2 col-sm-6">
-                        <h5>Compare</h5>
-                        <ul>
-                            <li>vs Eventbrite</li>
-                            <li>vs ShowClix</li>
-                            <li>vs Ticketleap</li>
-                            <li>vs Ticketspice</li>
+                            <a href="{{ route('pricing') }}" style="text-decoration: none">
+                            <li>Ticket Pricing</li>
+                            </a>
                         </ul>
                     </div>
                 </div>
-                <div class="row mt-4 d-flex justify-content-between">
+                {{-- <div class="row mt-4 d-flex justify-content-between">
                     <div class="col">
                         <ul class="gap-2">
                             <li><a href="#">T&C for Attendees</a></li>
@@ -232,7 +211,7 @@
                             <!-- Add other social media icons as needed -->
                         </ul>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </footer>
 </body>

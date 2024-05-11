@@ -106,15 +106,15 @@
                     <p>{{ $event->long_description }}</p>
                 </div>
 
-                <div class="location-details">
+                {{-- <div class="location-details">
                     <h3>New Location</h3>
                     <address>
                         2Step Dance<br> <span> 3/10 Tollis Place, Seven Hills</span>
 
                     </address>
-                </div>
+                </div> --}}
 
-                <div class="styles-details">
+                {{-- <div class="styles-details">
                     <p>Styles will include:</p>
                     <ul>
                         <li>Jazz</li>
@@ -122,7 +122,7 @@
                         <li>Technique</li>
                         <li>Commercial</li>
                     </ul>
-                </div>
+                </div> --}}
 
 
             </div>
@@ -130,7 +130,8 @@
             <div class="terms-section">
 
                 <h1 class="mt-5 mb-4">Terms and Conditions</h1>
-                <div class="terms-header">General Terms</div>
+                <div class="terms-header">{{$event->terms_and_conditions}}</div>
+                {{-- <div class="terms-header">General Terms</div>
                 <ul class="terms-list">
                     <li>These terms and conditions outline the rules and regulations for the use of our website.</li>
                     <li>By accessing this website, we assume you accept these terms and conditions in full.</li>
@@ -142,7 +143,7 @@
                     <li>To access certain features of the website, you may be required to create an account.</li>
                     <li>You must provide accurate and complete information when creating an account.</li>
                     <li>You are responsible for maintaining the confidentiality of your account and password.</li>
-                </ul>
+                </ul> --}}
                 <!-- Add more sections as needed -->
 
             </div>
@@ -156,50 +157,29 @@
         <div class="container">
             <div class="row gap">
                 <div class="col-md-2 col-sm-6">
-                    <img src="https://www.eventbookings.com/wp-content/uploads/2020/10/footer-logo.png"
-                        alt="Company Logo" />
+                    <img src="{{ asset('img/NYJ_LOGO.png') }}" alt="Company Logo"  height="200" />
                 </div>
                 <div class="col-md-2 col-sm-6">
                     <h5>Product</h5>
                     <ul>
-                        <li>Features</li>
-                        <li>Sell Event Tickets</li>
+                        <a href="{{ route('register') }}" style="text-decoration: none">
+                        <li >Sell Event Tickets</li>
+                        </a>
+                        <a href="{{ route('register') }}" style="text-decoration: none">
                         <li>Event Registration</li>
-                        <li>Enterprise</li>
-                        <li>Explore Events</li>
+                        </a>
                     </ul>
                 </div>
                 <div class="col-md-2 col-sm-6">
                     <h5>Pricing</h5>
                     <ul>
-                        <li>NYJ Events</li>
-                        <li>About Us</li>
-                        <li>Blog</li>
-                        <li>Sign Up</li>
-                        <li>Sign In</li>
-                    </ul>
-                </div>
-                <div class="col-md-2 col-sm-6">
-                    <h5>Affiliate</h5>
-                    <ul>
-                        <li>Help & Support</li>
-                        <li>Help Center</li>
-                        <li>Contact Us</li>
-                        <li>Developers</li>
-                        <li>Compare</li>
-                    </ul>
-                </div>
-                <div class="col-md-2 col-sm-6">
-                    <h5>Compare</h5>
-                    <ul>
-                        <li>vs Eventbrite</li>
-                        <li>vs ShowClix</li>
-                        <li>vs Ticketleap</li>
-                        <li>vs Ticketspice</li>
+                        <a href="{{ route('pricing') }}" style="text-decoration: none">
+                        <li>Ticket Pricing</li>
+                        </a>
                     </ul>
                 </div>
             </div>
-            <div class="row mt-4 d-flex justify-content-between">
+            {{-- <div class="row mt-4 d-flex justify-content-between">
                 <div class="col">
                     <ul class="gap-2">
                         <li><a href="#">T&C for Attendees</a></li>
@@ -221,7 +201,7 @@
                         <!-- Add other social media icons as needed -->
                     </ul>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </footer>
 

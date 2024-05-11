@@ -64,10 +64,10 @@
             <div class="col-md-6 flex-center">
               <div class="card">
                 <div class="card-body">
-                  <h1>30¢</h1>
-                  <h3>+</h3>
-                  <h2>2%</h2>
-                  <h4>Per ticket sold</h4>
+                  <h1>1£</h1>
+                  {{-- <h3>+</h3>
+                  <h2>2%</h2> --}}
+                  <h4 style="margin-top: 20px">Per ticket sold</h4>
                   <p>Includes credit card processing fees</p>
                 </div>
               </div>
@@ -112,78 +112,55 @@
 
       <footer class="footer">
         <div class="container">
-          <div class="row gap">
-            <div class="col-md-2 col-sm-6">
-              <img
-                src="https://www.eventbookings.com/wp-content/uploads/2020/10/footer-logo.png"
-                alt="Company Logo"
-              />
+            <div class="row gap">
+                <div class="col-md-2 col-sm-6">
+                    <img src="{{ asset('img/NYJ_LOGO.png') }}" alt="Company Logo"  height="200" />
+                </div>
+                <div class="col-md-2 col-sm-6">
+                    <h5>Product</h5>
+                    <ul>
+                        <a href="{{ route('register') }}" style="text-decoration: none">
+                        <li >Sell Event Tickets</li>
+                        </a>
+                        <a href="{{ route('register') }}" style="text-decoration: none">
+                        <li>Event Registration</li>
+                        </a>
+                    </ul>
+                </div>
+                <div class="col-md-2 col-sm-6">
+                    <h5>Pricing</h5>
+                    <ul>
+                        <a href="{{ route('pricing') }}" style="text-decoration: none">
+                        <li>Ticket Pricing</li>
+                        </a>
+                    </ul>
+                </div>
             </div>
-            <div class="col-md-2 col-sm-6">
-              <h5>Product</h5>
-              <ul>
-                <li>Features</li>
-                <li>Sell Event Tickets</li>
-                <li>Event Registration</li>
-                <li>Enterprise</li>
-                <li>Explore Events</li>
-              </ul>
-            </div>
-            <div class="col-md-2 col-sm-6">
-              <h5>Pricing</h5>
-              <ul>
-                <li>NYJ Events</li>
-                <li>About Us</li>
-                <li>Blog</li>
-                <li>Sign Up</li>
-                <li>Sign In</li>
-              </ul>
-            </div>
-            <div class="col-md-2 col-sm-6">
-              <h5>Affiliate</h5>
-              <ul>
-                <li>Help & Support</li>
-                <li>Help Center</li>
-                <li>Contact Us</li>
-                <li>Developers</li>
-                <li>Compare</li>
-              </ul>
-            </div>
-            <div class="col-md-2 col-sm-6">
-              <h5>Compare</h5>
-              <ul>
-                <li>vs Eventbrite</li>
-                <li>vs ShowClix</li>
-                <li>vs Ticketleap</li>
-                <li>vs Ticketspice</li>
-              </ul>
-            </div>
-          </div>
-          <div class="row mt-4 d-flex justify-content-between">
-            <div class="col">
-              <ul class="gap-2">
-                <li><a href="#">T&C for Attendees</a></li>
-                <li><a href="#">T&C for Organizers</a></li>
-                <li><a href="#">Privacy Policy</a></li>
-              </ul>
-            </div>
-            <div class="col">
-              <ul class="list-inline">
-                <li class="list-inline-item">
-                  <a href="#"><i class="ri-facebook-circle-line"></i></a>
-                </li>
-                <li class="list-inline-item">
-                  <a href="#"><i class="ri-twitter-x-line"></i></a>
-                </li>
-                <li class="list-inline-item">
-                  <a href="#"><i class="ri-instagram-line"></i></a>
-                </li>
-                <!-- Add other social media icons as needed -->
-              </ul>
-            </div>
-          </div>
+            {{-- <div class="row mt-4 d-flex justify-content-between">
+                <div class="col">
+                    <ul class="gap-2">
+                        <li><a href="#">T&C for Attendees</a></li>
+                        <li><a href="#">T&C for Organizers</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <ul class="list-inline">
+                        <li class="list-inline-item">
+                            <a href="#"><i class="ri-facebook-circle-line"></i></a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="#"><i class="ri-twitter-x-line"></i></a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="#"><i class="ri-instagram-line"></i></a>
+                        </li>
+                        <!-- Add other social media icons as needed -->
+                    </ul>
+                </div>
+            </div> --}}
         </div>
-      </footer>
+    </footer>
 
 
 
