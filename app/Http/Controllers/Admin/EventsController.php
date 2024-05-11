@@ -89,8 +89,7 @@ class EventsController extends Controller
 
         $filename1 = date('mdYHis') . uniqid() . '.' . $banner1->getClientOriginalExtension();
         $path1 = $banner1->storeAs('public/images', $filename1);
-        //$url1 = $request->getSchemeAndHttpHost() . env('PROJECT_FOLDER_PREFIX') . '/public' . Storage::url($path1);
-        $url1 = asset('storage/images/' . $filename1);
+        $url1 = $request->getSchemeAndHttpHost() . env('PROJECT_FOLDER_PREFIX') . '/public' . Storage::url($path1);
 
         $filename2 = date('mdYHis') . uniqid() . '.' . $banner2->getClientOriginalExtension();
         $path2 = $banner2->storeAs('public/images', $filename2);
