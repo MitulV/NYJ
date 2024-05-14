@@ -167,6 +167,7 @@ class EventsController extends Controller
                 'price' => $price,
                 'quantity' => $request->input('group_ticket_quantity'),
                 'group_count' =>$request->input('group_count'),
+                'is_group_ticket'=>1,
                 'stripe_product_id' => $productObj->id,
                 'stripe_price_id' => $priceObj->id
             ]);
