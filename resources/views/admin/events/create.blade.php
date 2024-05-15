@@ -155,34 +155,36 @@
                         </div>
 
                         <div id="ticket-info" class="content" role="tabpanel" aria-labelledby="ticket-info-trigger">
-                            <div class="ticket-info-section">
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <label for="ticketName">Ticket Name</label>
-                                        <input type="text" name="ticket_name[]" class="form-control"
-                                            placeholder="Enter Ticket Name">
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="ticketDescription">Ticket Description</label>
-                                        <input type="text" name="ticket_description[]" class="form-control"
-                                            placeholder="Enter Ticket Description">
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <label for="ticketPrice">Ticket Price</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">£</span>
-                                            </div>
-                                            <input type="number" name="ticket_price[]" class="form-control"
-                                                placeholder="Enter Ticket Price">
+                            <div id="ticket-info-container">
+                                <div class="ticket-info-section">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="ticketName">Ticket Name</label>
+                                            <input type="text" name="ticket_name[]" class="form-control"
+                                                placeholder="Enter Ticket Name">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="ticketDescription">Ticket Description</label>
+                                            <input type="text" name="ticket_description[]" class="form-control"
+                                                placeholder="Enter Ticket Description">
                                         </div>
                                     </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="ticketQuantity">Number of Tickets</label>
-                                        <input type="number" name="ticket_quantity[]" class="form-control"
-                                            placeholder="Enter Number of Tickets">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="ticketPrice">Ticket Price</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">£</span>
+                                                </div>
+                                                <input type="number" name="ticket_price[]" class="form-control"
+                                                    placeholder="Enter Ticket Price">
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="ticketQuantity">Number of Tickets</label>
+                                            <input type="number" name="ticket_quantity[]" class="form-control"
+                                                placeholder="Enter Number of Tickets">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -321,13 +323,14 @@
                 var bookingDeadline = $('#booking_deadline').val();
                 var description = $('#shortDescription').val();
                 if (category === '-- Select --' || title.trim() === '' || startDate.trim() === '' ||
-                    startTime.trim() === '' || endDate.trim() === '' || endTime.trim() === '' || bookingDeadline.trim() === '' || $(
+                    startTime.trim() === '' || endDate.trim() === '' || endTime.trim() === '' ||
+                    bookingDeadline.trim() === '' || $(
                         '#shortDescription').summernote('isEmpty')) {
                     alert('Please fill out all required fields.');
                     return;
                 }
 
-                // Check if endDate is after startDate
+                //Check if endDate is after startDate
                 if (endDate < startDate || (endDate === startDate && endTime <= startTime)) {
                     alert('End date and time should be after start date and time.');
                     return;
@@ -539,7 +542,8 @@
             });
 
             // Append the cloned section to the ticket-info-container div
-            $('.ticket-info-section').append(ticketSection);
+            $('#ticket-info-container').append(ticketSection);
+
         });
     </script>
 @endsection
