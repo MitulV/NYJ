@@ -336,7 +336,7 @@ class EventsController extends Controller
 
     public function handleBooking(Request $request)
     {
-       
+    
     $user = User::where('email', $request->email)->first();
     if (!$user) {
       $user = User::create([
