@@ -1,14 +1,9 @@
-const mobileInput = document.getElementById('mobile');
+const mobileInput = document.getElementById("mobile");
 
-// Add event listener for input
-mobileInput.addEventListener("input", function(event) {
-    // Remove non-numeric characters from the input value
+mobileInput.addEventListener("input", function (event) {
     const sanitizedValue = event.target.value.replace(/\D/g, "");
-
-    // Update the input value with the sanitized value
     event.target.value = sanitizedValue;
 });
-
 
 const progress = document.querySelector("#progress");
 const prev = document.querySelector("#prev");
@@ -51,53 +46,55 @@ function update() {
     }
 }
 
-function validateUserForm(){
-
+function validateUserForm() {
     var name = document.getElementById("name").value;
     var email = document.getElementById("email").value;
     var mobile = document.getElementById("mobile").value;
-       
 
-        if (name.trim() === "") {
-            alert('Please enter valid Name');
-            return false;
-        }
+    if (name.trim() === "") {
+        alert("Please enter valid Name");
+        return false;
+    }
 
-        if (email.trim() === "" || !/\S+@\S+\.\S+/.test(email)) {
-            alert('Please enter valid Email');
-            return false;
-        }
+    if (email.trim() === "" || !/\S+@\S+\.\S+/.test(email)) {
+        alert("Please enter valid Email");
+        return false;
+    }
 
-        if (mobile.trim() === "" || !/^\d{8,12}$/.test(mobile.trim())) {
-            alert('Please enter a valid mobile number');
-            return false;
-        }
-        
-
-        return true;
+    if (mobile.trim() === "" || !/^\d{8,12}$/.test(mobile.trim())) {
+        alert("Please enter a valid mobile number");
+        return false;
+    }
+    return true;
 }
 
-function showStep(step) {
-    if(step==2){
-        if(!validateUserForm()){
+function showStep() {
+    var bookButton = document.getElementById("bookBtn");
+    bookButton.disabled = true;
+    if (!validateUserForm()) {
+        bookButton.disabled =false;
+        return false;
+    }
+
+    var email = document.getElementById("email").value;
+    validateEmail(email)
+        .then(function (isValidEmail) {
+            if (isValidEmail) {
+                document.getElementById("ticketForm").submit();
+                return true;
+            } else {
+                alert(
+                    "You cannot book the tickets as you are an organizer or admin."
+                );
+                bookButton.disabled =false;
+                return false;
+            }
+        })
+        .catch(function (error) {
+            bookButton.disabled =false;
             return false;
-        }
-    }
-    // Hide all steps
-    document.querySelectorAll(".step").forEach(function (el) {
-        el.style.display = "none";
-    });
+        });
 
-    // Show the selected step
-    document.getElementById("step" + step).style.display = "block";
-
-    currentActive++;
-
-    if (currentActive > circles.length) {
-        currentActive = circles.length;
-    }
-
-    update();
 }
 
 function incrementQuantity(button, quantity, totalBookedTickets) {
@@ -108,15 +105,14 @@ function incrementQuantity(button, quantity, totalBookedTickets) {
         input.value = value + 1;
     } else if (value === remainingTickets) {
         if (remainingTickets === 0) {
-            alert('Booking is full for this ticket');
+            alert("Booking is full for this ticket");
         } else {
-            alert(remainingTickets + ' tickets are available.');
+            alert(remainingTickets + " tickets are available.");
         }
     } else {
-        alert('Maximum tickets for this type have been reached.');
+        alert("Maximum tickets for this type have been reached.");
     }
 }
-
 
 function decrementQuantity(button) {
     var input = button.parentElement.querySelector('input[type="text"]');
@@ -132,38 +128,51 @@ function validateAndSubmit(booking_deadline) {
     ticketQuantities.forEach(function (ticket) {
         ticketCount += parseInt(ticket.value);
     });
-    
+
     var bookingDeadlineDate = new Date(booking_deadline);
-    var bookingDeadlineDateOnly = new Date(bookingDeadlineDate.getFullYear(), bookingDeadlineDate.getMonth(), bookingDeadlineDate.getDate());
+    var bookingDeadlineDateOnly = new Date(
+        bookingDeadlineDate.getFullYear(),
+        bookingDeadlineDate.getMonth(),
+        bookingDeadlineDate.getDate()
+    );
     var currentDate = new Date();
-    var currentDateOnly = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+    var currentDateOnly = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        currentDate.getDate()
+    );
 
     if (ticketCount === 0) {
         alert("Please select at least one ticket.");
-    }else if (currentDateOnly > bookingDeadlineDateOnly) {
-        alert('Booking has been closed.');
+        return false;
+    } else if (currentDateOnly > bookingDeadlineDateOnly) {
+        alert("Booking has been closed.");
+        return false;
     }
-    else {
-        var email = document.getElementById("email").value;
-        validateUser(email).then(function(isValidUser) {
-            if (isValidUser) {
-                document.getElementById("ticketForm").submit();
-            } else {
-                alert("You cannot book the tickets as you are an organizer or admin.");
-            }
-        }).catch(function(error) {
-            alert(error);
-        });
+
+    // Hide all steps
+    document.querySelectorAll(".step").forEach(function (el) {
+        el.style.display = "none";
+    });
+
+    // Show the selected step
+    document.getElementById("step" + 1).style.display = "block";
+
+    currentActive++;
+
+    if (currentActive > circles.length) {
+        currentActive = circles.length;
     }
+
+    update();
 }
 
-
-function validateUser(email) {
-    return new Promise(function(resolve, reject) {
+function validateEmail(email) {
+    return new Promise(function (resolve, reject) {
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "/booking/is-valid-user");
         xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.onload = function() {
+        xhr.onload = function () {
             if (xhr.status === 200) {
                 var response = JSON.parse(xhr.responseText);
                 resolve(response.isValidUser);
@@ -171,11 +180,10 @@ function validateUser(email) {
                 resolve(false); // If not valid, return false
             }
         };
-        xhr.onerror = function() {
+        xhr.onerror = function () {
             console.error(xhr.statusText);
             resolve(false); // If error, return false
         };
         xhr.send(JSON.stringify({ email: email }));
     });
 }
-

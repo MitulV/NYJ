@@ -46,62 +46,41 @@
 
     <div class="container">
         <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <div class="progress-container">
-                        <div class="progress" id="progress"></div>
-                        <div class="circle active">1</div>
-                        <div class="circle">2</div>
-                    </div>
-                    <form id="ticketForm" action="{{ route('admin.events.handleBooking') }}" method="POST">
-                        @csrf
-                        <input type="hidden" class="form-control" id="event_id" name="event_id"
-                            value="{{ $event->id }}" />
-                        <!-- Step 1: Account -->
-                        <div class="step" id="step1">
-                            <h3>Account</h3>
-                            <div class="mb-3">
-                                <label for="name">Name*</label>
-                                <input type="text" class="form-control" id="name" name="name" required />
-                            </div>
-                            <div class="mb-3">
-                                <label for="email">Email*</label>
-                                <input type="email" class="form-control" id="email" name="email" required />
-                            </div>
+            <div class="col-md-6">
+                <div class="progress-container">
+                    <div class="progress" id="progress"></div>
+                    <div class="circle active">1</div>
+                    <div class="circle">2</div>
+                </div>
+                <form id="ticketForm" action="{{ route('admin.events.handleBooking') }}" method="POST">
+                    @csrf
+                    <input type="hidden" class="form-control" id="event_id" name="event_id"
+                        value="{{ $event->id }}" />
 
-                            <div class="mb-3">
-                                <label for="mobile">Mobile*</label>
-                                <input type="text" class="form-control" id="mobile" name="mobile" required />
-                            </div>
-                            
-                            <button type="button" class="btn event-btn" id="next" onclick="showStep(2)">
-                                Create
-                            </button>
-                            
+
+                    <!-- Step 1: Select Ticket -->
+                    <div class="step" id="step2">
+                        <div class="payment_mode mb-3">
+                            <h3>Payment Mode</h3>
+                            <select id="payment_mode" name="payment_mode" class="form-control">
+                                <option value="cash" selected>Cash</option>
+                                <option value="Card">Card</option>
+                            </select>
                         </div>
-
-                        <!-- Step 2: Select Ticket -->
-                        
-                        <div class="step" id="step2" style="display: none">
-                            <div class="payment_mode mb-3">
-                                <h3>Payment Mode</h3>
-                                <select id="payment_mode" name="payment_mode" class="form-control">
-                                    <option value="cash" selected>Cash</option>
-                                    <option value="Card">Card</option>
-                                </select>
-                            </div>
-                            <h3>Select ticket</h3>
-                            @foreach ($normalTickets as $ticket)
-                                <div class="d-flex justify-content-between mb-3 input-group-text">
-                                    <div>
-                                        <label for="ticket_id_{{ $ticket->id }}" class="fw-bold">
-                                            {{ $ticket->name }}</label> 
-                                        <span class="input-group-text text-danger">
-                                            £{{ $ticket->price }}
-                                        </span>
-                                    </div>
-                                    @if ($ticket->quantity == $ticket->total_booked_tickets)
-                                        <h5>All Tickets Booked</h5>
-                                   @else
+                        <h3>Select ticket</h3>
+                        @foreach ($normalTickets as $ticket)
+                            <div class="d-flex justify-content-between mb-3 input-group-text">
+                                <div>
+                                    <label for="ticket_id_{{ $ticket->id }}" class="fw-bold">
+                                        {{ $ticket->name }}
+                                    </label>
+                                    <span class="input-group-text text-danger">
+                                        £{{ $ticket->price }}
+                                    </span>
+                                </div>
+                                @if ($ticket->quantity == $ticket->total_booked_tickets)
+                                    <h5>All Tickets Booked</h5>
+                                @else
                                     <div class="input-group">
                                         <div class="d-flex align-items-center">
                                             <button class="btn btn-outline-secondary rounded-circle" type="button"
@@ -116,48 +95,71 @@
                                             </button>
                                         </div>
                                     </div>
-                                    @endif
+                                @endif
+                            </div>
+                        @endforeach
+
+                        @if ($groupTickets)
+                            <h3>Group ticket</h3>
+                        @endif
+
+                        @foreach ($groupTickets as $ticket)
+                            <div class="d-flex justify-content-between mb-3 input-group-text">
+                                <div>
+                                    <label for="ticket_id_{{ $ticket->id }}" class="fw-bold">Ticket for
+                                        {{ $ticket->group_count }} Persons</label> <span
+                                        class="input-group-text text-danger d-flex justify-content-center">
+                                        £{{ $ticket->price }}</span>
                                 </div>
-                            @endforeach
-
-                            @if ($groupTickets)
-                                <h3>Group ticket</h3>
-                            @endif
-
-                            @foreach ($groupTickets as $ticket)
-                                <div class="d-flex justify-content-between mb-3 input-group-text">
-                                    <div>
-                                        <label for="ticket_id_{{ $ticket->id }}" class="fw-bold">Ticket for
-                                            {{ $ticket->group_count }} Persons</label> <span
-                                            class="input-group-text text-danger d-flex justify-content-center">
-                                            £{{ $ticket->price }}</span>
-                                    </div>
-                                    <div class="input-group">
-                                        <div class="d-flex align-items-center">
-                                            <button class="btn btn-outline-secondary rounded-circle" type="button"
-                                                onclick="decrementQuantity(this)">
-                                                -
-                                            </button>
-                                            <input type="text" class="form-control text-center ticket-quantity" value="0"
-                                                name="ticket_id_{{ $ticket->id }}" readonly />
-                                            <button class="btn btn-outline-secondary rounded-circle" type="button"
-                                                onclick="incrementQuantity(this, {{ $ticket->quantity }}, {{ $ticket->total_booked_tickets }})">
-                                                +
-                                            </button>
-                                        </div>
+                                <div class="input-group">
+                                    <div class="d-flex align-items-center">
+                                        <button class="btn btn-outline-secondary rounded-circle" type="button"
+                                            onclick="decrementQuantity(this)">
+                                            -
+                                        </button>
+                                        <input type="text" class="form-control text-center ticket-quantity"
+                                            value="0" name="ticket_id_{{ $ticket->id }}" readonly />
+                                        <button class="btn btn-outline-secondary rounded-circle" type="button"
+                                            onclick="incrementQuantity(this, {{ $ticket->quantity }}, {{ $ticket->total_booked_tickets }})">
+                                            +
+                                        </button>
                                     </div>
                                 </div>
-                            @endforeach
+                            </div>
+                        @endforeach
 
-                            @if (auth()->check() && auth()->user()->isOrganizer())
-                                <button type="button" class="btn event-btn"
-                                    onclick="validateAndSubmit('{{$event->booking_deadline}}')">Book
-                                </button>
-                            @endif
+                        @if (auth()->check() && auth()->user()->isOrganizer())
+                            <button type="button" class="btn event-btn" id="next"
+                                onclick="validateAndSubmit('{{ $event->booking_deadline }}')">Continue</button>
+                        @endif
 
+                    </div>
+                    <div style="margin-top: 50px"></div>
+
+                    <!-- Step 2: Account -->
+                    <div class="step" id="step1" style="display: none">
+                        <h3>Account</h3>
+                        <div class="mb-3">
+                            <label for="name">Name*</label>
+                            <input type="text" class="form-control" id="name" name="name" required />
                         </div>
-                    </form>
-                </div>
+                        <div class="mb-3">
+                            <label for="email">Email*</label>
+                            <input type="email" class="form-control" id="email" name="email" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="mobile">Mobile*</label>
+                            <input type="text" class="form-control" id="mobile" name="mobile" required />
+                        </div>
+
+                        <button type="button" id="bookBtn" class="btn event-btn" onclick="showStep()">
+                            Book
+                        </button>
+
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </body>

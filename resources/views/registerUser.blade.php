@@ -56,31 +56,9 @@
                         @csrf
                         <input type="hidden" class="form-control" id="event_id" name="event_id"
                             value="{{ $event->id }}" />
-                        <!-- Step 1: Account -->
-                        <div class="step" id="step1">
-                            <h3>Account</h3>
-                            <div class="mb-3">
-                                <label for="name">Name*</label>
-                                <input type="text" class="form-control" id="name" name="name" required />
-                            </div>
-                            <div class="mb-3">
-                                <label for="email">Email*</label>
-                                <input type="email" class="form-control" id="email" name="email" required />
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="mobile">Mobile*</label>
-                                <input type="text" class="form-control" id="mobile" name="mobile" required />
-                            </div>
-                            
-                            <button type="button" class="btn event-btn" id="next" onclick="showStep(2)">
-                                Create
-                            </button>
-                            
-                        </div>
-
-                        <!-- Step 2: Select Ticket -->
-                        <div class="step" id="step2" style="display: none">
+                        
+                        <!-- Step 1: Select Ticket -->
+                        <div class="step" id="step2">
                             <h3>Select ticket</h3>
                             @foreach ($normalTickets as $ticket)
                                 <div class="d-flex justify-content-between mb-3 input-group-text">
@@ -143,11 +121,35 @@
                             @endforeach
 
                             @if (auth()->guest() || (!auth()->user()->isOrganizer() && !auth()->user()->isAdmin()))
-                                <button type="button" class="btn event-btn"
-                                    onclick="validateAndSubmit('{{$event->booking_deadline}}')">Book</button>
+                                <button type="button" class="btn event-btn" id="next"
+                                    onclick="validateAndSubmit('{{$event->booking_deadline}}')">Continue</button>
                             @endif
 
                         </div>
+                       
+                        <!-- Step 2: Account -->
+                        <div class="step" id="step1" style="display: none">
+                            <h3>Account</h3>
+                            <div class="mb-3">
+                                <label for="name">Name*</label>
+                                <input type="text" class="form-control" id="name" name="name" required />
+                            </div>
+                            <div class="mb-3">
+                                <label for="email">Email*</label>
+                                <input type="email" class="form-control" id="email" name="email" required />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="mobile">Mobile*</label>
+                                <input type="text" class="form-control" id="mobile" name="mobile" required />
+                            </div>
+                            
+                            <button type="button" id="bookBtn" class="btn event-btn" onclick="showStep()">
+                                Book
+                            </button>
+                            
+                        </div>
+
                     </form>
                 </div>
         </div>
