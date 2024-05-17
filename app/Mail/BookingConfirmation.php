@@ -17,19 +17,19 @@ class BookingConfirmation extends Mailable
 
     public $booking;
     public $totalTicketQuantity;
-    public $qrCodeImage;
+    public $qrCodeUrl;
 
     /**
      * Create a new message instance.
      * @param $booking
      * @param $totalTicketQuantity
-      * @param $qrCodeImage
+      * @param $qrCodeUrl
      */
-    public function __construct($booking, $totalTicketQuantity,$qrCodeImage)
+    public function __construct($booking, $totalTicketQuantity,$qrCodeUrl)
     {
         $this->booking = $booking;
         $this->totalTicketQuantity = $totalTicketQuantity;
-        $this->qrCodeImage = $qrCodeImage;
+        $this->qrCodeUrl = $qrCodeUrl;
     }
 
     /**
@@ -53,7 +53,7 @@ class BookingConfirmation extends Mailable
             with: [
                 'booking' => $this->booking,
                 'totalTicketQuantity' => $this->totalTicketQuantity,
-                'qrCodeImage' => $this->qrCodeImage
+                'qrCodeUrl' => $this->qrCodeUrl
             ],
         );
     }

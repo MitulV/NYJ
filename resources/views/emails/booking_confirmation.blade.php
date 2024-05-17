@@ -14,7 +14,7 @@
         <h1 style="color: green; text-align: center;">Ticket Booked Successfully !</h1>
 
         <div style="text-align: center; margin-top: 20px;">
-            <img src="data:image/png;base64,{{ $qrCodeImage }}" alt="Ticket QR Code"
+            <img src="{{ $qrCodeUrl }}" alt="Ticket QR Code"
                 style="width: 150px; height: 150px;">
         </div>
 

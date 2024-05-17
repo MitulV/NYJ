@@ -151,8 +151,8 @@ class EventsController extends Controller
         }
 
         if ($request->filled('group_ticket_name')) {
-            $price=$request->input('group_ticket_price');
-            $price_in_cents = (int)($price* 100);
+            $price = $request->input('group_ticket_price');
+            $price_in_cents = (int)($price * 100);
             $productObj = $stripe->products->create(['name' => $request->input('group_ticket_name')]);
             $priceObj = $stripe->prices->create([
                 'currency' => 'GBP',
@@ -166,14 +166,14 @@ class EventsController extends Controller
                 'description' => $request->input('group_ticket_description'),
                 'price' => $price,
                 'quantity' => $request->input('group_ticket_quantity'),
-                'group_count' =>$request->input('group_count'),
-                'is_group_ticket'=>1,
+                'group_count' => $request->input('group_count'),
+                'is_group_ticket' => 1,
                 'stripe_product_id' => $productObj->id,
                 'stripe_price_id' => $priceObj->id
             ]);
         }
 
-        
+
 
         return redirect()->route('admin.events.index');
     }
@@ -314,94 +314,100 @@ class EventsController extends Controller
 
     public function book(Request $request)
     {
-    $eventId = $request->input('event_id');
-    $event = Event::find($eventId);
-    $tickets = $event->tickets->map(function ($ticket) {
-        $totalBookedTickets = $this->calculateTotalBookedTicketsForTicket($ticket->id); // Calculate total booked tickets for this ticket
-        $ticket->total_booked_tickets = $totalBookedTickets; // Add total booked tickets to the ticket object
-        return $ticket;
-    });
+        $eventId = $request->input('event_id');
+        $event = Event::find($eventId);
+        $tickets = $event->tickets->map(function ($ticket) {
+            $totalBookedTickets = $this->calculateTotalBookedTicketsForTicket($ticket->id); // Calculate total booked tickets for this ticket
+            $ticket->total_booked_tickets = $totalBookedTickets; // Add total booked tickets to the ticket object
+            return $ticket;
+        });
 
-    $normalTickets = $tickets->where('is_group_ticket', false)->values()->all();
-    $groupTickets = $tickets->where('is_group_ticket', true)->values()->all();
+        $normalTickets = $tickets->where('is_group_ticket', false)->values()->all();
+        $groupTickets = $tickets->where('is_group_ticket', true)->values()->all();
 
-    return view('admin.events.book', compact('event', 'normalTickets', 'groupTickets'));
+        return view('admin.events.book', compact('event', 'normalTickets', 'groupTickets'));
     }
 
-    public function calculateTotalBookedTicketsForTicket($ticketId){
+    public function calculateTotalBookedTicketsForTicket($ticketId)
+    {
         $totalBookedTickets = BookingTicket::where('ticket_id', $ticketId)->sum('quantity');
-        
+
         return $totalBookedTickets;
-      }
+    }
 
     public function handleBooking(Request $request)
     {
-    
-    $user = User::where('email', $request->email)->first();
-    if (!$user) {
-      $user = User::create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'mobile' => $request->mobile,
-        'password' => Hash::make('Welcome@123'),
-      ]);
 
-      $user->roles()->attach(3);
-    }
+        $user = User::where('email', $request->email)->first();
+        if (!$user) {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'mobile' => $request->mobile,
+                'password' => Hash::make('Welcome@123'),
+            ]);
 
-    $totalAmount = 0;
-
-    // Create the booking
-    $booking = Booking::create([
-        'event_id' => $request->event_id,
-        'user_id' => $user->id,
-        'status' => 'Pending',
-        'is_offline' => true,
-        'payment_mode'=>$request->payment_mode,
-        'amount' => $totalAmount,
-        'booking_date_time' => now(),
-      ]);
-
-    foreach ($request->except('_token', 'event_id', 'name', 'email', 'mobile', 'payment_mode') as $ticketId => $quantity) {
-        $ticketId = substr($ticketId, strlen('ticket_id_'));
-
-        $ticket = Ticket::findOrFail($ticketId);
-        if ($quantity > 0) {
-            $amount = $ticket->price * $quantity;
-          $totalAmount += $amount;
-
-          BookingTicket::create([
-            'booking_id' => $booking->id,
-            'ticket_id' => $ticketId,
-            'quantity' => $quantity,
-          ]);
+            $user->roles()->attach(3);
         }
-    }
 
-    $booking->update([
-        'amount' => $totalAmount,
-        'status' => 'Complete'
-    ]);
+        $totalAmount = 0;
 
-    $result = Builder::create()
-                    ->writer(new PngWriter())
-                    ->writerOptions([])
-                    ->data($booking->reference_number)
-                    ->encoding(new Encoding('UTF-8'))
-                    ->errorCorrectionLevel(ErrorCorrectionLevel::High)
-                    ->size(300)
-                    ->margin(10)
-                    ->roundBlockSizeMode(RoundBlockSizeMode::Margin)
-                    ->build();
+        // Create the booking
+        $booking = Booking::create([
+            'event_id' => $request->event_id,
+            'user_id' => $user->id,
+            'status' => 'Pending',
+            'is_offline' => true,
+            'payment_mode' => $request->payment_mode,
+            'amount' => $totalAmount,
+            'booking_date_time' => now(),
+        ]);
 
-    $qrCodeImage = base64_encode($result->getString());
+        foreach ($request->except('_token', 'event_id', 'name', 'email', 'mobile', 'payment_mode') as $ticketId => $quantity) {
+            $ticketId = substr($ticketId, strlen('ticket_id_'));
 
-    $totalTicketQuantity = $booking->tickets()->sum('booking_tickets.quantity');
+            $ticket = Ticket::findOrFail($ticketId);
+            if ($quantity > 0) {
+                $amount = $ticket->price * $quantity;
+                $totalAmount += $amount;
 
-    $booking->load('event');
-    Mail::to($user->email)->send(new BookingConfirmation($booking, $totalTicketQuantity, $qrCodeImage));
-   
-    return redirect()->route('admin.bookings.index')->with('payment_success', 'Your booking has been confirmed.');
+                BookingTicket::create([
+                    'booking_id' => $booking->id,
+                    'ticket_id' => $ticketId,
+                    'quantity' => $quantity,
+                ]);
+            }
+        }
 
+        $booking->update([
+            'amount' => $totalAmount,
+            'status' => 'Complete'
+        ]);
+
+        $result = Builder::create()
+            ->writer(new PngWriter())
+            ->writerOptions([])
+            ->data($booking->reference_number)
+            ->encoding(new Encoding('UTF-8'))
+            ->errorCorrectionLevel(ErrorCorrectionLevel::High)
+            ->size(300)
+            ->margin(10)
+            ->roundBlockSizeMode(RoundBlockSizeMode::Margin)
+            ->build();
+
+        // Save the QR code image to storage
+        $filename = 'qrcode_' . $booking->reference_number . '.png';
+        $path = 'public/qrcodes/' . $filename;
+        Storage::put($path, $result->getString());
+
+        // Generate the URL for the QR code image
+        $url = Storage::url($path);
+        $qrCodeUrl = $request->getSchemeAndHttpHost() . $url;
+        $totalTicketQuantity = $booking->tickets()->sum('booking_tickets.quantity');
+
+        $booking->load('event');
+        Mail::to($user->email)->send(new BookingConfirmation($booking, $totalTicketQuantity, $qrCodeUrl));
+
+        return redirect()->route('admin.bookings.index')->with('payment_success', 'Your booking has been confirmed.');
     }
 }
