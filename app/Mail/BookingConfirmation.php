@@ -38,7 +38,7 @@ class BookingConfirmation extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('admin@NyjTickets.com', 'Admin'),
+            from: new Address('tickets@nyjtickets.co.uk', 'Admin'),
             subject: 'Booking Confirmation',
         );
     }
