@@ -23,7 +23,6 @@ use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel;
 use Endroid\QrCode\RoundBlockSizeMode;
 use Endroid\QrCode\Writer\PngWriter;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class EventsController extends Controller
@@ -398,15 +397,12 @@ class EventsController extends Controller
 
         // Save the QR code image to storage
         $filename = 'qrcode_' . $booking->reference_number . '.png';
-        Log::info('filename - '.$filename);
         $path = 'public/qrcodes/' . $filename;
         Storage::put($path, $result->getString());
 
         // Generate the URL for the QR code image
         $url = Storage::url($path);
-        Log::info('url - '.$url);
         $qrCodeUrl = $request->getSchemeAndHttpHost() . $url;
-        Log::info('qrCodeUrl - '.$qrCodeUrl);
         $totalTicketQuantity = $booking->tickets()->sum('booking_tickets.quantity');
 
         $booking->load('event');
