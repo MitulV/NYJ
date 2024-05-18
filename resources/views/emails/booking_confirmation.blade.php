@@ -43,7 +43,7 @@
                     <th
                         style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2; text-align: left; max-width: 50%;">
                         Event Date & Time</th>
-                    <td>{{ \Carbon\Carbon::parse($booking->event->start_date)->format('d F Y') }}
+                    <td style="border: 1px solid #ddd; padding: 8px; max-width: 50%;">{{ \Carbon\Carbon::parse($booking->event->start_date)->format('d F Y') }}
                         {{ \Carbon\Carbon::parse($booking->event->start_time)->format('g:iA') }}
                     </td>
                 </tr>
