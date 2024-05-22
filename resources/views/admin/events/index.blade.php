@@ -79,7 +79,7 @@
                                 <td>
                                     <select style="background-color: #ECECEC;border: none;" id="select-{{ $event->id }}" name="select" class="form-control">
                                         <option selected>Action <i class="fa-solid fa-angle-down"></i></option>
-                                        <option value="{{ route('admin.events.edit', $event->id) }}" @if (!(auth()->user()->isOrganizer() && $event->status === 'Draft')) disabled @endif>
+                                        <option value="{{ route('admin.events.edit', $event->id) }}" @if (!(auth()->user()->isOrganizer())) disabled @endif>
                                             <a class="btn btn-xs btn-info"
                                                 href="{{ route('admin.events.edit', $event->id) }}">
                                                 {{ trans('global.edit') }}
@@ -120,7 +120,7 @@
                                         <a class="btn btn-lg btn-block btn-{{ $isPastEvent ? 'secondary' : 'success' }}"
                                             href="{{ $isPastEvent ? '#' : route('admin.events.book', ['event_id' => $event->id]) }}"
                                             {{ $isPastEvent ? 'disabled' : '' }}>
-                                            Book
+                                            Book Now
                                         </a>
                                     @endif
                                 </td>

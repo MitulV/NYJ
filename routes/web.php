@@ -50,6 +50,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     Route::get('my-bookings', 'MyBookingsController@index')->name('mybookings.index');
     Route::get('my-bookings/{booking}', 'MyBookingsController@show')->name('mybookings.show');
+
+    Route::resource('settings/automatic-discount', 'AutomaticDiscountController');
+
+
 });
 
 Route::post('/booking/is-valid-user', 'UserEventBookingController@isValidUser')->name('isValidUser');
@@ -58,6 +62,7 @@ Route::post('/booking/is-valid-user', 'UserEventBookingController@isValidUser')-
 Route::get('/events', 'HomeController@events')->name('events');
 Route::get('/pricing', 'HomeController@pricing')->name('pricing');
 Route::get('/stepper', 'HomeController@stepper')->name('stepper');
+
 
 Route::get('details', 'UserEventBookingController@eventDetails')->name('eventDetails');
 Route::get('register-user', 'UserEventBookingController@registerUser')->name('registerUser.index');

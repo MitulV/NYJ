@@ -14,7 +14,8 @@ class PermissionRoleTableSeeder extends Seeder
             'Category_Management',
             'City_Management',
             'Bookings',
-            'User_Management'
+            'User_Management',
+            'Setting_access'
         ])->get();
 
         Role::findOrFail(1)->permissions()->sync($admin_permissions->pluck('id'));
