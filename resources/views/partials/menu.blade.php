@@ -16,9 +16,7 @@
                 <li class="nav-item">
                     <a href="{{ route('admin.home') }}" class="nav-link {{ request()->is('admin') ? 'active' : '' }}">
                         <p>
-                            <i class="fas fa-fw fa-tachometer-alt">
-
-                            </i>
+                            <i class="fas fa-fw fa-tachometer-alt"></i>
                             <span>{{ trans('global.dashboard') }}</span>
                         </p>
                     </a>

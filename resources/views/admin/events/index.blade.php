@@ -48,9 +48,11 @@
                             <th>
                                 Start Date
                             </th>
+
                             <th>
                                 Status
                             </th>
+                            <th></th>
                             <th>
                                 &nbsp;
                             </th>
@@ -70,8 +72,41 @@
 
                                     {{ \Carbon\Carbon::parse($event->start_date)->format('d/m/Y') }}
                                 </td>
+
                                 <td>
                                     {{ $event->status ?? '' }}
+                                </td>
+                                <td>
+                                    <select style="background-color: #ECECEC;border: none;" id="select-{{ $event->id }}" name="select" class="form-control">
+                                        <option selected>Action <i class="fa-solid fa-angle-down"></i></option>
+                                        <option value="{{ route('admin.events.edit', $event->id) }}" @if (!(auth()->user()->isOrganizer() && $event->status === 'Draft')) disabled @endif>
+                                            <a class="btn btn-xs btn-info"
+                                                href="{{ route('admin.events.edit', $event->id) }}">
+                                                {{ trans('global.edit') }}
+                                            </a>
+                                        </option>
+
+                                        <option value="{{ route('admin.events.show', $event->id) }}">
+                                            <a class="btn btn-xs btn-primary"
+                                                href="{{ route('admin.events.show', $event->id) }}">
+                                                {{ trans('global.view') }}
+                                            </a>
+                                        </option>
+                                        {{-- <option value="delete" @if (!(auth()->user()->isOrganizer() && $event->bookings->count() === 0)) disabled @endif>
+                                            @if (auth()->user()->isOrganizer() && $event->bookings->count() === 0)
+                                                <form action="{{ route('admin.events.destroy', $event->id) }}"
+                                                    method="POST"
+                                                    onsubmit="return confirm('{{ trans('global.areYouSure') }}');"
+                                                    style="display: inline-block;">
+                                                    <input type="hidden" name="_method" value="DELETE">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                    <input type="submit" 
+                                                        value="{{ trans('global.delete') }}">
+                                                </form>
+                                            @endif
+                                        </option> --}}
+
+                                    </select>
                                 </td>
                                 <td>
 
@@ -82,40 +117,12 @@
                                             $isPastEvent = $now > $startDateTime;
                                         @endphp
 
-                                        <a class="btn btn-xs btn-{{ $isPastEvent ? 'secondary' : 'success' }}"
+                                        <a class="btn btn-lg btn-block btn-{{ $isPastEvent ? 'secondary' : 'success' }}"
                                             href="{{ $isPastEvent ? '#' : route('admin.events.book', ['event_id' => $event->id]) }}"
                                             {{ $isPastEvent ? 'disabled' : '' }}>
                                             Book
                                         </a>
                                     @endif
-
-
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.events.show', $event->id) }}">
-                                        {{ trans('global.view') }}
-                                    </a>
-
-                                    @if (auth()->user()->isOrganizer() && $event->status === 'Draft')
-                                        <a class="btn btn-xs btn-info" href="{{ route('admin.events.edit', $event->id) }}">
-                                            {{ trans('global.edit') }}
-                                        </a>
-                                    @endif
-
-
-                                    @if (auth()->user()->isOrganizer() && $event->bookings->count() === 0)
-                                        <form action="{{ route('admin.events.destroy', $event->id) }}" method="POST"
-                                            onsubmit="return confirm('{{ trans('global.areYouSure') }}');"
-                                            style="display: inline-block;">
-                                            <input type="hidden" name="_method" value="DELETE">
-                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                            <input type="submit" class="btn btn-xs btn-danger"
-                                                value="{{ trans('global.delete') }}">
-                                        </form>
-                                    @endif
-
-
-
-
-
                                 </td>
 
                             </tr>
@@ -185,5 +192,19 @@
                     .columns.adjust();
             });
         })
+
+
+        document.querySelectorAll('select[name="select"]').forEach(function(selectElement) {
+        selectElement.addEventListener('change', function() {
+            var selectedOption = this.options[this.selectedIndex];
+            if (selectedOption.value) {
+                window.location.href = selectedOption.value;
+                // Reset the selected option back to the first one after a slight delay
+                setTimeout(function() {
+                    selectElement.selectedIndex = 0;
+                }, 100);
+            }
+        });
+    });
     </script>
 @endsection
