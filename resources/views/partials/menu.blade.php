@@ -108,15 +108,17 @@
                         </a>
                         <ul class="nav nav-treeview">
                             
+                            @can('discount_code')
                                 <li class="nav-item">
-                                    <a href="{{ route('admin.automatic-discount.index') }}"
-                                        class="nav-link {{ request()->is('admin/settings/automatic-discount') || request()->is('admin/settings/automatic-discount/*') ? 'active' : '' }}">
+                                    <a href="{{ route('admin.discount.index') }}"
+                                        class="nav-link {{ request()->is('admin/settings/discount') || request()->is('admin/settings/discount/*') ? 'active' : '' }}">
                                         <i class="fa-fw fas fa-tags"></i>
                                         <p>
-                                            <span>Automatic Discounts</span>
+                                            <span>Discount Codes</span>
                                         </p>
                                     </a>
                                 </li>
+                            @endcan
                         </ul>
                     </li>
                 @endcan

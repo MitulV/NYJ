@@ -23,7 +23,9 @@ class PermissionRoleTableSeeder extends Seeder
         $organizer_permissions = Permission::whereIn('title', [
             'Dashboard',
             'Event_Management',
-            'Bookings'
+            'Bookings',
+            'Setting_access',
+            'discount_code'
         ])->get();
 
         Role::findOrFail(2)->permissions()->sync($organizer_permissions);

@@ -4,15 +4,15 @@
 
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('admin.automatic-discount.create') }}">
-                Create New Discount Rule
+            <a class="btn btn-success" href="{{ route('admin.discount.create') }}">
+                Create
             </a>
         </div>
     </div>
 
     <div class="card">
         <div class="card-header">
-            Discount Rules List
+            Discount Codes List
         </div>
 
         <div class="card-body">
@@ -25,15 +25,14 @@
                             </th>
 
                             <th>
-                                Description
+                                Code
                             </th>
                             <th>
-                                Linked To
+                                Amount
                             </th>
                             <th>
-                                Action
+                                Used
                             </th>
-
                             <th>
                                 Status
                             </th>

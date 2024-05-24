@@ -2,136 +2,61 @@
 @section('content')
     <div class="card" style="background-color: #FBFBFB">
         <div class="card-header">
-            Create Discount Rule
+            Create Discount Code
         </div>
         <div class="card-body">
-            <form id="discountForm" action="{{ route('admin.automatic-discount.store') }}" method="POST"
+            <form id="discountForm" action="{{ route('admin.discount.store') }}" method="POST"
                 enctype="multipart/form-data">
                 @csrf
 
                 <div class="form-row">
                     <div class="form-group col-md-12">
-                        <input type="text" name="description" class="form-control" id="description"
-                            placeholder="Description">
-                    </div>
-                </div>
-                <div class="form-row align-items-center">
-                    <div class="form-group col-auto">
-                        <input type="checkbox" name="remember" id="remember">
-                    </div>
-                    <div class="form-group col-auto">
-                        <span>Set automatic discount availability start date to</span>
-                    </div>
-                    <div class="form-group col-auto">
-                        <input type="date" class="form-control" name="startDate" id="startDate"
-                            min="{{ date('Y-m-d') }}">
-                    </div>
-                    <div class="form-group col-auto">
-                        <span>at</span>
-                    </div>
-                    <div class="form-group col-auto">
-                        <input type="time" class="form-control" name="startTime" id="startTime">
+                        <input type="text" name="code" class="form-control" id="code"
+                            placeholder="Discount Code">
                     </div>
                 </div>
 
-                <div class="form-row align-items-center">
-                    <div class="form-group col-auto">
-                        <input type="checkbox" name="remember" id="remember">
-                    </div>
-                    <div class="form-group col-auto">
-                        <span>Set automatic discount availability end date to</span>
-                    </div>
-                    <div class="form-group col-auto">
-                        <input type="date" class="form-control" name="endDate" id="endDate"
-                            min="{{ date('Y-m-d') }}">
-                    </div>
-                    <div class="form-group col-auto">
-                        <span>at</span>
-                    </div>
-                    <div class="form-group col-auto">
-                        <input type="time" class="form-control" name="endTime" id="endTime">
-                    </div>
-                </div>
-
-
-                <span>If the booking conditions</span>
-                <div class="form-row form-check align-items-center m-1">
-                        <input class="form-check-input" type="radio" name="radio1">
-                        <label class="form-check-label">Match all of</label>
-                </div>
-                <div class="form-row form-check align-items-center m-1">
-                    <input class="form-check-input" type="radio" name="radio1">
-                    <label class="form-check-label">Match any of</label>
-                </div>
-
-                <div class="form-row align-items-center">
-                    <div class="form-group col-auto">
-                        <input type="checkbox" name="remember" id="remember">
-                    </div>
-                    <div class="form-group col-auto">
-                        <span>Spend value of</span>
-                    </div>
-                    <div class="form-group col-auto">
-                        <input type="number" class="form-control" name="value" id="endDavaluete">
-                    </div>
-                    <div class="form-group col-auto">
-                        <span>or more</span>
+                <div class="form-row">
+                    <div class="container">
+                        <div class="scrollable-list" style="max-height: 300px;overflow-y: auto;border: 1px solid #ccc;padding: 10px;">
+                            <ul style="list-style: none">
+                                <li>
+                                    <li>
+                                        <label class="m-1">
+                                            <input type="checkbox" class="subOption" id="all"> 
+                                            All events
+                                        </label>
+                                    </li>
+                                    <ul style="list-style: none">
+                                        @foreach($events as $event)
+                                            <li>
+                                                <input type="checkbox" id="event-{{ $event->id }}">
+                                                <label class="m-1" for="event-{{ $event->id }}">{{ $event->title }}</label>
+                                                <ul style="list-style: none">
+                                                    @foreach($event->tickets as $ticket)
+                                                        <li>
+                                                            <label class="m-1">
+                                                                <input type="checkbox" class="subOption" id="ticket-{{ $ticket->id }}"> 
+                                                                {{ $ticket->name }}
+                                                            </label>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </li>
+                            </ul>        
+                        </div>
                     </div>
                 </div>
+                
+                
 
-                <div class="form-row align-items-center">
+                <div class="form-row align-items-center mt-5">
+                   
                     <div class="form-group col-auto">
-                        <input type="checkbox" name="remember" id="remember">
-                    </div>
-                    <div class="form-group col-auto">
-                        <span>Selection of</span>
-                    </div>
-                    <div class="form-group col-auto">
-                        <input type="number" class="form-control" name="value" id="endDavaluete">
-                    </div>
-                    <div class="form-group col-auto">
-                        <span>or more tickets</span>
-                    </div>
-                </div>
-
-                <div class="form-row align-items-center">
-                    <div class="form-group col-auto">
-                        <input type="checkbox" name="remember" id="remember">
-                    </div>
-                    <div class="form-group col-auto">
-                        <span>Selection of</span>
-                    </div>
-                    <div class="form-group col-auto">
-                        <input type="number" class="form-control" name="value" id="endDavaluete">
-                    </div>
-                    <div class="form-group col-auto">
-                        <span>or more events</span>
-                    </div>
-                </div>
-
-                <div class="form-row align-items-center">
-                    <div class="form-group col-auto">
-                        <input type="checkbox" name="remember" id="remember">
-                    </div>
-                    <div class="form-group col-auto">
-                        <span>Selection of</span>
-                    </div>
-                    <div class="form-group col-auto">
-                        <input type="number" class="form-control" name="value" id="endDavaluete">
-                    </div>
-                    <div class="form-group col-auto">
-                        <span>or more dates</span>
-                    </div>
-                </div>
-
-                <span>Then take the following action</span>
-
-                <div class="form-row align-items-center">
-                    <div class="form-group col-auto">
-                        <input type="radio" name="remember" id="remember">
-                    </div>
-                    <div class="form-group col-auto">
-                        <span>Apply a discount of</span>
+                        <span>Discount amount</span>
                     </div>
                     <div class="form-group col-auto">
                         <select id="currency" name="currency" class="form-control">
@@ -150,21 +75,84 @@
                     </div>
                 </div>
 
+
+                <div class="form-row align-items-center">
+                    <div class="form-group col-auto">
+                        <input type="checkbox" name="remember" id="remember">
+                    </div>
+                    <div class="form-group col-auto">
+                        <span>Set discount code valid from</span>
+                    </div>
+                    <div class="form-group col-auto">
+                        <input type="date" class="form-control" name="startDate" id="startDate"
+                            min="{{ date('Y-m-d') }}">
+                    </div>
+                    <div class="form-group col-auto">
+                        <span>at</span>
+                    </div>
+                    <div class="form-group col-auto">
+                        <input type="time" class="form-control" name="startTime" id="startTime">
+                    </div>
+                </div>
+
+                <div class="form-row align-items-center">
+                    <div class="form-group col-auto">
+                        <input type="checkbox" name="remember" id="remember">
+                    </div>
+                    <div class="form-group col-auto">
+                        <span>Set discount code expiry to</span>
+                    </div>
+                    <div class="form-group col-auto">
+                        <input type="date" class="form-control" name="endDate" id="endDate"
+                            min="{{ date('Y-m-d') }}">
+                    </div>
+                    <div class="form-group col-auto">
+                        <span>at</span>
+                    </div>
+                    <div class="form-group col-auto">
+                        <input type="time" class="form-control" name="endTime" id="endTime">
+                    </div>
+                </div>
+
+
                 <div class="form-row align-items-center">
                     <div class="form-group col-auto">
                         <input type="radio" name="remember" id="remember">
                     </div>
                     <div class="form-group col-auto">
-                        <span>Apply a discount of</span>
+                        <span>Discount code can be used unlimited number of times</span>
+                    </div>
+                </div>
+
+                <div class="form-row align-items-center">
+                    <div class="form-group col-auto">
+                        <input type="radio" name="remember" id="remember">
+                    </div>
+                    <div class="form-group col-auto">
+                        <span>Discount code can be used</span>
                     </div>
                     <div class="form-group col-auto">
                         <input type="number" class="form-control" name="value" id="endDavaluete">
                     </div>
                     <div class="form-group col-auto">
-                        <select id="currency" name="currency" class="form-control">
-                            <option value="free_tickets" selected>free ticket(s)</option>
-                            <option value="free_dates">free date(s)</option>
-                        </select>
+                        <span>times in total</span>
+                    </div>
+                </div>
+
+                <div class="form-row align-items-center">
+                    <div class="form-group col-auto">
+                        <input type="radio" name="available_for" id="available_for">
+                    </div>
+                    <div class="form-group col-auto">
+                        <span>Discount code available on all bookings</span>
+                    </div>
+                </div>
+                <div class="form-row align-items-center">
+                    <div class="form-group col-auto">
+                        <input type="radio" name="available_for" id="available_for">
+                    </div>
+                    <div class="form-group col-auto">
+                        <span>Discount code available on in-house bookings only</span>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-success">Submit</button>

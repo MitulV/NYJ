@@ -58,6 +58,13 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2019-09-24 19:16:02',
                 'updated_at' => '2019-09-24 19:16:02',
             ],
+
+            [
+                'id'         => 9,
+                'title'      => 'discount_code',
+                'created_at' => '2019-09-24 19:16:02',
+                'updated_at' => '2019-09-24 19:16:02',
+            ],
             
             
         ];

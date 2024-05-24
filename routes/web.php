@@ -1,6 +1,11 @@
 <?php
 
+use App\Http\Controllers\Admin\DiscountController;
 use App\Http\Controllers\Admin\EventsController;
+use App\Http\Controllers\Admin\PermissionsController;
+use App\Http\Controllers\Admin\RolesController;
+use App\Http\Controllers\Admin\UsersController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\UserEventBookingController;
 use App\Http\Controllers\WebhookController;
@@ -18,16 +23,16 @@ Auth::routes();
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
     Route::get('/', 'HomeController@index')->name('home');
     // Permissions
-    Route::delete('permissions/destroy', 'PermissionsController@massDestroy')->name('permissions.massDestroy');
-    Route::resource('permissions', 'PermissionsController');
+    Route::delete('permissions/destroy', [PermissionsController::class,'massDestroy'])->name('permissions.massDestroy');
+    Route::resource('permissions', PermissionsController::class);
 
     // Roles
-    Route::delete('roles/destroy', 'RolesController@massDestroy')->name('roles.massDestroy');
-    Route::resource('roles', 'RolesController');
+    Route::delete('roles/destroy', [RolesController::class,'massDestroy'])->name('roles.massDestroy');
+    Route::resource('roles', RolesController::class);
 
     // Users
-    Route::delete('users/destroy', 'UsersController@massDestroy')->name('users.massDestroy');
-    Route::resource('users', 'UsersController');
+    Route::delete('users/destroy', [UsersController::class,'massDestroy'])->name('users.massDestroy');
+    Route::resource('users', UsersController::class);
 
     // Events
     Route::delete('events/destroy', 'EventsController@massDestroy')->name('events.massDestroy');
@@ -51,22 +56,22 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('my-bookings', 'MyBookingsController@index')->name('mybookings.index');
     Route::get('my-bookings/{booking}', 'MyBookingsController@show')->name('mybookings.show');
 
-    Route::resource('settings/automatic-discount', 'AutomaticDiscountController');
+    Route::resource('settings/discount', DiscountController::class);
 
 
 });
 
-Route::post('/booking/is-valid-user', 'UserEventBookingController@isValidUser')->name('isValidUser');
+Route::post('/booking/is-valid-user', [UserEventBookingController::class,'isValidUser'])->name('isValidUser');
 
 
-Route::get('/events', 'HomeController@events')->name('events');
-Route::get('/pricing', 'HomeController@pricing')->name('pricing');
-Route::get('/stepper', 'HomeController@stepper')->name('stepper');
+Route::get('/events', [HomeController::class,'events'])->name('events');
+Route::get('/pricing', [HomeController::class,'pricing'])->name('pricing');
+Route::get('/stepper', [HomeController::class,'stepper'])->name('stepper');
 
 
-Route::get('details', 'UserEventBookingController@eventDetails')->name('eventDetails');
-Route::get('register-user', 'UserEventBookingController@registerUser')->name('registerUser.index');
-Route::post('book-event', 'UserEventBookingController@bookEvent')->name('bookEvent');
+Route::get('details', [UserEventBookingController::class,'eventDetails'])->name('eventDetails');
+Route::get('register-user', [UserEventBookingController::class,'registerUser'])->name('registerUser.index');
+Route::post('book-event', [UserEventBookingController::class,'bookEvent'])->name('bookEvent');
 
 Route::get('/stripe/refresh',[StripeController::class, 'refresh'])->name('refresh');
 Route::get('/stripe/return',[StripeController::class, 'return'])->name('return');
