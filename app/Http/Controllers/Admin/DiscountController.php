@@ -6,44 +6,69 @@ use App\Discount;
 use App\Event;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class DiscountController extends Controller
 {
-    public function index(Request $request){
-       
-        return view('admin.Discount.index');
+    public function index(Request $request)
+    {
+        $discounts = Discount::all();
+        return view('admin.Discount.index', compact('discounts'));
     }
 
     public function create()
     {
         $events = Event::with('tickets')->get();
-        return view('admin.Discount.create',compact('events'));
+        return view('admin.Discount.create', compact('events'));
     }
 
-    public function store(Request $request){
-
-        $validator = Validator::make($request->all(), [
-            'code' => 'required|string|unique:discounts,code',
-            'event_id' => 'required|exists:events,id',
-            'ticket_id' => 'required|exists:tickets,id',
-            'discount_amount_type' => 'required|in:fixed,percentage',
-            'valid_from_date' => 'nullable|date',
-            'valid_from_time' => 'nullable|date_format:H:i:s',
-            'valid_to_date' => 'nullable|date',
-            'valid_to_time' => 'nullable|date_format:H:i:s',
-            'quantity' => 'nullable|integer|min:0',
-            'available_for' => 'required|in:all,in_house',
-        ]);
-    
-        // Check if validation fails
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+    public function store(Request $request)
+    {
+        if (Discount::where('code', $request->code)->exists()) {
+            return response()->json(['message' => 'The code already exists'], 422);
         }
-    
-        // Create new Discount record using mass assignment
-        $discount = Discount::create($request->all());
-    
-        return response()->json(['message' => 'Discount created successfully', 'discount' => $discount], 201);
+        
+        DB::transaction(function () use ($request) {
+            $valid_from_date = $request->valid_from_date;
+            $valid_from_time = $request->valid_from_time;
+            $valid_to_date = $request->valid_to_date;
+            $valid_to_time = $request->valid_to_time;
+            $quantity = $request->quantity_radio === 'limited' ? $request->quantity : null;
+        
+            $discount = Discount::create([
+                'code' => $request->code,
+                'discount_amount_type' => $request->discount_amount_type,
+                'discount_amount' => $request->discount_amount,
+                'discount_amount_per_ticket_or_booking' => $request->discount_amount_per_ticket_or_booking,
+                'valid_from_date' => $valid_from_date,
+                'valid_from_time' => $valid_from_time,
+                'valid_to_date' => $valid_to_date,
+                'valid_to_time' => $valid_to_time,
+                'quantity' => $quantity,
+                'available_for' => $request->available_for,
+            ]);
+        
+            // Iterate over the selected events and their tickets
+            $selectedEvents = json_decode($request->selectedEvents, true);
+            
+            foreach ($selectedEvents as $event) {
+                $eventId = $event['id'];
+                $selectedTickets = $event['selectedTickets'];
+        
+                foreach ($selectedTickets as $ticketId) {
+                    // Create a DiscountEventTicket record for each event and ticket combination
+                    $discount->discountEventTickets()->create([
+                        'event_id' => $eventId,
+                        'ticket_id' => $ticketId,
+                    ]);
+                }
+            }
+        });
+    }
+
+    public function show(Discount $discount)
+    {
+        $events = Event::with('tickets')->get();
+        return view('admin.cities.show', compact('discount','events'));
     }
 }

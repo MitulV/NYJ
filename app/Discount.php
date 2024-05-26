@@ -11,9 +11,9 @@ class Discount extends Model
 
     protected $fillable = [
         'code', 
-        'event_id', 
-        'ticket_id', 
         'discount_amount_type', 
+        'discount_amount',
+        'discount_amount_per_ticket_or_booking',
         'valid_from_date', 
         'valid_from_time', 
         'valid_to_date', 
@@ -21,4 +21,9 @@ class Discount extends Model
         'quantity', 
         'available_for'
     ];
+
+    public function discountEventTickets()
+    {
+        return $this->hasMany(DiscountEventTicket::class);
+    }
 }

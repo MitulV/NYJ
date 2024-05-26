@@ -42,8 +42,47 @@
                         </tr>
                     </thead>
                     <tbody>
-                        
+                        @foreach($discounts as $discount)
+                            <tr>
+                                <td></td>
+                                <td>{{ $discount->code }}</td>
+                                <td>{{ $discount->discount_amount }}</td>
+                                <td>5</td>
+                                <td>
+                                    @if ($discount->valid_from_date && $discount->valid_from_time && $discount->valid_to_date && $discount->valid_to_time)
+                                        @php
+                                            $currentDateTime = now();
+                                            $validFromDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $discount->valid_from_date . ' ' . $discount->valid_from_time);
+                                            $validToDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $discount->valid_to_date . ' ' . $discount->valid_to_time);
+                                        @endphp
+                                        @if ($currentDateTime >= $validFromDate && $currentDateTime <= $validToDate)
+                                            Active
+                                        @else
+                                            Not Active
+                                        @endif
+                                    @else
+                                        Active
+                                    @endif
+                                </td>
+                                
+                                <td>
+                               
+                                    <a class="btn btn-xs btn-info" href="{{ route('admin.cities.edit', $discount->id) }}">
+                                        {{ trans('global.edit') }}
+                                    </a>
+                                
+                                    <form action="{{ route('admin.cities.destroy', $discount->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                    </form>
+                               
+
+                            </td>
+                            </tr>
+                        @endforeach
                     </tbody>
+                    
                 </table>
             </div>
         </div>

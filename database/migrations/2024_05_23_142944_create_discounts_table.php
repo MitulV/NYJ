@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('discounts', function (Blueprint $table) {
             $table->id();
             $table->string('code')->unique();
-            $table->foreignId('event_id')->nullable();
-            $table->foreignId('ticket_id')->nullable();
             $table->enum('discount_amount_type', ['fixed', 'percentage']);
+            $table->decimal('discount_amount', 10, 2);
+            $table->enum('discount_amount_per_ticket_or_booking', ['per_ticket', 'per_booking']); // Added discount_amount_per_ticket_or_booking field
             $table->date('valid_from_date')->nullable();
             $table->time('valid_from_time')->nullable();
             $table->date('valid_to_date')->nullable();
@@ -25,6 +25,7 @@ return new class extends Migration
             $table->enum('available_for', ['all', 'in_house']);
             $table->timestamps();
         });
+        
         
     }
 
