@@ -18,7 +18,8 @@ class Discount extends Model
         'valid_from_time', 
         'valid_to_date', 
         'valid_to_time', 
-        'quantity', 
+        'quantity',
+        'used', 
         'available_for'
     ];
 

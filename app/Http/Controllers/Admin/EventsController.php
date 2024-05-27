@@ -53,7 +53,6 @@ class EventsController extends Controller
 
     public function store(Request $request)
     {
-
         abort_if(Gate::denies('Event_Management'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $validator = Validator::make($request->all(), [
             'category' => 'required|numeric', // Example validation rule for category (required and numeric)

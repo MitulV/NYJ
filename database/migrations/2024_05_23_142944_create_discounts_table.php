@@ -22,6 +22,7 @@ return new class extends Migration
             $table->date('valid_to_date')->nullable();
             $table->time('valid_to_time')->nullable();
             $table->unsignedInteger('quantity')->nullable();
+            $table->integer('used')->default(0);
             $table->enum('available_for', ['all', 'in_house']);
             $table->timestamps();
         });

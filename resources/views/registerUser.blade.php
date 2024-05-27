@@ -52,13 +52,17 @@
                         <div class="circle active">1</div>
                         <div class="circle">2</div>
                     </div>
-                    <form id="ticketForm" action="{{ route('bookEvent') }}" method="POST">
+                    <form id="ticketForm" action="{{ route('bookEvent') }}" method="POST" class="mb-5">
                         @csrf
                         <input type="hidden" class="form-control" id="event_id" name="event_id"
                             value="{{ $event->id }}" />
                         
                         <!-- Step 1: Select Ticket -->
                         <div class="step" id="step2">
+                            <div class="mb-5">
+                                <h3>Discount Code</h3>
+                                <input style="width:100%" type="text" name="code" class="form-control" id="code" placeholder="Discount Code (optional)">
+                            </div>
                             <h3>Select ticket</h3>
                             @foreach ($normalTickets as $ticket)
                                 <div class="d-flex justify-content-between mb-3 input-group-text">

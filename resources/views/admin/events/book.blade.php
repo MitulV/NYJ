@@ -60,13 +60,18 @@
 
                     <!-- Step 1: Select Ticket -->
                     <div class="step" id="step2">
-                        <div class="payment_mode mb-3">
+                        <div class="payment_mode mb-5">
                             <h3>Payment Mode</h3>
-                            <select id="payment_mode" name="payment_mode" class="form-control">
+                            <select id="payment_mode" style="margin: 0 0.5vw;" name="payment_mode" class="form-control">
                                 <option value="cash" selected>Cash</option>
                                 <option value="Card">Card</option>
                             </select>
                         </div>
+                        <div class="mb-5">
+                            <h3>Discount Code</h3>
+                            <input style="width:100%" type="text" name="code" class="form-control" id="code" placeholder="Discount Code (optional)">
+                        </div>
+
                         <h3>Select ticket</h3>
                         @foreach ($normalTickets as $ticket)
                             <div class="d-flex justify-content-between mb-3 input-group-text">
