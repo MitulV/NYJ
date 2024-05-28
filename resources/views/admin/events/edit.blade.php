@@ -143,6 +143,7 @@
                                             <div class="form-row">
                                                 <div class="form-group col-md-6">
                                                     <label>Ticket Name</label>
+                                                    <input type="hidden" name="ticket_id[]" value="{{ $ticket->id }}">
                                                     <input type="text" name="ticket_name[]" class="form-control"
                                                         placeholder="Enter Ticket Name" value="{{ $ticket->name }}">
                                                 </div>
@@ -177,6 +178,7 @@
                                 </div>
                                 @endif
                             @endforeach
+                            <button type="button" class="btn btn-primary" id="addTicketButton">Add+</button>
                         </div>
                     </div>
                 </div>
@@ -221,6 +223,7 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label>Ticket Name</label>
+                                        <input type="hidden" name="group_ticket_id" value="{{ $ticket->id }}">
                                         <input type="text" name="group_ticket_name" id="group_ticket_name"
                                             class="form-control" placeholder="Enter Ticket Name" value="{{ $ticket->name }}">
                                     </div>
@@ -276,8 +279,10 @@
     <script>
         $('#eventForm').submit(function(event) {
                 if (validateForm()) {
+                    console.log(true);
                     return true;
                 } else {
+                    console.log(false);
                     event.preventDefault();
                     return false;
                 }
@@ -285,9 +290,6 @@
 
 
         $(document).ready(function() {
-
-            $('#minAgeDiv').hide();
-            $('#maxAgeDiv').hide();
 
             $('#ageRestrictions').change(function() {
                 var selectedOption = $(this).val();
@@ -337,6 +339,7 @@
                 inputs.each(function() {
                     $(this).val('');
                 });
+                ticketSection.find('input[name="ticket_id[]"]').val('');
 
                 var deleteButton = $(
                     '<button type="button" class="btn btn-danger delete-button">Delete</button>');
@@ -438,8 +441,8 @@
 
                     if (ticketName === '' || ticketDescription === '' || ticketPrice === '' ||
                         ticketQuantity === '') {
-                        isValid = false;
                         alert('Please fill out all required fields.');
+                        isValid = false;
                         return isValid;
                     }
 
@@ -457,6 +460,9 @@
                     }
                 });
 
+                if(!isValid){
+                    return isValid;
+                }
                 var group_ticketName = $('#group_ticket_name').val();
                 var group_ticketDescription = $('#group_ticket_description').val();
                 var group_ticketPrice = $('#group_ticket_price').val();

@@ -77,35 +77,25 @@
                                     {{ $event->status ?? '' }}
                                 </td>
                                 <td>
-                                    <select style="background-color: #ECECEC;border: none;" id="select-{{ $event->id }}" name="select" class="form-control">
-                                        <option selected>Action <i class="fa-solid fa-angle-down"></i></option>
-                                        <option value="{{ route('admin.events.edit', $event->id) }}" @if (!(auth()->user()->isOrganizer())) disabled @endif>
-                                            <a class="btn btn-xs btn-info"
-                                                href="{{ route('admin.events.edit', $event->id) }}">
-                                                {{ trans('global.edit') }}
-                                            </a>
+                                    <select style="background-color: #ECECEC; border: none;" onchange="changeAction({{$event->id}})"
+                                        id="select-{{ $event->id }}" name="select" class="form-control">
+                                        <option value="Action" selected>Action <i class="fa-solid fa-angle-down"></i></option>
+                                        @if (auth()->user()->isOrganizer())
+                                        <option value="{{ route('admin.events.edit', $event->id) }}">
+                                            {{ trans('global.edit') }}
                                         </option>
-
+                                        @endif
+                                        
                                         <option value="{{ route('admin.events.show', $event->id) }}">
-                                            <a class="btn btn-xs btn-primary"
-                                                href="{{ route('admin.events.show', $event->id) }}">
-                                                {{ trans('global.view') }}
-                                            </a>
+                                            {{ trans('global.view') }}
                                         </option>
-                                        {{-- <option value="delete" @if (!(auth()->user()->isOrganizer() && $event->bookings->count() === 0)) disabled @endif>
-                                            @if (auth()->user()->isOrganizer() && $event->bookings->count() === 0)
-                                                <form action="{{ route('admin.events.destroy', $event->id) }}"
-                                                    method="POST"
-                                                    onsubmit="return confirm('{{ trans('global.areYouSure') }}');"
-                                                    style="display: inline-block;">
-                                                    <input type="hidden" name="_method" value="DELETE">
-                                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                    <input type="submit" 
-                                                        value="{{ trans('global.delete') }}">
-                                                </form>
-                                            @endif
-                                        </option> --}}
 
+                                        @if (auth()->user()->isOrganizer() && $event->bookings->count() === 0)
+                                        <option value="delete">
+                                            {{ trans('global.delete') }}
+                                        </option>
+                                        @endif
+                                        
                                     </select>
                                 </td>
                                 <td>
@@ -145,33 +135,24 @@
                     url: "{{ route('admin.settings.massDestroy') }}",
                     className: 'btn-danger',
                     action: function(e, dt, node, config) {
-                        var ids = $.map(dt.rows({
-                            selected: true
-                        }).nodes(), function(entry) {
+                        var ids = $.map(dt.rows({ selected: true }).nodes(), function(entry) {
                             return $(entry).data('entry-id')
                         });
 
                         if (ids.length === 0) {
                             alert('{{ trans('global.datatables.zero_selected') }}')
-
                             return
                         }
 
                         if (confirm('{{ trans('global.areYouSure') }}')) {
                             $.ajax({
-                                    headers: {
-                                        'x-csrf-token': _token
-                                    },
-                                    method: 'POST',
-                                    url: config.url,
-                                    data: {
-                                        ids: ids,
-                                        _method: 'DELETE'
-                                    }
-                                })
-                                .done(function() {
-                                    location.reload()
-                                })
+                                headers: { 'x-csrf-token': _token },
+                                method: 'POST',
+                                url: config.url,
+                                data: { ids: ids, _method: 'DELETE' }
+                            }).done(function() {
+                                location.reload()
+                            })
                         }
                     }
                 }
@@ -179,32 +160,54 @@
             @endcan
 
             $.extend(true, $.fn.dataTable.defaults, {
-                order: [
-                    [1, 'desc']
-                ],
+                order: [[1, 'desc']],
                 pageLength: 100,
             });
-            $('.datatable-Setting:not(.ajaxTable)').DataTable({
-                buttons: dtButtons
-            })
+
+            $('.datatable-Setting:not(.ajaxTable)').DataTable({ buttons: dtButtons })
             $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
-                $($.fn.dataTable.tables(true)).DataTable()
-                    .columns.adjust();
+                $($.fn.dataTable.tables(true)).DataTable().columns.adjust();
             });
-        })
-
-
-        document.querySelectorAll('select[name="select"]').forEach(function(selectElement) {
-        selectElement.addEventListener('change', function() {
-            var selectedOption = this.options[this.selectedIndex];
-            if (selectedOption.value) {
-                window.location.href = selectedOption.value;
-                // Reset the selected option back to the first one after a slight delay
-                setTimeout(function() {
-                    selectElement.selectedIndex = 0;
-                }, 100);
-            }
         });
-    });
+
+        function changeAction(eventId) {
+
+            var value = $('#select-' + eventId).val();
+            if (value === 'delete') {
+                $('#select-' + eventId).prop('selectedIndex', 0); // Reset the select element to "Action" option
+                if (confirm('{{ trans('global.areYouSure') }}')) {
+                    var form = $('<form>', {
+                        method: 'POST',
+                        action: '{{ route('admin.events.destroy', ':eventId') }}'.replace(':eventId', eventId)
+                    });
+
+                    var methodInput = $('<input>', {
+                        type: 'hidden',
+                        name: '_method',
+                        value: 'DELETE'
+                    });
+
+                    var tokenInput = $('<input>', {
+                        type: 'hidden',
+                        name: '_token',
+                        value: '{{ csrf_token() }}'
+                    });
+
+                    form.append(methodInput, tokenInput);
+                    $('body').append(form);
+                    form.submit();
+                }
+            } else if (value === 'Action') {
+                return;
+            } else if (value) {
+                window.location.href = value;
+            }
+        }
+
+        $(document).ready(function() {
+            $('select').each(function() {
+                $(this).prop('selectedIndex', 0); // Reset all select elements to the first option
+            });
+        });
     </script>
 @endsection

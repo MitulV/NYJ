@@ -189,36 +189,8 @@ class EventsController extends Controller
 
     public function update(Request $request, Event $event)
     {
+        
         abort_if(Gate::denies('Event_Management'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $validator = Validator::make($request->all(), [
-            'category' => 'required|numeric', // Example validation rule for category (required and numeric)
-            'title' => 'required|string|max:255', // Example validation rule for title (required, string, max length 255)
-            'startDate' => 'required|date', // Example validation rule for startDate (required and date)
-            'startTime' => 'nullable|date_format:H:i:s', // Example validation rule for startTime (optional and time in format HH:MM)
-            'endDate' => 'required|date', // Example validation rule for endDate (required and date)
-            'endTime' => 'nullable|date_format:H:i:s', // Example validation rule for endTime (optional and time in format HH:MM)
-            'shortDescription' => 'nullable|string|max:255', // Example validation rule for shortDescription (optional, string, max length 255)
-            'city' => 'required|numeric', // Example validation rule for city (required and numeric)
-            'address' => 'nullable|string|max:255', // Example validation rule for address (optional, string, max length 255)
-            'long_description' => 'nullable|string', // Example validation rule for long_description (optional string)
-            'terms_conditions' => 'nullable|string', // Example validation rule for terms_conditions (optional string)
-            'age_restrictions' => 'nullable|in:Minimum Age,Maximum Age,None', // Example validation rule for age_restrictions (optional and must be one of the given values)
-            'min_age' => 'nullable|required_if:age_restrictions,Minimum Age|integer|min:0', // Example validation rule for min_age (optional, required if age_restrictions is Minimum Age, integer, min value 0)
-            'max_age' => 'nullable|required_if:age_restrictions,Maximum Age|integer|min:0', // Example validation rule for max_age (optional, required if age_restrictions is Maximum Age, integer, min value 0)
-            'additionalInfo' => 'nullable|string', // Example validation rule for additionalInfo (optional string)
-            'booking_deadline' => 'required',
-            'ticket_name.*' => 'required|string|max:255',
-            'ticket_description.*' => 'required|string|max:255',
-            'ticket_price.*' => 'required|numeric|min:0',
-            'ticket_quantity.*' => 'required|integer|min:0',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
-        }
 
         $event->update([
             'title' => $request->input('title'),
@@ -239,41 +211,87 @@ class EventsController extends Controller
             'booking_deadline' => $request->input('booking_deadline'),
         ]);
 
+        $ticketIds = $request->input('ticket_id');
+        $ticketNames = $request->input('ticket_name');
+        $ticketDescriptions = $request->input('ticket_description');
+        $ticketPrices = $request->input('ticket_price');
+        $ticketQuantities = $request->input('ticket_quantity');
+
+
+
+        /** @var \App\User $user */
+        $user = auth()->user();
         $stripe = new StripeClient(config('stripe.api_keys.secret_key'));
 
-        foreach ($request->input('tickets', []) as $ticketData) {
-            if (isset($ticketData['id'])) {
-                // If the ticket has an ID, it already exists, so update it
-                $ticket = Ticket::findOrFail($ticketData['id']);
-                $ticket->update([
-                    'name' => $ticketData['name'],
-                    'description' => $ticketData['description'],
-                    'price' => $ticketData['price'],
-                    'quantity' => $ticketData['quantity'],
-                ]);
-            } else {
-                // If the ticket does not have an ID, it's a new ticket, so create it
+        // Iterate through the arrays and create Ticket records
+        foreach ($ticketNames as $key => $ticketName) {
 
-
-                $price_in_cents = (int)($ticketData['price'] * 100);
-                $product = $stripe->products->create(['name' => $ticketData['name']]);
-                $price = $stripe->prices->create([
+            $ticketId = $ticketIds[$key];
+            $price = $ticketPrices[$key];
+            if ($ticketId==null) {
+                $price_in_cents = (int)($price * 100);
+                $productObj = $stripe->products->create(['name' => $ticketName]);
+                $priceObj = $stripe->prices->create([
                     'currency' => 'GBP',
                     'unit_amount' => $price_in_cents,
-                    'product' => $product->id
+                    'product' => $productObj->id
                 ]);
 
                 Ticket::create([
                     'event_id' => $event->id,
-                    'name' => $ticketData['name'],
-                    'description' => $ticketData['description'],
-                    'price' => $ticketData['price'],
-                    'quantity' => $ticketData['quantity'],
-                    'stripe_product_id' => $product->id,
-                    'stripe_price_id' => $price->id
+                    'name' => $ticketName,
+                    'description' => $ticketDescriptions[$key],
+                    'price' => $price,
+                    'quantity' => $ticketQuantities[$key],
+                    'stripe_product_id' => $productObj->id,
+                    'stripe_price_id' => $priceObj->id
+                ]);
+            } else {
+                $ticket = Ticket::find($ticketId);
+                $ticket->update([
+                    'name' => $ticketName,
+                    'description' => $ticketDescriptions[$key],
+                    'price' => $price,
+                    'quantity' => $ticketQuantities[$key],
                 ]);
             }
         }
+
+        if ($request->filled('group_ticket_name')) {
+            $ticketId = $request->input('group_ticket_id');
+            $price = $request->input('group_ticket_price');
+            if ($ticketId==null) {
+                $price_in_cents = (int)($price * 100);
+                $productObj = $stripe->products->create(['name' => $request->input('group_ticket_name')]);
+                $priceObj = $stripe->prices->create([
+                    'currency' => 'GBP',
+                    'unit_amount' => $price_in_cents,
+                    'product' => $productObj->id
+                ]);
+
+                Ticket::create([
+                    'event_id' => $event->id,
+                    'name' => $request->input('group_ticket_name'),
+                    'description' => $request->input('group_ticket_description'),
+                    'price' => $price,
+                    'quantity' => $request->input('group_ticket_quantity'),
+                    'group_count' => $request->input('group_count'),
+                    'is_group_ticket' => 1,
+                    'stripe_product_id' => $productObj->id,
+                    'stripe_price_id' => $priceObj->id
+                ]);
+            } else {
+                $ticket = Ticket::find($ticketId);
+                $ticket->update([
+                    'name' => $request->input('group_ticket_name'),
+                    'description' => $request->input('group_ticket_description'),
+                    'price' => $price,
+                    'quantity' => $request->input('group_ticket_quantity'),
+                    'group_count' => $request->input('group_count')
+                ]);
+            }
+        }
+
         return redirect()->route('admin.events.index');
     }
 

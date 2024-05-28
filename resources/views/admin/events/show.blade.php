@@ -109,7 +109,7 @@
                                 </select>
                             </div>
                             @if ($event->min_age > 0)
-                                    <div class="form-group col-md-4" id="minAgeDiv">
+                                    <div class="form-group col-md-4" id="minAgeDiv" style="{{ $event->age_restrictions == 'Minimum Age' ? '' : 'display: none;' }}">
                                         <label for="minAge">Minimum Age</label>
                                         <input type="number" name="min_age" class="form-control" id="minAge"
                                             value="{{$event->min_age}}" disabled>
@@ -117,7 +117,7 @@
                                 @endif
 
                                 @if ($event->max_age > 0)
-                                    <div class="form-group col-md-4" id="maxAgeDiv">
+                                    <div class="form-group col-md-4" id="maxAgeDiv" style="{{ $event->age_restrictions == 'Maximum Age' ? '' : 'display: none;' }}">
                                         <label for="maxAge">Maximum Age</label>
                                         <input type="number" name="max_age" class="form-control" id="maxAge"
                                             value="{{$event->max_age}}" disabled>
@@ -284,9 +284,6 @@
 
         $(document).ready(function() {
 
-            $('#minAgeDiv').hide();
-            $('#maxAgeDiv').hide();
-
             $('#ageRestrictions').change(function() {
                 var selectedOption = $(this).val();
                 if (selectedOption === 'None') {
@@ -300,6 +297,6 @@
                     $('#maxAgeDiv').show();
                 }
             });
-
+        });
            </script>
 @endsection
