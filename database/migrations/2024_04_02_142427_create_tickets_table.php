@@ -18,8 +18,6 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->decimal('price', 8, 2);
             $table->integer('quantity');
-            $table->string('stripe_product_id');
-            $table->string('stripe_price_id');
             $table->boolean('is_group_ticket')->default(false);
             $table->integer('group_count')->nullable();
             $table->timestamps();

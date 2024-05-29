@@ -269,6 +269,13 @@
 @section('scripts')
     <script>
         $('#eventForm').submit(function(event) {
+            var shortDescriptionHtml = $('#shortDescription').summernote('code');
+                $('#shortDescription').val(shortDescriptionHtml);
+                var longDescriptionHtml = $('#longDescription').summernote('code');
+                $('#longDescription').val(longDescriptionHtml);
+                var termsConditionsHtml = $('#termsConditions').summernote('code');
+                $('#termsConditions').val(termsConditionsHtml);
+                
                 if (validateForm()) {
                     return true;
                 } else {

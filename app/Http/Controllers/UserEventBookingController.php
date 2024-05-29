@@ -74,8 +74,8 @@ class UserEventBookingController extends Controller
     ]);
 
     foreach ($request->except('_token', 'event_id', 'name', 'email') as $ticketId => $quantity) {
-      // Ensure the request parameter represents a ticket ID
       if (Str::startsWith($ticketId, 'ticket_id_')) {
+
         // Extract the ticket ID from the parameter name
         $ticketId = substr($ticketId, strlen('ticket_id_'));
 
@@ -84,8 +84,6 @@ class UserEventBookingController extends Controller
 
           $amount = $ticket->price * $quantity;
           $totalAmount += $amount;
-
-          $price_in_cents = (int)($ticket->price * 100);
 
           // Create the booking ticket
           BookingTicket::create([
@@ -98,12 +96,12 @@ class UserEventBookingController extends Controller
           $lineItems[] = [
             'price_data' => [
               'currency' => 'GBP',
-              'unit_amount' => $price_in_cents, // Amount in cents
+              'unit_amount' => (int)($ticket->price * 100), // Amount in cents
               'product_data' => [
-                'name' =>  $ticket->name, // You can customize the name here
+                'name' =>  $ticket->name,
               ],
             ],
-            'quantity' => $quantity, // Quantity of this item
+            'quantity' => $quantity,
           ];
         }
       }

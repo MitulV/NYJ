@@ -297,6 +297,27 @@
                     $('#maxAgeDiv').show();
                 }
             });
+
+            $('#longDescription').summernote('disable');
+            $('#shortDescription').summernote('disable');
+            $('#termsConditions').summernote('disable');
+
+            $('#longDescription').summernote({
+                height: 150,
+                inheritPlaceholder: true,
+                disable:true
+                
+            });
+
+            $('#shortDescription').summernote({
+                height: 100,
+                inheritPlaceholder: true,
+            });
+
+            $('#termsConditions').summernote({
+                height: 150,
+                inheritPlaceholder: true
+            });
         });
            </script>
 @endsection

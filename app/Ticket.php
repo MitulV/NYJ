@@ -15,8 +15,6 @@ class Ticket extends Model
         'description',
         'price',
         'quantity',
-        'stripe_product_id',
-        'stripe_price_id',
         'is_group_ticket',
         'group_count'
     ];
