@@ -85,6 +85,8 @@ class UserEventBookingController extends Controller
           $amount = $ticket->price * $quantity;
           $totalAmount += $amount;
 
+          $price_in_cents = (int)($ticket->price * 100);
+
           // Create the booking ticket
           BookingTicket::create([
             'booking_id' => $booking->id,
@@ -94,8 +96,14 @@ class UserEventBookingController extends Controller
 
           // Create the line item array for this ticket
           $lineItems[] = [
-            'price' => $ticket->stripe_price_id,
-            'quantity' => $quantity,
+            'price_data' => [
+              'currency' => 'GBP',
+              'unit_amount' => $price_in_cents, // Amount in cents
+              'product_data' => [
+                'name' =>  $ticket->name, // You can customize the name here
+              ],
+            ],
+            'quantity' => $quantity, // Quantity of this item
           ];
         }
       }
