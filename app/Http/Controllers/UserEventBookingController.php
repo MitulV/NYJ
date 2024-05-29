@@ -147,7 +147,7 @@ class UserEventBookingController extends Controller
 
     $transaction->update([
       'stripe_checkout_id' => $checkoutSession->id,
-      'amount_total' => $checkoutSession->amount_total,
+      'amount_total' => ($checkoutSession->amount_total)/100,
       'status' => $checkoutSession->status
     ]);
 

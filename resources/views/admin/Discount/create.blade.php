@@ -181,7 +181,7 @@
                         <label for="available_for_in_house">Discount code available on in-house bookings only</label>
                     </div>
                 </div>
-                <button type="button" @click="submitFormAjax" class="btn btn-success">Submit</button>
+                <button type="button" @click="submitFormAjax" :disabled="submitting" class="btn btn-success">Submit</button>
             </form>
         </div>
     </div>
@@ -192,6 +192,7 @@
                 selectedEvents: [],
                 selectedTickets: [],
                 submitted: false,
+                submitting: false,
                 formData: {
                     code: '',
                     discount_amount: null,
@@ -222,6 +223,7 @@
                     }
                 },
                 submitFormAjax() {
+                    this.submitting = true;
                     this.validateForm();
                     if (Object.keys(this.errors).length === 0) {
                         let formData = new FormData();
@@ -268,10 +270,11 @@
                                 console.error('There was a problem with the fetch operation:', error);
                                 alert(error.message);
                             });
-
+                            
                     } else {
                         alert('Provide all of the required details before proceeding');
                     }
+                    this.submitting = false;
                 },
 
                 toggleAll() {

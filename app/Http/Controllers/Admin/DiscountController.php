@@ -5,12 +5,17 @@ namespace App\Http\Controllers\Admin;
 use App\Discount;
 use App\Event;
 use App\Http\Controllers\Controller;
-use Carbon\Carbon;
+use App\Services\BookingService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class DiscountController extends Controller
 {
+    public function __construct(private BookingService $bookingService)
+    {
+        
+    }
+
     public function index(Request $request)
     {
         $discounts = Discount::all();
@@ -71,28 +76,6 @@ class DiscountController extends Controller
     {
         $events = Event::with('tickets')->get();
         return view('admin.cities.show', compact('discount','events'));
-    }
-
-    public function isDiscountCodeAvailable($code, $requestValue){
-        $discount = Discount::where('code', $code)->first();
-        
-        if ($discount) {
-            $now = Carbon::now();
-    
-            if ($discount->used < $discount->quantity) {
-                if ($discount->available_for === $requestValue) {
-                    if (is_null($discount->valid_from_date) && is_null($discount->valid_from_time)) {
-                        if (is_null($discount->valid_to_date) && is_null($discount->valid_to_time)) {
-                            return true;
-                        } else if (!is_null($discount->valid_to_date) && !is_null($discount->valid_to_time)) {
-                            $validTo = Carbon::createFromFormat('Y-m-d H:i:s', $discount->valid_to_date . ' ' . $discount->valid_to_time);
-                            return $validTo >= $now;
-                        }
-                    }
-                }
-            }
-        }
-        return false;
     }
         
 }
