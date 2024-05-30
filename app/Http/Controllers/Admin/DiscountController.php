@@ -75,7 +75,70 @@ class DiscountController extends Controller
     public function show(Discount $discount)
     {
         $events = Event::with('tickets')->get();
-        return view('admin.cities.show', compact('discount','events'));
+        return view('admin.discount.show', compact('discount','events'));
+    }
+
+    public function edit(Discount $discount)
+    {
+        $events = Event::with('tickets')->get();
+        return view('admin.discount.edit', compact('discount','events'));
+    }
+
+    public function update(Request $request, Discount $discount)
+{
+    // Validate the incoming request data if necessary
+
+    DB::transaction(function () use ($request, $discount) {
+        $valid_from_date = $request->valid_from_date;
+        $valid_from_time = $request->valid_from_time;
+        $valid_to_date = $request->valid_to_date;
+        $valid_to_time = $request->valid_to_time;
+        $quantity = $request->quantity_radio === 'limited' ? $request->quantity : null;
+
+        // Update the discount details
+        $discount->update([
+            'discount_amount_type' => $request->discount_amount_type,
+            'discount_amount' => $request->discount_amount,
+            'discount_amount_per_ticket_or_booking' => $request->discount_amount_per_ticket_or_booking,
+            'valid_from_date' => $valid_from_date,
+            'valid_from_time' => $valid_from_time,
+            'valid_to_date' => $valid_to_date,
+            'valid_to_time' => $valid_to_time,
+            'quantity' => $quantity,
+            'available_for' => $request->available_for,
+        ]);
+
+        // Delete existing discount event tickets
+        $discount->discountEventTickets()->delete();
+
+        // Iterate over the selected events and their tickets
+        $selectedEvents = json_decode($request->selectedEvents, true);
+
+        foreach ($selectedEvents as $event) {
+            $eventId = $event['id'];
+            $selectedTickets = $event['selectedTickets'];
+
+            foreach ($selectedTickets as $ticketId) {
+                // Create new DiscountEventTicket records for each event and ticket combination
+                $discount->discountEventTickets()->create([
+                    'event_id' => $eventId,
+                    'ticket_id' => $ticketId,
+                ]);
+            }
+        }
+    });
+
+    return redirect()->route('admin.discount.index');
+}
+
+
+    public function destroy(Discount $discount)
+    {
+
+        $discount->discountEventTickets()->delete();
+        $discount->delete();
+
+        return back();
     }
         
 }

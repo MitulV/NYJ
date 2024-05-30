@@ -22,6 +22,7 @@ return new class extends Migration
             $table->boolean('is_offline')->default(true);
             $table->string('payment_mode')->nullable();
             $table->boolean('checked_in')->default(false);
+            $table->unsignedBigInteger('discount_id')->nullable();
             $table->timestamps();
         });
     }

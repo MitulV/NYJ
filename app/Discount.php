@@ -27,4 +27,9 @@ class Discount extends Model
     {
         return $this->hasMany(DiscountEventTicket::class);
     }
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
 }

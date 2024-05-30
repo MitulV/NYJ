@@ -21,7 +21,13 @@ class Booking extends Model
         'is_offline',
         'payment_mode',
         'checked_in',
+        'discount_id',
     ];
+
+    public function discount()
+    {
+        return $this->belongsTo(Discount::class);
+    }
 
     public function tickets()
     {

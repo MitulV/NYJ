@@ -6,6 +6,7 @@ use App\Booking;
 use App\BookingTicket;
 use App\Event;
 use App\Http\Controllers\Controller;
+use App\Services\BookingService;
 use App\Ticket;
 use App\Transaction;
 use App\User;
@@ -14,10 +15,13 @@ use Illuminate\Support\Facades\Hash;
 use Stripe\StripeClient;
 use Illuminate\Support\Str;
 
-
-
 class UserEventBookingController extends Controller
 {
+
+  public function __construct(private BookingService $bookingService)
+  {
+  }
+
   public function eventDetails(Request $request)
   {
     $eventId = $request->query('eventId');
@@ -33,7 +37,7 @@ class UserEventBookingController extends Controller
       $totalBookedTickets = $this->calculateTotalBookedTicketsForTicket($ticket->id); // Calculate total booked tickets for this ticket
       $ticket->total_booked_tickets = $totalBookedTickets; // Add total booked tickets to the ticket object
       return $ticket;
-  });
+    });
 
     $normalTickets = $tickets->where('is_group_ticket', false)->values()->all();
     $groupTickets = $tickets->where('is_group_ticket', true)->values()->all();
@@ -41,9 +45,10 @@ class UserEventBookingController extends Controller
     return view('registerUser', compact('event', 'normalTickets', 'groupTickets'));
   }
 
-  public function calculateTotalBookedTicketsForTicket($ticketId){
+  public function calculateTotalBookedTicketsForTicket($ticketId)
+  {
     $totalBookedTickets = BookingTicket::where('ticket_id', $ticketId)->sum('quantity');
-    
+
     return $totalBookedTickets;
   }
 
@@ -61,62 +66,76 @@ class UserEventBookingController extends Controller
       $user->roles()->attach(3);
     }
 
-    $lineItems = [];
-    $totalAmount = 0;
 
     // Create the booking
     $booking = Booking::create([
       'event_id' => $request->event_id,
       'user_id' => $user->id,
       'status' => 'Pending',
-      'amount' => $totalAmount,
+      'amount' => 0,
       'booking_date_time' => now(),
     ]);
 
-    foreach ($request->except('_token', 'event_id', 'name', 'email') as $ticketId => $quantity) {
-      if (Str::startsWith($ticketId, 'ticket_id_')) {
+    $checkoutSessionUrl = null;
+    $request['available_for']='all';
 
-        // Extract the ticket ID from the parameter name
-        $ticketId = substr($ticketId, strlen('ticket_id_'));
+    if ($request->filled('code')) {
+      $discountedData = $this->bookingService->handleDiscount($request, $booking);
+      $booking->update(['amount' => $discountedData['totalAmount']]);
 
-        $ticket = Ticket::findOrFail($ticketId);
-        if ($quantity > 0) {
+      $event = Event::find($request->event_id);
 
-          $amount = $ticket->price * $quantity;
-          $totalAmount += $amount;
+      $checkoutSessionUrl = $this->createCheckoutSession($discountedData['liteItems'], $event, $booking, $user);
+    } else {
+      $lineItems = [];
+      $totalAmount = 0;
+      foreach ($request->except('_token', 'event_id', 'name', 'email') as $ticketId => $quantity) {
+        if (Str::startsWith($ticketId, 'ticket_id_')) {
 
-          // Create the booking ticket
-          BookingTicket::create([
-            'booking_id' => $booking->id,
-            'ticket_id' => $ticketId,
-            'quantity' => $quantity,
-          ]);
+          // Extract the ticket ID from the parameter name
+          $ticketId = substr($ticketId, strlen('ticket_id_'));
 
-          // Create the line item array for this ticket
-          $lineItems[] = [
-            'price_data' => [
-              'currency' => 'GBP',
-              'unit_amount' => (int)($ticket->price * 100), // Amount in cents
-              'product_data' => [
-                'name' =>  $ticket->name,
+          $ticket = Ticket::findOrFail($ticketId);
+          if ($quantity > 0) {
+
+            $amount = $ticket->price * $quantity;
+            $totalAmount += $amount;
+
+            // Create the booking ticket
+            BookingTicket::create([
+              'booking_id' => $booking->id,
+              'ticket_id' => $ticketId,
+              'quantity' => $quantity,
+            ]);
+
+            // Create the line item array for this ticket
+            $lineItems[] = [
+              'price_data' => [
+                'currency' => 'GBP',
+                'unit_amount' => (int)($ticket->price * 100), // Amount in cents
+                'product_data' => [
+                  'name' =>  $ticket->name,
+                ],
               ],
-            ],
-            'quantity' => $quantity,
-          ];
+              'quantity' => $quantity,
+            ];
+          }
         }
       }
+
+      $booking->update(['amount' => $totalAmount]);
+
+      $event = Event::find($request->event_id);
+
+      $checkoutSessionUrl = $this->createCheckoutSession($lineItems, $event, $booking, $user);
+
     }
-    
-    $booking->update(['amount' => $totalAmount]);
 
-    $event = Event::find($request->event_id);
-
-    $checkoutSessionUrl = $this->createCheckoutSession($lineItems, $event, $booking,$user);
 
     return redirect($checkoutSessionUrl);
   }
 
-  public function createCheckoutSession($lineItems, $event, $booking,$user)
+  public function createCheckoutSession($lineItems, $event, $booking, $user)
   {
     $organizer = User::find($event->organizer_id);
     $stripeSettings = $organizer->stripeSettings;
@@ -147,7 +166,7 @@ class UserEventBookingController extends Controller
 
     $transaction->update([
       'stripe_checkout_id' => $checkoutSession->id,
-      'amount_total' => ($checkoutSession->amount_total)/100,
+      'amount_total' => ($checkoutSession->amount_total) / 100,
       'status' => $checkoutSession->status
     ]);
 
@@ -166,17 +185,17 @@ class UserEventBookingController extends Controller
   }
 
   public function isValidUser(Request $request)
-    {
-        $email = $request->input('email');
+  {
+    $email = $request->input('email');
 
-        $user = User::where('email', $email)->first();
+    $user = User::where('email', $email)->first();
 
-        if ($user) {
-            // Check if the user is neither an admin nor an organizer
-            $isValidUser = !$user->isAdmin() && !$user->isOrganizer();
-            return response()->json(['isValidUser' => $isValidUser], $isValidUser ? 200 : 403);
-        } else {
-          return response()->json(['isValidUser' => true], 200);
-        }
+    if ($user) {
+      // Check if the user is neither an admin nor an organizer
+      $isValidUser = !$user->isAdmin() && !$user->isOrganizer();
+      return response()->json(['isValidUser' => $isValidUser], $isValidUser ? 200 : 403);
+    } else {
+      return response()->json(['isValidUser' => true], 200);
     }
+  }
 }
