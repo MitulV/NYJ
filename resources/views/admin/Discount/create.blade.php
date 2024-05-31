@@ -213,13 +213,15 @@
                     this.errors = {};
                     if (!this.formData.code ||
                         this.formData.discount_amount === null ||
-                        this.formData.discount_amount <= 0 ||
                         this.selectedTickets.length === 0 ||
                         !this.formData.quantity_radio ||
-                        (this.formData.quantity_radio === 'limited' && (!this.formData.quantity || this.formData.quantity <=
-                            0)) ||
+                        (this.formData.quantity_radio === 'limited' && (!this.formData.quantity)) ||
                         !this.formData.available_for) {
                         this.errors.general = 'Please provide all of the required details before proceeding.';
+                    }
+
+                    if(this.formData.discount_amount <= 0 || this.formData.quantity <= 0){
+                        this.errors.general1 = 'Please Enter Posetive Values only'
                     }
                 },
                 submitFormAjax() {
@@ -272,7 +274,12 @@
                             });
                             
                     } else {
-                        alert('Provide all of the required details before proceeding');
+                        if(this.errors.general){
+                            alert('Provide all of the required details before proceeding');
+                        }else if(this.errors.general1){
+                            alert('Please enter posetive values only');
+                        }
+                       
                     }
                     this.submitting = false;
                 },
