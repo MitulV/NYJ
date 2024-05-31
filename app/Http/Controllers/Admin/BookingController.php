@@ -24,12 +24,12 @@ class BookingController extends Controller
         $user = auth()->user();
         
         if ($user->isAdmin()) {
-            $bookings = Booking::with('event')->get();
+            $bookings = Booking::with('event')->orderBy('id', 'desc')->get();
         } elseif ($user->isOrganizer()) {
             $organizerId = $user->id;
             $bookings = Booking::whereHas('event', function ($query) use ($organizerId) {
                 $query->where('organizer_id', $organizerId);
-            })->with('event')->get();
+            })->with('event')->orderBy('id', 'desc')->get();            
         }    
 
         return view('admin.bookings.index', compact('bookings'));

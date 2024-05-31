@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Booking;
 use App\BookingTicket;
+use App\Discount;
 use App\Event;
 use App\Http\Controllers\Controller;
 use App\Services\BookingService;
@@ -79,8 +80,9 @@ class UserEventBookingController extends Controller
     $checkoutSessionUrl = null;
     $request['available_for']='all';
 
-    if ($request->filled('code')) {
-      $discountedData = $this->bookingService->handleDiscount($request, $booking);
+    $discount = Discount::where('code', $request->code)->first();
+    if ($request->filled('code') && $this->bookingService->isDiscountCodeActive($discount, $request)) {
+      $discountedData = $this->bookingService->handleOnlineDiscount($request, $booking,$discount);
       $booking->update(['amount' => $discountedData['totalAmount']]);
 
       $event = Event::find($request->event_id);

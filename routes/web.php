@@ -11,11 +11,6 @@ use App\Http\Controllers\UserEventBookingController;
 use App\Http\Controllers\WebhookController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
-
-Route::get('/test',function(){
-    return Carbon::now();
-});
 
 Route::get('/', 'HomeController@index')->name('home');
 

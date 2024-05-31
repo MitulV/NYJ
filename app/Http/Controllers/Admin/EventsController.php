@@ -6,9 +6,11 @@ use App\Booking;
 use App\BookingTicket;
 use App\Category;
 use App\City;
+use App\Discount;
 use App\Event;
 use App\Http\Controllers\Controller;
 use App\Mail\BookingConfirmation;
+use App\Services\BookingService;
 use App\Ticket;
 use App\User;
 use Illuminate\Support\Facades\Validator;
@@ -17,7 +19,6 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
-use Stripe\StripeClient;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel;
@@ -27,6 +28,9 @@ use Illuminate\Support\Facades\Mail;
 
 class EventsController extends Controller
 {
+    public function __construct(private BookingService $bookingService)
+  {
+  }
     public function index()
     {
         abort_if(Gate::denies('Event_Management'), Response::HTTP_FORBIDDEN, '403 Forbidden');
@@ -304,7 +308,6 @@ class EventsController extends Controller
 
     public function handleBooking(Request $request)
     {
-
         $user = User::where('email', $request->email)->first();
         if (!$user) {
             $user = User::create([
@@ -330,22 +333,28 @@ class EventsController extends Controller
             'booking_date_time' => now(),
         ]);
 
-        foreach ($request->except('_token', 'event_id', 'name', 'email', 'mobile', 'payment_mode') as $ticketId => $quantity) {
-            $ticketId = substr($ticketId, strlen('ticket_id_'));
-
-            $ticket = Ticket::findOrFail($ticketId);
-            if ($quantity > 0) {
-                $amount = $ticket->price * $quantity;
-                $totalAmount += $amount;
-
-                BookingTicket::create([
-                    'booking_id' => $booking->id,
-                    'ticket_id' => $ticketId,
-                    'quantity' => $quantity,
-                ]);
+        $request['available_for']='in_house';
+        $discount = Discount::where('code', $request->code)->first();
+        if ($request->filled('code') && $this->bookingService->isDiscountCodeActive($discount, $request)) {
+            $totalAmount = $this->bookingService->handleOfflineDiscount($request, $booking,$discount);
+        }else{
+            foreach ($request->except('_token', 'event_id', 'name', 'email', 'mobile', 'payment_mode','code','available_for') as $ticketId => $quantity) {
+                $ticketId = substr($ticketId, strlen('ticket_id_'));
+                $ticket = Ticket::findOrFail($ticketId);
+                
+                if ($quantity > 0) {
+                    $amount = $ticket->price * $quantity;
+                    $totalAmount += $amount;
+                   
+                    BookingTicket::create([
+                        'booking_id' => $booking->id,
+                        'ticket_id' => $ticketId,
+                        'quantity' => $quantity,
+                    ]);
+                }
             }
         }
-
+       
         $booking->update([
             'amount' => $totalAmount,
             'status' => 'Complete'
