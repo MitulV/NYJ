@@ -90,6 +90,11 @@ class WebhookController extends Controller
             $booking->update([
                 'status' => 'Complete'
             ]);
+
+            $discount = $booking->discount;
+            if ($discount) {
+                $discount->increment('used');
+            }
         } else if ($session->payment_status == 'no_payment_required') {
             $booking->update([
                 'status' => 'Cancelled'

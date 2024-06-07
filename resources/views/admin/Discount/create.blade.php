@@ -220,9 +220,10 @@
                         this.errors.general = 'Please provide all of the required details before proceeding.';
                     }
 
-                    if(this.formData.discount_amount <= 0 || this.formData.quantity <= 0){
-                        this.errors.general1 = 'Please Enter Posetive Values only'
+                    if(this.formData.discount_amount <= 0 || (this.formData.quantity <= 0 && this.formData.quantity_radio === 'limited')){
+                        this.errors.general1 = 'Please Enter Positive Values only'
                     }
+                    
                 },
                 submitFormAjax() {
                     this.submitting = true;
@@ -277,7 +278,7 @@
                         if(this.errors.general){
                             alert('Provide all of the required details before proceeding');
                         }else if(this.errors.general1){
-                            alert('Please enter posetive values only');
+                            alert('Please enter Positive values only');
                         }
                        
                     }

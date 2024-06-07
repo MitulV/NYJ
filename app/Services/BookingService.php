@@ -42,7 +42,6 @@ class BookingService
                                 $booking->update([
                                     'discount_id' => $discount->id
                                 ]);
-                                $discount->increment('used');
                             }
 
                             $amount = $price * $quantity;
@@ -111,7 +110,7 @@ class BookingService
                 $booking->update([
                     'discount_id' => $discount->id
                 ]);
-                $discount->increment('used');
+               
 
                 $lineItems[] = [
                     'price_data' => [

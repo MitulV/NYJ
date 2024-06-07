@@ -301,8 +301,10 @@ class EventsController extends Controller
 
     public function calculateTotalBookedTicketsForTicket($ticketId)
     {
-        $totalBookedTickets = BookingTicket::where('ticket_id', $ticketId)->sum('quantity');
-
+        $totalBookedTickets = BookingTicket::whereHas('booking', function ($query) {
+            $query->where('status', 'Complete');
+        })->where('ticket_id', $ticketId)->sum('quantity');
+        
         return $totalBookedTickets;
     }
 

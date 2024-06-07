@@ -80,7 +80,7 @@
                                     <select style="background-color: #ECECEC; border: none;" onchange="changeAction({{$event->id}})"
                                         id="select-{{ $event->id }}" name="select" class="form-control">
                                         <option value="Action" selected>Action <i class="fa-solid fa-angle-down"></i></option>
-                                        @if (auth()->user()->isOrganizer())
+                                        @if (auth()->user()->isOrganizer() && $event->bookings->count() === 0)
                                         <option value="{{ route('admin.events.edit', $event->id) }}">
                                             {{ trans('global.edit') }}
                                         </option>
