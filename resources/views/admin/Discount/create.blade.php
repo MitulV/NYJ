@@ -181,7 +181,8 @@
                         <label for="available_for_in_house">Discount code available on in-house bookings only</label>
                     </div>
                 </div>
-                <button type="button" @click="submitFormAjax" :disabled="submitting" class="btn btn-success">Submit</button>
+                <button type="button" @click="submitFormAjax" :disabled="submitting"
+                    class="btn btn-success">Submit</button>
             </form>
         </div>
     </div>
@@ -220,10 +221,22 @@
                         this.errors.general = 'Please provide all of the required details before proceeding.';
                     }
 
-                    if(this.formData.discount_amount <= 0 || (this.formData.quantity <= 0 && this.formData.quantity_radio === 'limited')){
-                        this.errors.general1 = 'Please Enter Positive Values only'
+                    if (this.formData.discount_amount <= 0 || (this.formData.quantity <= 0 && this.formData
+                            .quantity_radio === 'limited')) {
+                        this.errors.general1 = 'Please enter positive values only'
                     }
-                    
+
+                    if (this.formData.valid_from_date && this.formData.valid_from_time && this.formData.valid_to_date &&
+                        this.formData.valid_to_time) {
+                        let validFromDateTime = new Date(this.formData.valid_from_date + ' ' + this.formData
+                            .valid_from_time);
+                        let validToDateTime = new Date(this.formData.valid_to_date + ' ' + this.formData.valid_to_time);
+
+                        if (validFromDateTime >= validToDateTime) {
+                             this.errors.general2 = 'valid from date/time should be before valid to date/time'
+                        } 
+                    }
+
                 },
                 submitFormAjax() {
                     this.submitting = true;
@@ -273,14 +286,16 @@
                                 console.error('There was a problem with the fetch operation:', error);
                                 alert(error.message);
                             });
-                            
+
                     } else {
-                        if(this.errors.general){
+                        if (this.errors.general) {
                             alert('Provide all of the required details before proceeding');
-                        }else if(this.errors.general1){
+                        } else if (this.errors.general1) {
                             alert('Please enter Positive values only');
+                        } else if(this.errors.general2){
+                            alert(this.errors.general2);
                         }
-                       
+
                     }
                     this.submitting = false;
                 },
