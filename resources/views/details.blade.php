@@ -178,6 +178,14 @@
                         </a>
                     </ul>
                 </div>
+                <div class="col-md-2 col-sm-6">
+                    <h5>Privacy</h5>
+                    <ul>
+                        <a href="{{ route('privacy') }}" style="text-decoration: none">
+                        <li>Privacy Policy</li>
+                        </a>
+                    </ul>
+                </div>
             </div>
             {{-- <div class="row mt-4 d-flex justify-content-between">
                 <div class="col">

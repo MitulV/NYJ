@@ -24,7 +24,7 @@
     <form id="select" name="select" class="ml-40 my-40">
       <div class="grid grid-cols-1 mx-auto">
         <div class="flex items-center">
-          <div class="w-24 md:w-32 text-base text-lg">Event</div>
+          <div class="w-24 md:w-32 text-lg">Event</div>
           <div class="text-lg">
             Mentoring Skills placement 2 Placement 2 mentors only (Primary)
           </div>

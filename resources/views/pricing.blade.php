@@ -25,9 +25,9 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
+              {{-- <li class="nav-item">
                   <a class="nav-link" href="/index.html#feature">Features</a>
-              </li>
+              </li> --}}
 
               <li class="nav-item">
                   <a class="nav-link" href="{{ route('events') }}">Explore Events</a>
@@ -135,6 +135,14 @@
                         </a>
                     </ul>
                 </div>
+                <div class="col-md-2 col-sm-6">
+                  <h5>Privacy</h5>
+                  <ul>
+                      <a href="{{ route('privacy') }}" style="text-decoration: none">
+                      <li>Privacy Policy</li>
+                      </a>
+                  </ul>
+              </div>
             </div>
             {{-- <div class="row mt-4 d-flex justify-content-between">
                 <div class="col">

@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', 'HomeController@index')->name('home');
 
+Route::get('/privacy-policy',function(){
+   return view('privacy');
+})->name('privacy');
+
 Route::get('/home',function(){
     return redirect()->route('admin.home');
 });
