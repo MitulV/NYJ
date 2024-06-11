@@ -19,13 +19,13 @@ class DiscountController extends Controller
     public function index(Request $request)
     {
         $discounts = Discount::all();
-        return view('admin.Discount.index', compact('discounts'));
+        return view('admin.discount.index', compact('discounts'));
     }
 
     public function create()
     {
         $events = Event::with('tickets')->get();
-        return view('admin.Discount.create', compact('events'));
+        return view('admin.discount.create', compact('events'));
     }
 
     public function store(Request $request)
