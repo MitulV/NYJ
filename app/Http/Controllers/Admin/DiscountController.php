@@ -26,7 +26,7 @@ class DiscountController extends Controller
         } elseif ($user->isOrganizer()) {
             $discounts = Discount::where('organizer_id', $user->id)->get();
         }
-        return view('admin.Discount.index', compact('discounts'));
+        return view('admin.discount.index', compact('discounts'));
     }
 
     public function create()
