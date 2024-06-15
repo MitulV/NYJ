@@ -517,7 +517,7 @@
         </div>
     </section>
 
-    <section class="feature-section">
+    {{-- <section class="feature-section">
         <div class="container">
             <div class="row align-items-start">
                 <div class="col-md-6">
@@ -644,7 +644,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
 
     <section class="faq-section">
         <div class="container">
