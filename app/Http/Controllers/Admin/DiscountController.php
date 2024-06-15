@@ -32,7 +32,7 @@ class DiscountController extends Controller
     public function create()
     {
         $events = Event::with('tickets')->get();
-        return view('admin.Discount.create', compact('events'));
+        return view('admin.discount.create', compact('events'));
     }
 
     public function store(Request $request)
