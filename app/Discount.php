@@ -11,6 +11,7 @@ class Discount extends Model
 
     protected $fillable = [
         'code', 
+        'organizer_id',
         'discount_amount_type', 
         'discount_amount',
         'discount_amount_per_ticket_or_booking',

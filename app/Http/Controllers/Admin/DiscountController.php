@@ -18,7 +18,14 @@ class DiscountController extends Controller
 
     public function index(Request $request)
     {
-        $discounts = Discount::all();
+         /** @var \App\User $user */
+         $user = auth()->user();
+
+        if ($user->isAdmin()) {
+            $discounts = Discount::all();
+        } elseif ($user->isOrganizer()) {
+            $discounts = Discount::where('organizer_id', $user->id)->get();
+        }
         return view('admin.Discount.index', compact('discounts'));
     }
 
@@ -43,6 +50,7 @@ class DiscountController extends Controller
         
             $discount = Discount::create([
                 'code' => $request->code,
+                'organizer_id' => auth()->id(),
                 'discount_amount_type' => $request->discount_amount_type,
                 'discount_amount' => $request->discount_amount,
                 'discount_amount_per_ticket_or_booking' => $request->discount_amount_per_ticket_or_booking,
