@@ -49,35 +49,33 @@
 </style>
 
 <body>
-  <nav class="navbar navbar-expand-lg  sticky-top-navbar">
-    <a href="{{ route('home') }}"><img src="{{ asset('img/NYJ_LOGO.png') }}" alt="Logo" height="100" /></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-                <a class="nav-link" href="/index.html#feature">Features</a>
-            </li>
+    <nav class="navbar navbar-expand-lg  sticky-top-navbar">
+        <a href="{{ route('home') }}"><img src="{{ asset('img/NYJ_LOGO.png') }}" alt="Logo" height="100" /></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('events') }}">Explore Events</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('pricing') }}">Pricing</a>
-            </li>
 
-        </ul>
-        <div class="d-flex">
-            @if (auth()->check())
-                <a href="{{ route('login') }}" class="nav-link me-3">{{ auth()->user()->name }}</a>
-            @endif
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('events') }}">Explore Events</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('pricing') }}">Pricing</a>
+                </li>
 
-            <a href="{{ route('register') }}" class="event-btn me-3">Create Event</a>
+            </ul>
+            <div class="d-flex">
+                @if (auth()->check())
+                    <a href="{{ route('login') }}" class="nav-link me-3">{{ auth()->user()->name }}</a>
+                @endif
+
+                <a href="{{ route('register') }}" class="event-btn me-3">Create Event</a>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
     <div class="card" style="margin-top: 30px">
         <div style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto;">
             <i class="checkmark">X</i>

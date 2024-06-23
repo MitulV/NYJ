@@ -20,9 +20,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" href="/index.html#feature">Features</a>
-                </li>
+
 
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('events') }}">Explore Events</a>
@@ -69,21 +67,21 @@
                             <h4 class="info-title">Date</h4>
                             <p>{{ Carbon\Carbon::parse($event->start_date)->format('l, M d') }}</p>
                         </div>
-                        
+
                         <!-- Time Column -->
-<div class="col-md-3 time-column">
-    <h4 class="info-title">Time</h4>
-    <?php
-    // Convert UTC time to UK timezone
-    $utc_time = new DateTime($event->start_time, new DateTimeZone('UTC'));
-    $uk_timezone = new DateTimeZone('Europe/London');
-    $utc_time->setTimezone($uk_timezone);
-    
-    // Format the time to show only hours and minutes
-    $formatted_time = $utc_time->format('H:i A');
-    ?>
-    <p>{{ $formatted_time }}</p>
-</div>
+                        <div class="col-md-3 time-column">
+                            <h4 class="info-title">Time</h4>
+                            <?php
+                            // Convert UTC time to UK timezone
+                            $utc_time = new DateTime($event->start_time, new DateTimeZone('UTC'));
+                            $uk_timezone = new DateTimeZone('Europe/London');
+                            $utc_time->setTimezone($uk_timezone);
+                            
+                            // Format the time to show only hours and minutes
+                            $formatted_time = $utc_time->format('H:i A');
+                            ?>
+                            <p>{{ $formatted_time }}</p>
+                        </div>
 
                         <!-- Buttons Section Column -->
 
@@ -157,16 +155,16 @@
         <div class="container">
             <div class="row gap">
                 <div class="col-md-2 col-sm-6">
-                    <img src="{{ asset('img/NYJ_LOGO.png') }}" alt="Company Logo"  height="200" />
+                    <img src="{{ asset('img/NYJ_LOGO.png') }}" alt="Company Logo" height="200" />
                 </div>
                 <div class="col-md-2 col-sm-6">
                     <h5>Product</h5>
                     <ul>
                         <a href="{{ route('register') }}" style="text-decoration: none">
-                        <li >Sell Event Tickets</li>
+                            <li>Sell Event Tickets</li>
                         </a>
                         <a href="{{ route('register') }}" style="text-decoration: none">
-                        <li>Event Registration</li>
+                            <li>Event Registration</li>
                         </a>
                     </ul>
                 </div>
@@ -174,7 +172,7 @@
                     <h5>Pricing</h5>
                     <ul>
                         <a href="{{ route('pricing') }}" style="text-decoration: none">
-                        <li>Ticket Pricing</li>
+                            <li>Ticket Pricing</li>
                         </a>
                     </ul>
                 </div>
@@ -182,7 +180,7 @@
                     <h5>Privacy</h5>
                     <ul>
                         <a href="{{ route('privacy') }}" style="text-decoration: none">
-                        <li>Privacy Policy</li>
+                            <li>Privacy Policy</li>
                         </a>
                     </ul>
                 </div>

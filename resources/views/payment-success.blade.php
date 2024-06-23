@@ -1,5 +1,6 @@
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{{ trans('panel.site_title') }} - Events</title>
@@ -8,42 +9,47 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('css/Events.css') }}" />
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,400i,700,900&display=swap" rel="stylesheet">
-  </head>
-    <style>
-      body {
+</head>
+<style>
+    body {
         text-align: center;
         background: #EBF0F5;
-      }
-        h1 {
-          color: #88B04B;
-          font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
-          font-weight: 900;
-          font-size: 40px;
-          margin-bottom: 10px;
-        }
-        p {
-          color: #404F5E;
-          font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
-          font-size:20px;
-          margin: 0;
-        }
-      i {
+    }
+
+    h1 {
+        color: #88B04B;
+        font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+        font-weight: 900;
+        font-size: 40px;
+        margin-bottom: 10px;
+    }
+
+    p {
+        color: #404F5E;
+        font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+        font-size: 20px;
+        margin: 0;
+    }
+
+    i {
         color: #9ABC66;
         font-size: 100px;
         line-height: 200px;
-        margin-left:-15px;
-      }
-      .card {
+        margin-left: -15px;
+    }
+
+    .card {
         background: white;
         padding: 60px;
         border-radius: 4px;
         box-shadow: 0 2px 3px #C8D0D8;
         display: inline-block;
         margin: 0 auto;
-      }
-    </style>
-    <body>
-      <nav class="navbar navbar-expand-lg  sticky-top-navbar">
+    }
+</style>
+
+<body>
+    <nav class="navbar navbar-expand-lg  sticky-top-navbar">
         <a href="{{ route('home') }}"><img src="{{ asset('img/NYJ_LOGO.png') }}" alt="Logo" height="100" /></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,9 +57,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" href="/index.html#feature">Features</a>
-                </li>
+
 
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('events') }}">Explore Events</a>
@@ -72,12 +76,13 @@
             </div>
         </div>
     </nav>
-      <div class="card" style="margin-top: 30px">
-      <div style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto;">
-        <i class="checkmark">✓</i>
-      </div>
-        <h1>Success</h1> 
-        <p>We received your purchase request;<br/> You will receive an email with booking details shortly!</p>
-      </div>
-    </body>
+    <div class="card" style="margin-top: 30px">
+        <div style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto;">
+            <i class="checkmark">✓</i>
+        </div>
+        <h1>Success</h1>
+        <p>We received your purchase request;<br /> You will receive an email with booking details shortly!</p>
+    </div>
+</body>
+
 </html>

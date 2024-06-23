@@ -22,9 +22,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" href="/index.html#feature">Features</a>
-                </li>
+
 
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('events') }}">Explore Events</a>
@@ -69,7 +67,8 @@
                         </div>
                         <div class="mb-5">
                             <h3>Discount Code</h3>
-                            <input style="width:100%" type="text" name="code" class="form-control" id="code" placeholder="Discount Code (optional)">
+                            <input style="width:100%" type="text" name="code" class="form-control" id="code"
+                                placeholder="Discount Code (optional)">
                         </div>
 
                         <h3>Select ticket</h3>
