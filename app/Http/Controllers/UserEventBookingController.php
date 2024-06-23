@@ -48,7 +48,9 @@ class UserEventBookingController extends Controller
 
   public function calculateTotalBookedTicketsForTicket($ticketId)
   {
-    $totalBookedTickets = BookingTicket::where('ticket_id', $ticketId)->sum('quantity');
+    $totalBookedTickets = BookingTicket::whereHas('booking', function ($query) {
+      $query->where('status', 'Complete');
+    })->where('ticket_id', $ticketId)->sum('quantity');
 
     return $totalBookedTickets;
   }
@@ -78,11 +80,11 @@ class UserEventBookingController extends Controller
     ]);
 
     $checkoutSessionUrl = null;
-    $request['available_for']='all';
+    $request['available_for'] = 'all';
 
     $discount = Discount::where('code', $request->code)->first();
     if ($request->filled('code') && $this->bookingService->isDiscountCodeActive($discount, $request)) {
-      $discountedData = $this->bookingService->handleOnlineDiscount($request, $booking,$discount);
+      $discountedData = $this->bookingService->handleOnlineDiscount($request, $booking, $discount);
       $booking->update(['amount' => $discountedData['totalAmount']]);
 
       $event = Event::find($request->event_id);
@@ -130,7 +132,6 @@ class UserEventBookingController extends Controller
       $event = Event::find($request->event_id);
 
       $checkoutSessionUrl = $this->createCheckoutSession($lineItems, $event, $booking, $user);
-
     }
 
 
