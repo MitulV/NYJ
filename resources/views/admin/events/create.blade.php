@@ -236,9 +236,8 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">£</span>
                                             </div>
-                                            <input type="number" name="group_ticket_price"
-                                                        id="group_ticket_price" class="form-control"
-                                                        placeholder="Enter Ticket Price">
+                                            <input type="number" name="group_ticket_price" id="group_ticket_price"
+                                                class="form-control" placeholder="Enter Ticket Price">
                                         </div>
                                     </div>
                                 </div>
@@ -270,18 +269,18 @@
     <script>
         $('#eventForm').submit(function(event) {
             var shortDescriptionHtml = $('#shortDescription').summernote('code');
-                $('#shortDescription').val(shortDescriptionHtml);
-                var longDescriptionHtml = $('#longDescription').summernote('code');
-                $('#longDescription').val(longDescriptionHtml);
-                var termsConditionsHtml = $('#termsConditions').summernote('code');
-                $('#termsConditions').val(termsConditionsHtml);
-                
-                if (validateForm()) {
-                    return true;
-                } else {
-                    event.preventDefault();
-                    return false;
-                }
+            $('#shortDescription').val(shortDescriptionHtml);
+            var longDescriptionHtml = $('#longDescription').summernote('code');
+            $('#longDescription').val(longDescriptionHtml);
+            var termsConditionsHtml = $('#termsConditions').summernote('code');
+            $('#termsConditions').val(termsConditionsHtml);
+
+            if (validateForm()) {
+                return true;
+            } else {
+                event.preventDefault();
+                return false;
+            }
         });
 
 
@@ -330,7 +329,7 @@
                 inheritPlaceholder: true
             });
 
-            
+
             $('#addTicketButton').click(function() {
                 var ticketSection = $('.ticket-info-section').first().clone(true);
 
@@ -353,164 +352,164 @@
         });
 
         function validateForm() {
-                var isValid = true;
+            var isValid = true;
 
-                var category = $('#category').val();
-                var title = $('#title').val();
-                var startDate = $('#startDate').val();
-                var startTime = $('#startTime').val();
-                var endDate = $('#endDate').val();
-                var endTime = $('#endTime').val();
-                var bookingDeadline = $('#booking_deadline').val();
-                var description = $('#shortDescription').val();
-                if (category === '-- Select --' || title === '' || startDate === '' ||
-                    startTime === '' || endDate === '' || endTime === '' ||
-                    bookingDeadline === '' || $('#shortDescription').summernote('isEmpty')) {
-                    alert('Please fill out all required fields');
-                    isValid = false;
-                    return isValid;
-                }
-
-                if (endDate < startDate || (endDate === startDate && endTime <= startTime)) {
-                    alert('End date and time should be after start date and time.');
-                    isValid = false;
-                    return isValid;
-                }
-
-                if (bookingDeadline >= startDate) {
-                    alert('Booking deadline should be before the start date.');
-                    isValid = false;
-                    return isValid;
-                }
-
-                var city = $('#city').val();
-                var address = $('#address').val();
-                var longDescription = $('#longDescription').val();
-                var termsConditions = $('#termsConditions').val();
-                var ageRestrictions = $('#ageRestrictions').val();
-                var minAge = $('#minAge').val();
-                var maxAge = $('#maxAge').val();
-
-                if (city === '-- Select --' || address === '' || $('#longDescription').summernote(
-                        'isEmpty') ||
-                    $('#termsConditions').summernote('isEmpty') || ageRestrictions === '-- Select --') {
-                    alert('Please fill out all required fields.');
-                    isValid = false;
-                    return isValid;
-                }
-
-                if (ageRestrictions === 'Minimum Age') {
-                    if (minAge === '') {
-                        alert('Please fill out the Minimum Age field.');
-                        isValid = false;
-                        return isValid;
-                    }
-
-                    if (parseFloat(minAge) < 0) {
-                        alert('Minimum Age cannot be negative.');
-                        isValid = false;
-                        return isValid;
-                    }
-                }
-
-                if (ageRestrictions === 'Maximum Age') {
-                    if (maxAge === '') {
-                        alert('Please fill out the Maximum Age field.');
-                        isValid = false;
-                        return isValid;
-                    }
-
-                    if (parseFloat(maxAge) < 0) {
-                        alert('Maximum Age cannot be negative.');
-                        isValid = false;
-                        return isValid;
-                    }
-
-                }
-
-                var ticketSections = $('.ticket-info-section');
-                ticketSections.each(function(index, section) {
-                    var ticketName = $(section).find('.form-group input[name="ticket_name[]"]').val();
-                    var ticketDescription = $(section).find(
-                        '.form-group input[name="ticket_description[]"]').val();
-                    var ticketPrice = $(section).find('.form-group input[name="ticket_price[]"]').val();
-                    var ticketQuantity = $(section).find('.form-group input[name="ticket_quantity[]"]')
-                    .val();
-
-                    if (ticketName === '' || ticketDescription === '' || ticketPrice === '' ||
-                        ticketQuantity === '') {
-                        isValid = false;
-                        alert('Please fill out all required fields.');
-                        return isValid;
-                    }
-
-                    // Validate that the price is not negative
-                    if (parseFloat(ticketPrice) < 0) {
-                        isValid = false;
-                        alert('Ticket price cannot be negative.');
-                        return isValid;
-                    }
-
-                    if (parseFloat(ticketQuantity) < 0) {
-                        isValid = false;
-                        alert('Number of Tickets cannot be negative.');
-                        return isValid;
-                    }
-                });
-
-                var group_ticketName = $('#group_ticket_name').val();
-                var group_ticketDescription = $('#group_ticket_description').val();
-                var group_ticketPrice = $('#group_ticket_price').val();
-                var group_ticketQuantity = $('#group_ticket_quantity').val();
-                var group_count = $('#group_count').val();
-
-                if (group_ticketName !== '' || group_ticketDescription !== '' ||
-                    group_ticketPrice !== '' || group_ticketQuantity !== '' || group_count !==
-                    '') {
-                    // Validate if all fields are filled
-                    if (group_ticketName === '' || group_ticketDescription === '' ||
-                        group_ticketPrice === '' || group_ticketQuantity === '' || 
-                        group_count === '') {
-                        alert('Please fill out all group ticket fields.');
-                        isValid = false;
-                        return isValid;
-                    }
-                    // Validate that price is not negative
-                    if (parseFloat(group_ticketPrice) < 0) {
-                        alert('Group ticket price cannot be negative.');
-                        isValid = false;
-                        return isValid;
-                    }
-
-                    if (parseFloat(group_ticketQuantity) < 0) {
-                        alert('Group ticket Number of Tickets cannot be negative.');
-                        isValid = false;
-                        return isValid;
-                    }
-
-                    if (parseFloat(group_count) < 0) {
-                        alert('Group ticket Number of Persons in Group cannot be negative.');
-                        isValid = false;
-                        return isValid;
-                    }
-                }
-
-                var additionalInfo = $('#additionalInfo').val();
-                if (additionalInfo === '') {
-                    alert('Please fill out all required fields.');
-                    isValid = false;
-                    return isValid;
-                }
-
-                var banner1 = $('#banner1').prop('files')[0];
-                var banner2 = $('#banner2').prop('files')[0];
-                if (!banner1 || !banner2) {
-                    alert('Please upload both banner images.');
-                    isValid = false;
-                    return isValid;
-                }
-
+            var category = $('#category').val();
+            var title = $('#title').val();
+            var startDate = $('#startDate').val();
+            var startTime = $('#startTime').val();
+            var endDate = $('#endDate').val();
+            var endTime = $('#endTime').val();
+            var bookingDeadline = $('#booking_deadline').val();
+            var description = $('#shortDescription').val();
+            if (category === '-- Select --' || title === '' || startDate === '' ||
+                startTime === '' || endDate === '' || endTime === '' ||
+                $('#shortDescription').summernote('isEmpty')) {
+                alert('Please fill out all required fields');
+                isValid = false;
                 return isValid;
             }
+
+            if (endDate < startDate || (endDate === startDate && endTime <= startTime)) {
+                alert('End date and time should be after start date and time.');
+                isValid = false;
+                return isValid;
+            }
+
+            if (bookingDeadline && (bookingDeadline >= startDate)) {
+                alert('Booking deadline should be before the start date.');
+                isValid = false;
+                return isValid;
+            }
+
+            var city = $('#city').val();
+            var address = $('#address').val();
+            var longDescription = $('#longDescription').val();
+            var termsConditions = $('#termsConditions').val();
+            var ageRestrictions = $('#ageRestrictions').val();
+            var minAge = $('#minAge').val();
+            var maxAge = $('#maxAge').val();
+
+            if (city === '-- Select --' || address === '' || $('#longDescription').summernote(
+                    'isEmpty') ||
+                $('#termsConditions').summernote('isEmpty') || ageRestrictions === '-- Select --') {
+                alert('Please fill out all required fields.');
+                isValid = false;
+                return isValid;
+            }
+
+            if (ageRestrictions === 'Minimum Age') {
+                if (minAge === '') {
+                    alert('Please fill out the Minimum Age field.');
+                    isValid = false;
+                    return isValid;
+                }
+
+                if (parseFloat(minAge) < 0) {
+                    alert('Minimum Age cannot be negative.');
+                    isValid = false;
+                    return isValid;
+                }
+            }
+
+            if (ageRestrictions === 'Maximum Age') {
+                if (maxAge === '') {
+                    alert('Please fill out the Maximum Age field.');
+                    isValid = false;
+                    return isValid;
+                }
+
+                if (parseFloat(maxAge) < 0) {
+                    alert('Maximum Age cannot be negative.');
+                    isValid = false;
+                    return isValid;
+                }
+
+            }
+
+            var ticketSections = $('.ticket-info-section');
+            ticketSections.each(function(index, section) {
+                var ticketName = $(section).find('.form-group input[name="ticket_name[]"]').val();
+                var ticketDescription = $(section).find(
+                    '.form-group input[name="ticket_description[]"]').val();
+                var ticketPrice = $(section).find('.form-group input[name="ticket_price[]"]').val();
+                var ticketQuantity = $(section).find('.form-group input[name="ticket_quantity[]"]')
+                    .val();
+
+                if (ticketName === '' || ticketDescription === '' || ticketPrice === '' ||
+                    ticketQuantity === '') {
+                    isValid = false;
+                    alert('Please fill out all required fields.');
+                    return isValid;
+                }
+
+                // Validate that the price is not negative
+                if (parseFloat(ticketPrice) < 0) {
+                    isValid = false;
+                    alert('Ticket price cannot be negative.');
+                    return isValid;
+                }
+
+                if (parseFloat(ticketQuantity) < 0) {
+                    isValid = false;
+                    alert('Number of Tickets cannot be negative.');
+                    return isValid;
+                }
+            });
+
+            var group_ticketName = $('#group_ticket_name').val();
+            var group_ticketDescription = $('#group_ticket_description').val();
+            var group_ticketPrice = $('#group_ticket_price').val();
+            var group_ticketQuantity = $('#group_ticket_quantity').val();
+            var group_count = $('#group_count').val();
+
+            if (group_ticketName !== '' || group_ticketDescription !== '' ||
+                group_ticketPrice !== '' || group_ticketQuantity !== '' || group_count !==
+                '') {
+                // Validate if all fields are filled
+                if (group_ticketName === '' || group_ticketDescription === '' ||
+                    group_ticketPrice === '' || group_ticketQuantity === '' ||
+                    group_count === '') {
+                    alert('Please fill out all group ticket fields.');
+                    isValid = false;
+                    return isValid;
+                }
+                // Validate that price is not negative
+                if (parseFloat(group_ticketPrice) < 0) {
+                    alert('Group ticket price cannot be negative.');
+                    isValid = false;
+                    return isValid;
+                }
+
+                if (parseFloat(group_ticketQuantity) < 0) {
+                    alert('Group ticket Number of Tickets cannot be negative.');
+                    isValid = false;
+                    return isValid;
+                }
+
+                if (parseFloat(group_count) < 0) {
+                    alert('Group ticket Number of Persons in Group cannot be negative.');
+                    isValid = false;
+                    return isValid;
+                }
+            }
+
+            var additionalInfo = $('#additionalInfo').val();
+            if (additionalInfo === '') {
+                alert('Please fill out all required fields.');
+                isValid = false;
+                return isValid;
+            }
+
+            var banner1 = $('#banner1').prop('files')[0];
+            var banner2 = $('#banner2').prop('files')[0];
+            if (!banner1 || !banner2) {
+                alert('Please upload both banner images.');
+                isValid = false;
+                return isValid;
+            }
+
+            return isValid;
+        }
     </script>
 @endsection

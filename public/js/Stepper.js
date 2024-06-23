@@ -145,7 +145,7 @@ function validateAndSubmit(booking_deadline) {
     if (ticketCount === 0) {
         alert("Please select at least one ticket.");
         return false;
-    } else if (currentDateOnly > bookingDeadlineDateOnly) {
+    } else if ( booking_deadline && (currentDateOnly > bookingDeadlineDateOnly)) {
         alert("Booking has been closed.");
         return false;
     }

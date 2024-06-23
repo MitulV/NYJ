@@ -16,7 +16,8 @@
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label>Event Name</label>
-                                <input type="text" name="title" class="form-control" id="title" value="{{ $event->title }}" disabled>
+                                <input type="text" name="title" class="form-control" id="title"
+                                    value="{{ $event->title }}" disabled>
                             </div>
                         </div>
                         <div class="form-row">
@@ -24,7 +25,7 @@
                                 <label>Event Category</label>
                                 <select id="category" name="category" class="form-control" disabled>
                                     @if ($event->category)
-                                            <option value="{{ $event->category->id }}">{{ $event->category->name }}</option>
+                                        <option value="{{ $event->category->id }}">{{ $event->category->name }}</option>
                                     @endif
                                 </select>
                             </div>
@@ -33,26 +34,36 @@
                             <div class="form-group col-md-4">
                                 <label for="startDate">Start Date</label>
                                 <input type="date" class="form-control" name="startDate" id="startDate"
-                                value="{{ date('Y-m-d', strtotime($event->start_date)) }}" disabled>
+                                    value="{{ date('Y-m-d', strtotime($event->start_date)) }}" disabled>
                             </div>
                             <div class="form-group col-md-2">
                                 <label for="startTime">Start Time</label>
-                                <input type="time" class="form-control" name="startTime" id="startTime" value="{{ $event->start_time }}" disabled>
+                                <input type="time" class="form-control" name="startTime" id="startTime"
+                                    value="{{ $event->start_time }}" disabled>
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="endDate">End Date</label>
-                                <input type="date" class="form-control" name="endDate" id="endDate" value="{{ date('Y-m-d', strtotime($event->end_date)) }}" disabled>
+                                <input type="date" class="form-control" name="endDate" id="endDate"
+                                    value="{{ date('Y-m-d', strtotime($event->end_date)) }}" disabled>
                             </div>
                             <div class="form-group col-md-2">
                                 <label for="endTime">End Time</label>
-                                <input type="time" class="form-control" name="endTime" id="endTime" value="{{ $event->end_time }}" disabled>
+                                <input type="time" class="form-control" name="endTime" id="endTime"
+                                    value="{{ $event->end_time }}" disabled>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label for="booking_deadline">Booking Deadline</label>
-                                <input type="date" class="form-control" name="booking_deadline" id="booking_deadline"
-                                value="{{ date('Y-m-d', strtotime($event->booking_deadline)) }}" disabled>
+                                @if ($event->booking_deadline != null)
+                                    <input type="date" class="form-control" name="booking_deadline" id="booking_deadline"
+                                        value="{{ date('Y-m-d', strtotime($event->booking_deadline)) }}"
+                                        min="{{ date('Y-m-d') }}" disabled>
+                                @else
+                                    <input type="date" class="form-control" name="booking_deadline" id="booking_deadline"
+                                        min="{{ date('Y-m-d') }}" disabled>
+                                @endif
+
                             </div>
                         </div>
 
@@ -76,8 +87,8 @@
                                 <label>Event City</label>
                                 <select id="city" name="city" class="form-control" disabled>
                                     @if ($event->city)
-                                            <option value="{{ $event->city->id }}">{{ $event->city->name }}</option>
-                                        @endif
+                                        <option value="{{ $event->city->id }}">{{ $event->city->name }}</option>
+                                    @endif
                                 </select>
                             </div>
                         </div>
@@ -109,20 +120,22 @@
                                 </select>
                             </div>
                             @if ($event->min_age > 0)
-                                    <div class="form-group col-md-4" id="minAgeDiv" style="{{ $event->age_restrictions == 'Minimum Age' ? '' : 'display: none;' }}">
-                                        <label for="minAge">Minimum Age</label>
-                                        <input type="number" name="min_age" class="form-control" id="minAge"
-                                            value="{{$event->min_age}}" disabled>
-                                    </div>
-                                @endif
+                                <div class="form-group col-md-4" id="minAgeDiv"
+                                    style="{{ $event->age_restrictions == 'Minimum Age' ? '' : 'display: none;' }}">
+                                    <label for="minAge">Minimum Age</label>
+                                    <input type="number" name="min_age" class="form-control" id="minAge"
+                                        value="{{ $event->min_age }}" disabled>
+                                </div>
+                            @endif
 
-                                @if ($event->max_age > 0)
-                                    <div class="form-group col-md-4" id="maxAgeDiv" style="{{ $event->age_restrictions == 'Maximum Age' ? '' : 'display: none;' }}">
-                                        <label for="maxAge">Maximum Age</label>
-                                        <input type="number" name="max_age" class="form-control" id="maxAge"
-                                            value="{{$event->max_age}}" disabled>
-                                    </div>
-                                @endif
+                            @if ($event->max_age > 0)
+                                <div class="form-group col-md-4" id="maxAgeDiv"
+                                    style="{{ $event->age_restrictions == 'Maximum Age' ? '' : 'display: none;' }}">
+                                    <label for="maxAge">Maximum Age</label>
+                                    <input type="number" name="max_age" class="form-control" id="maxAge"
+                                        value="{{ $event->max_age }}" disabled>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -134,46 +147,50 @@
                     <div class="card-body">
 
                         <div id="ticket-section">
-                            @foreach($event->tickets as $ticket)
-                                @if ($ticket->is_group_ticket==0)
-                                <div id="ticket-info-container">
-                                    <div class="card shadow">
-                                        <div class="card-body ticket-info-section">
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <label>Ticket Name</label>
-                                                    <input type="text" name="ticket_name[]" class="form-control"
-                                                        placeholder="Enter Ticket Name" value="{{ $ticket->name }}" disabled>
-                                                </div>
-                                                <div class="form-group col-md-6">
-                                                    <label>Ticket Description</label>
-                                                    <input type="text" name="ticket_description[]" class="form-control"
-                                                        placeholder="Enter Ticket Description" value="{{ $ticket->description }}" disabled>
-                                                </div>
-                                            </div>
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6">
-    
-                                                    <div class="input-group">
-                                                        <label for="ticketPrice">Ticket Price</label>
-                                                        <div class="input-group">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text">£</span>
-                                                            </div>
-                                                            <input type="number" name="ticket_price[]" class="form-control"
-                                                                placeholder="Enter Ticket Price" value="{{ $ticket->price }}" disabled>
-                                                        </div>
+                            @foreach ($event->tickets as $ticket)
+                                @if ($ticket->is_group_ticket == 0)
+                                    <div id="ticket-info-container">
+                                        <div class="card shadow">
+                                            <div class="card-body ticket-info-section">
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <label>Ticket Name</label>
+                                                        <input type="text" name="ticket_name[]" class="form-control"
+                                                            placeholder="Enter Ticket Name" value="{{ $ticket->name }}"
+                                                            disabled>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label>Ticket Description</label>
+                                                        <input type="text" name="ticket_description[]"
+                                                            class="form-control" placeholder="Enter Ticket Description"
+                                                            value="{{ $ticket->description }}" disabled>
                                                     </div>
                                                 </div>
-                                                <div class="form-group col-md-6">
-                                                    <label>Number of Tickets</label>
-                                                    <input type="number" name="ticket_quantity[]" class="form-control"
-                                                        placeholder="Enter Number of Tickets" value="{{ $ticket->quantity }}" disabled>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+
+                                                        <div class="input-group">
+                                                            <label for="ticketPrice">Ticket Price</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">£</span>
+                                                                </div>
+                                                                <input type="number" name="ticket_price[]"
+                                                                    class="form-control" placeholder="Enter Ticket Price"
+                                                                    value="{{ $ticket->price }}" disabled>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label>Number of Tickets</label>
+                                                        <input type="number" name="ticket_quantity[]"
+                                                            class="form-control" placeholder="Enter Number of Tickets"
+                                                            value="{{ $ticket->quantity }}" disabled>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
                                 @endif
                             @endforeach
                         </div>
@@ -197,11 +214,13 @@
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="banner1">Banner Image 1</label>
-                                <img src="{{ $event->image1 }}" alt="Banner Image 1" style="max-width: 100%; height: auto;">
+                                <img src="{{ $event->image1 }}" alt="Banner Image 1"
+                                    style="max-width: 100%; height: auto;">
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="banner2">Banner Image 2</label>
-                                <img src="{{ $event->image2 }}" alt="Banner Image 2" style="max-width: 100%; height: auto;">
+                                <img src="{{ $event->image2 }}" alt="Banner Image 2"
+                                    style="max-width: 100%; height: auto;">
                             </div>
                         </div>
                     </div>
@@ -214,53 +233,59 @@
                     </div>
 
                     <div class="card-body">
-                        @foreach($event->tickets as $ticket)
-                            @if ($ticket->is_group_ticket==1)
-                            <div class="group_ticket-info-section">
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <label>Ticket Name</label>
-                                        <input type="text" name="group_ticket_name" id="group_ticket_name"
-                                            class="form-control" placeholder="Enter Ticket Name" value="{{ $ticket->name }}" disabled>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label>Ticket Description</label>
-                                        <input type="text" name="group_ticket_description" id="group_ticket_description"
-                                            class="form-control" placeholder="Enter Ticket Description" value="{{ $ticket->description }}" disabled>
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-    
-                                        <div class="input-group">
-                                            <label for="ticketPrice">Ticket Price</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">£</span>
-                                                </div>
-                                                <input type="number" name="group_ticket_price"
-                                                            id="group_ticket_price" class="form-control"
-                                                            placeholder="Enter Ticket Price" value="{{ $ticket->price }}" disabled>
-                                            </div>
+                        @foreach ($event->tickets as $ticket)
+                            @if ($ticket->is_group_ticket == 1)
+                                <div class="group_ticket-info-section">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label>Ticket Name</label>
+                                            <input type="text" name="group_ticket_name" id="group_ticket_name"
+                                                class="form-control" placeholder="Enter Ticket Name"
+                                                value="{{ $ticket->name }}" disabled>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label>Ticket Description</label>
+                                            <input type="text" name="group_ticket_description"
+                                                id="group_ticket_description" class="form-control"
+                                                placeholder="Enter Ticket Description" value="{{ $ticket->description }}"
+                                                disabled>
                                         </div>
                                     </div>
-                                    <div class="form-group col-md-6">
-                                        <label>Number of Tickets</label>
-                                        <input type="number" name="group_ticket_quantity" id="group_ticket_quantity"
-                                            class="form-control" placeholder="Enter Number of Tickets" value="{{ $ticket->quantity }}" disabled>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+
+                                            <div class="input-group">
+                                                <label for="ticketPrice">Ticket Price</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">£</span>
+                                                    </div>
+                                                    <input type="number" name="group_ticket_price"
+                                                        id="group_ticket_price" class="form-control"
+                                                        placeholder="Enter Ticket Price" value="{{ $ticket->price }}"
+                                                        disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label>Number of Tickets</label>
+                                            <input type="number" name="group_ticket_quantity" id="group_ticket_quantity"
+                                                class="form-control" placeholder="Enter Number of Tickets"
+                                                value="{{ $ticket->quantity }}" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label>Number of Persons in Group</label>
+                                            <input type="number" name="group_count" id="group_count"
+                                                class="form-control" placeholder="Number of Persons in Group"
+                                                value="{{ $ticket->group_count }}" disabled>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <label>Number of Persons in Group</label>
-                                        <input type="number" name="group_count" id="group_count" class="form-control"
-                                            placeholder="Number of Persons in Group" value="{{ $ticket->group_count }}" disabled>
-                                    </div>
-                                </div>
-                            </div>
                             @endif
                         @endforeach
-                        
+
                     </div>
 
                 </div>
@@ -273,12 +298,12 @@
 @section('scripts')
     <script>
         $('#eventForm').submit(function(event) {
-                if (validateForm()) {
-                    return true;
-                } else {
-                    event.preventDefault();
-                    return false;
-                }
+            if (validateForm()) {
+                return true;
+            } else {
+                event.preventDefault();
+                return false;
+            }
         });
 
 
@@ -305,8 +330,8 @@
             $('#longDescription').summernote({
                 height: 150,
                 inheritPlaceholder: true,
-                disable:true
-                
+                disable: true
+
             });
 
             $('#shortDescription').summernote({
@@ -319,5 +344,5 @@
                 inheritPlaceholder: true
             });
         });
-           </script>
+    </script>
 @endsection
