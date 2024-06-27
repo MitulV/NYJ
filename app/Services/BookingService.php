@@ -200,6 +200,13 @@ class BookingService
 
   public function isDiscountCodeActive($discount, $request)
   {
+    Log::info(json_encode($discount));
+    if ($discount) {
+      Log::info('if ($discount) -> true');
+    } else {
+      Log::info('if ($discount) -> false');
+    }
+
     if ($discount) {
       $now = Carbon::now();
       if (is_null($discount->valid_from_date) && is_null($discount->valid_from_time)) {
