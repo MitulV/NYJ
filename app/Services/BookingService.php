@@ -7,7 +7,6 @@ use App\Discount;
 use App\DiscountEventTicket;
 use App\Ticket;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class BookingService
@@ -200,42 +199,44 @@ class BookingService
 
   public function isDiscountCodeActive($discount, $request)
   {
-    Log::info(json_encode($discount));
-    if ($discount) {
-      Log::info('if ($discount) -> true');
-    } else {
-      Log::info('if ($discount) -> false');
+    if (!$discount) {
+      return false;
     }
 
-    if ($discount) {
-      $now = Carbon::now();
-      if (is_null($discount->valid_from_date) && is_null($discount->valid_from_time)) {
-        Log::info('at 206');
-        if (is_null($discount->valid_to_date) && is_null($discount->valid_to_time)) {
-          Log::info('at 208');
-          if (($discount->used < $discount->quantity) || $discount->quantity == null) {
-            Log::info('at 210');
-            if (($discount->available_for == 'all') || ($discount->available_for == $request->available_for)) {
-              Log::info('at 212');
-              return true;
-            }
-          }
-        } else if (!is_null($discount->valid_to_date) && !is_null($discount->valid_to_time)) {
-          Log::info('at 217');
-          $validTo = Carbon::createFromFormat('Y-m-d H:i:s', $discount->valid_to_date . ' ' . $discount->valid_to_time);
-          if (($validTo >= $now) && (($discount->used < $discount->quantity) || $discount->quantity == null)) {
-            Log::info('at 220');
-            if (($discount->available_for == 'all') || ($discount->available_for == $request->available_for)) {
-              Log::info('at 222');
-              return true;
-            }
-          }
-        }
+    $now = Carbon::now();
+    $validFrom = is_null($discount->valid_from_date) ? null : Carbon::createFromFormat('Y-m-d H:i:s', $discount->valid_from_date . ' ' . ($discount->valid_from_time ?? '00:00:00'));
+    $validTo = is_null($discount->valid_to_date) ? null : Carbon::createFromFormat('Y-m-d H:i:s', $discount->valid_to_date . ' ' . ($discount->valid_to_time ?? '23:59:59'));
+
+    // Check date conditions
+    if (is_null($validFrom) && is_null($validTo)) {
+      // Condition 1: both dates are null
+      $dateValid = true;
+    } elseif (!is_null($validFrom) && !is_null($validTo)) {
+      // Condition 2: both dates are not null
+      $dateValid = $now->between($validFrom, $validTo);
+    } elseif (is_null($validFrom) && !is_null($validTo)) {
+      // Condition 3: valid_from_date is null but valid_to_date is not null
+      $dateValid = $now <= $validTo;
+    } elseif (!is_null($validFrom) && is_null($validTo)) {
+      // Condition 4: valid_from_date is not null but valid_to_date is null
+      $dateValid = $now >= $validFrom;
+    } else {
+      $dateValid = false;
+    }
+
+    // Check other conditions
+    if ($dateValid) {
+      $quantityValid = ($discount->used < $discount->quantity) || is_null($discount->quantity);
+      $availabilityValid = ($discount->available_for == 'all') || ($discount->available_for == $request->available_for);
+
+      if ($quantityValid && $availabilityValid) {
+        return true;
       }
     }
-    Log::info('at 229');
+
     return false;
   }
+
 
   public function isCodeAvailableForTicket($discount, $ticketId)
   {
