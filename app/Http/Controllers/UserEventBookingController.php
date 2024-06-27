@@ -13,6 +13,7 @@ use App\Transaction;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Stripe\StripeClient;
 use Illuminate\Support\Str;
 
@@ -57,6 +58,7 @@ class UserEventBookingController extends Controller
 
   public function bookEvent(Request $request)
   {
+    Log::info('inside bookEvent method');
     $user = User::where('email', $request->email)->first();
     if (!$user) {
       $user = User::create([
@@ -79,11 +81,15 @@ class UserEventBookingController extends Controller
       'booking_date_time' => now(),
     ]);
 
+    Log::info('booking row inserted with ' . $booking->id);
+
     $checkoutSessionUrl = null;
     $request['available_for'] = 'all';
 
     $discount = Discount::where('code', $request->code)->first();
+    Log::info("discount object fecthed from db with " . $discount->id);
     if ($request->filled('code') && $this->bookingService->isDiscountCodeActive($discount, $request)) {
+      Log::info('code is eligible as it is inside If block');
       $discountedData = $this->bookingService->handleOnlineDiscount($request, $booking, $discount);
       $booking->update(['amount' => $discountedData['totalAmount']]);
 
@@ -91,6 +97,7 @@ class UserEventBookingController extends Controller
 
       $checkoutSessionUrl = $this->createCheckoutSession($discountedData['liteItems'], $event, $booking, $user);
     } else {
+      Log::info('code is not eligible as it is inside Else block');
       $lineItems = [];
       $totalAmount = 0;
       foreach ($request->except('_token', 'event_id', 'name', 'email') as $ticketId => $quantity) {
