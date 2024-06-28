@@ -4,17 +4,17 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    public function run()
-    {
-        $this->call([
-            PermissionsTableSeeder::class,
-            RolesTableSeeder::class,
-            PermissionRoleTableSeeder::class,
-            UsersTableSeeder::class,
-            RoleUserTableSeeder::class,
-            CitySeeder::class,
-            CategorySeeder::class,
-            // EventSeeder::class      
-        ]);
-    }
+  public function run()
+  {
+    $this->call([
+      PermissionsTableSeeder::class,
+      RolesTableSeeder::class,
+      PermissionRoleTableSeeder::class,
+      UsersTableSeeder::class,
+      RoleUserTableSeeder::class,
+      //CitySeeder::class,
+      //CategorySeeder::class,
+      // EventSeeder::class      
+    ]);
+  }
 }
