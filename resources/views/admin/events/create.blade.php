@@ -494,12 +494,12 @@
                 }
             }
 
-            var additionalInfo = $('#additionalInfo').val();
+            /*var additionalInfo = $('#additionalInfo').val();
             if (additionalInfo === '') {
                 alert('Please fill out all required fields.');
                 isValid = false;
                 return isValid;
-            }
+            }*/
 
             var banner1 = $('#banner1').prop('files')[0];
             var banner2 = $('#banner2').prop('files')[0];
