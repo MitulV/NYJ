@@ -49,13 +49,13 @@
                                 <input type="time" class="form-control" name="endTime" id="endTime">
                             </div>
                         </div>
-                        <div class="form-row">
+                        {{-- <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label for="booking_deadline">Booking Deadline</label>
                                 <input type="date" class="form-control" name="booking_deadline" id="booking_deadline"
                                     min="{{ date('Y-m-d') }}">
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="form-row">
                             <div class="form-group col-md-12">
@@ -360,7 +360,7 @@
             var startTime = $('#startTime').val();
             var endDate = $('#endDate').val();
             var endTime = $('#endTime').val();
-            var bookingDeadline = $('#booking_deadline').val();
+            //var bookingDeadline = $('#booking_deadline').val();
             var description = $('#shortDescription').val();
             if (category === '-- Select --' || title === '' || startDate === '' ||
                 startTime === '' || endDate === '' || endTime === '' ||
@@ -376,11 +376,11 @@
                 return isValid;
             }
 
-            if (bookingDeadline && (bookingDeadline >= startDate)) {
-                alert('Booking deadline should be before the start date.');
-                isValid = false;
-                return isValid;
-            }
+            // if (bookingDeadline && (bookingDeadline >= startDate)) {
+            //     alert('Booking deadline should be before the start date.');
+            //     isValid = false;
+            //     return isValid;
+            // }
 
             var city = $('#city').val();
             var address = $('#address').val();

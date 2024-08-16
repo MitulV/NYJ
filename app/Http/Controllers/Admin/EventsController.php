@@ -13,6 +13,7 @@ use App\Mail\BookingConfirmation;
 use App\Services\BookingService;
 use App\Ticket;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -28,9 +29,7 @@ use Illuminate\Support\Facades\Mail;
 
 class EventsController extends Controller
 {
-  public function __construct(private BookingService $bookingService)
-  {
-  }
+  public function __construct(private BookingService $bookingService) {}
   public function index()
   {
     abort_if(Gate::denies('Event_Management'), Response::HTTP_FORBIDDEN, '403 Forbidden');
@@ -97,6 +96,8 @@ class EventsController extends Controller
     $path2 = $banner2->storeAs('public/images', $filename2);
     $url2 = $request->getSchemeAndHttpHost() . env('PROJECT_FOLDER_PREFIX') . '/public' . Storage::url($path2);
 
+    $startDateTime = Carbon::parse($request->input('startDate') . ' ' . $request->input('startTime'));
+    $bookingDeadline = $startDateTime->subHour();
 
     $event = Event::create([
       'organizer_id' => auth()->id(),
@@ -117,7 +118,7 @@ class EventsController extends Controller
       'additional_info' => $request->input('additionalInfo'),
       'image1' => $url1,
       'image2' => $url2,
-      'booking_deadline' => $request->input('booking_deadline'),
+      'booking_deadline' => $bookingDeadline,
       'status' => 'Published'
     ]);
 
@@ -170,6 +171,9 @@ class EventsController extends Controller
 
     abort_if(Gate::denies('Event_Management'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
+    $startDateTime = Carbon::parse($request->input('startDate') . ' ' . $request->input('startTime'));
+    $bookingDeadline = $startDateTime->subHour();
+
     $event->update([
       'title' => $request->input('title'),
       'short_description' => $request->input('shortDescription'),
@@ -186,7 +190,7 @@ class EventsController extends Controller
       'min_age' => $request->input('min_age'),
       'max_age' => $request->input('max_age'),
       'additional_info' => $request->input('additionalInfo'),
-      'booking_deadline' => $request->input('booking_deadline'),
+      'booking_deadline' => $bookingDeadline
     ]);
 
     $ticketIds = $request->input('ticket_id');

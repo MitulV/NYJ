@@ -52,7 +52,7 @@
                                     value="{{ $event->end_time }}" disabled>
                             </div>
                         </div>
-                        <div class="form-row">
+                        {{-- <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label for="booking_deadline">Booking Deadline</label>
                                 @if ($event->booking_deadline != null)
@@ -65,7 +65,7 @@
                                 @endif
 
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="form-row">
                             <div class="form-group col-md-12">
