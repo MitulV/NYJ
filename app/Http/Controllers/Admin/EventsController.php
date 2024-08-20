@@ -64,7 +64,7 @@ class EventsController extends Controller
       'startTime' => 'nullable|date_format:H:i', // Example validation rule for startTime (optional and time in format HH:MM)
       'endDate' => 'required|date', // Example validation rule for endDate (required and date)
       'endTime' => 'nullable|date_format:H:i', // Example validation rule for endTime (optional and time in format HH:MM)
-      'shortDescription' => 'nullable|string|max:255', // Example validation rule for shortDescription (optional, string, max length 255)
+      'shortDescription' => 'nullable|string', // Example validation rule for shortDescription (optional, string, max length 255)
       'city' => 'required|numeric', // Example validation rule for city (required and numeric)
       'address' => 'nullable|string|max:255', // Example validation rule for address (optional, string, max length 255)
       'long_description' => 'nullable|string', // Example validation rule for long_description (optional string)
@@ -76,7 +76,7 @@ class EventsController extends Controller
       'banner1' => 'required|image',
       'banner2' => 'required|image',
       'ticket_name.*' => 'required|string|max:255',
-      'ticket_description.*' => 'required|string|max:255',
+      'ticket_description.*' => 'required|string',
       'ticket_price.*' => 'required|numeric|min:0',
       'ticket_quantity.*' => 'required|integer|min:0',
     ]);

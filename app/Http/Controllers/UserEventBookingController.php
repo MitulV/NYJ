@@ -20,14 +20,21 @@ use Illuminate\Support\Str;
 class UserEventBookingController extends Controller
 {
 
-  public function __construct(private BookingService $bookingService)
-  {
-  }
+  public function __construct(private BookingService $bookingService) {}
 
   public function eventDetails(Request $request)
   {
     $eventId = $request->query('eventId');
+    if (!$eventId) {
+      return redirect()->back()->withErrors('Event ID is missing.');
+    }
+
     $event = Event::find($eventId);
+
+    if (!$event) {
+      return redirect()->back()->withErrors('Event not found.');
+    }
+
     return view('details', compact('event'));
   }
 
@@ -87,7 +94,13 @@ class UserEventBookingController extends Controller
     $request['available_for'] = 'all';
 
     $discount = Discount::where('code', $request->code)->first();
-    Log::info("discount object fecthed from db with " . $discount->id);
+    if ($discount) {
+      Log::info("Discount object fetched from DB with ID: " . $discount->id);
+    } else {
+      Log::warning("No discount object found in the DB.");
+    }
+
+
     if ($request->filled('code') && $this->bookingService->isDiscountCodeActive($discount, $request)) {
       Log::info('code is eligible as it is inside If block');
       $discountedData = $this->bookingService->handleOnlineDiscount($request, $booking, $discount);
