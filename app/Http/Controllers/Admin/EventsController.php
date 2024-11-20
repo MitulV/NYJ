@@ -37,9 +37,23 @@ class EventsController extends Controller
     $user = auth()->user();
 
     if ($user->isAdmin()) {
-      $events = Event::all();
+      $events = Event::where(function ($query) {
+        $query->where('end_date', '>', Carbon::today())
+          ->orWhere(function ($subQuery) {
+            $subQuery->where('end_date', '=', Carbon::today())
+              ->where('end_time', '>=', Carbon::now()->format('H:i:s'));
+          });
+      })->get();
     } elseif ($user->isOrganizer()) {
-      $events = Event::where('organizer_id', $user->id)->get();
+      $events = Event::where('organizer_id', $user->id)
+        ->where(function ($query) {
+          $query->where('end_date', '>', Carbon::today())
+            ->orWhere(function ($subQuery) {
+              $subQuery->where('end_date', '=', Carbon::today())
+                ->where('end_time', '>=', Carbon::now()->format('H:i:s'));
+            });
+        })
+        ->get();
     }
 
     return view('admin.events.index', compact('events'));
@@ -131,28 +145,36 @@ class EventsController extends Controller
     foreach ($ticketNames as $key => $ticketName) {
       $price = $ticketPrices[$key];
 
+      // Apply 7% increase to the ticket price
+      $finalPrice = $price + ($price * 0.07); // Add 7% to the ticket price
+
       Ticket::create([
         'event_id' => $event->id,
         'name' => $ticketName,
         'description' => $ticketDescriptions[$key],
-        'price' => $price,
+        'price' => $finalPrice, // Use the final price with the 7% added
         'quantity' => $ticketQuantities[$key],
       ]);
     }
 
+
     if ($request->filled('group_ticket_name')) {
       $price = $request->input('group_ticket_price');
+
+      // Apply 7% increase to the group ticket price
+      $finalPrice = $price + ($price * 0.07); // Add 7% to the price
 
       Ticket::create([
         'event_id' => $event->id,
         'name' => $request->input('group_ticket_name'),
         'description' => $request->input('group_ticket_description'),
-        'price' => $price,
+        'price' => $finalPrice, // Use the final price with the 7% added
         'quantity' => $request->input('group_ticket_quantity'),
         'group_count' => $request->input('group_count'),
         'is_group_ticket' => 1,
       ]);
     }
+
     return redirect()->route('admin.events.index');
   }
 
@@ -205,12 +227,16 @@ class EventsController extends Controller
 
       $ticketId = $ticketIds[$key];
       $price = $ticketPrices[$key];
+
+      // Apply 7% increase to the ticket price
+      $finalPrice = $price + ($price * 0.07); // Add 7% to the ticket price
+
       if ($ticketId == null) {
         Ticket::create([
           'event_id' => $event->id,
           'name' => $ticketName,
           'description' => $ticketDescriptions[$key],
-          'price' => $price,
+          'price' => $finalPrice,
           'quantity' => $ticketQuantities[$key]
         ]);
       } else {
@@ -218,7 +244,7 @@ class EventsController extends Controller
         $ticket->update([
           'name' => $ticketName,
           'description' => $ticketDescriptions[$key],
-          'price' => $price,
+          'price' => $finalPrice,
           'quantity' => $ticketQuantities[$key],
         ]);
       }
@@ -227,12 +253,15 @@ class EventsController extends Controller
     if ($request->filled('group_ticket_name')) {
       $ticketId = $request->input('group_ticket_id');
       $price = $request->input('group_ticket_price');
+
+      // Apply 7% increase to the group ticket price
+      $finalPrice = $price + ($price * 0.07); // Add 7% to the price
       if ($ticketId == null) {
         Ticket::create([
           'event_id' => $event->id,
           'name' => $request->input('group_ticket_name'),
           'description' => $request->input('group_ticket_description'),
-          'price' => $price,
+          'price' => $finalPrice,
           'quantity' => $request->input('group_ticket_quantity'),
           'group_count' => $request->input('group_count'),
           'is_group_ticket' => 1
@@ -242,7 +271,7 @@ class EventsController extends Controller
         $ticket->update([
           'name' => $request->input('group_ticket_name'),
           'description' => $request->input('group_ticket_description'),
-          'price' => $price,
+          'price' => $finalPrice,
           'quantity' => $request->input('group_ticket_quantity'),
           'group_count' => $request->input('group_count')
         ]);
@@ -390,5 +419,36 @@ class EventsController extends Controller
     Mail::to($user->email)->send(new BookingConfirmation($booking, $totalTicketQuantity, $qrCodeUrl));
 
     return redirect()->route('admin.bookings.index')->with('payment_success', 'Your booking has been confirmed.');
+  }
+
+
+  public function salesReport(Request $request, $eventID)
+  {
+    // Fetch the event details
+    $event = Event::findOrFail($eventID);
+
+    // Fetch bookings for the given event
+    $bookings = Booking::with(['user', 'tickets', 'discount'])
+      ->where('event_id', $eventID)
+      ->get()
+      ->map(function ($booking) {
+        return [
+          'id' => $booking->id,
+          'booking_date' => \Carbon\Carbon::parse($booking->booking_date_time)->format('m/d/Y g:iA'),
+          'user_name' => $booking->user->name,
+          'payment_mode' => $booking->is_offline ? 'Offline' : 'Online',
+          'reference_number' => $booking->reference_number,
+          'no_of_tickets' => $booking->tickets->sum('pivot.quantity'),
+          'amount' => $booking->amount,
+          'discount_amount' => $booking->discount ? $booking->discount->discount_amount : 0,
+        ];
+      });
+
+    // Pass the event title and bookings to the view
+    return view('salesReport', [
+      'event_title' => $event->title,
+      'event_id' => $event->id,
+      'bookings' => $bookings,
+    ]);
   }
 }

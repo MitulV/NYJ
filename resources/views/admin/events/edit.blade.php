@@ -196,6 +196,7 @@
                                                             class="form-control" placeholder="Enter Number of Tickets"
                                                             value="{{ $ticket->quantity }}">
                                                     </div>
+                                                    <span class="finalPrice"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -275,6 +276,7 @@
                                                         id="group_ticket_price" class="form-control"
                                                         placeholder="Enter Ticket Price" value="{{ $ticket->price }}">
                                                 </div>
+                                                <span class="groupFinalPrice"></span>
                                             </div>
                                         </div>
                                         <div class="form-group col-md-6">
@@ -319,8 +321,42 @@
             }
         });
 
+        $(document).on('blur', 'input[name="ticket_price[]"]', function() {
+            // Get the ticket price value
+            var ticketPrice = parseFloat($(this).val());
+
+            // Calculate 7% of the ticket price
+            if (!isNaN(ticketPrice)) {
+                var finalPrice = ticketPrice + (ticketPrice * 0.07); // Add 7% to the ticket price
+
+                // Find the finalPrice span in the same section and update it
+                $(this).closest('.ticket-info-section').find('.finalPrice').text('Final Ticket Price will be £' +
+                    finalPrice.toFixed(2));
+            }
+        });
+
 
         $(document).ready(function() {
+
+            $('#group_ticket_price').on('blur', function() {
+
+                // Get the group ticket price value
+                var groupTicketPrice = parseFloat($(this).val());
+
+
+
+                // Calculate 7% of the group ticket price
+                if (!isNaN(groupTicketPrice)) {
+                    var finalGroupPrice = groupTicketPrice + (groupTicketPrice *
+                        0.07); // Add 7% to the price
+
+
+                    // Update the label with the final group ticket price
+                    $('.groupFinalPrice').text('Final Group Ticket Price will be £' +
+                        finalGroupPrice.toFixed(2));
+                }
+            });
+
 
             $('#ageRestrictions').change(function() {
                 var selectedOption = $(this).val();
@@ -371,6 +407,9 @@
                     $(this).val('');
                 });
                 ticketSection.find('input[name="ticket_id[]"]').val('');
+
+                // Reset the final price label to an empty state or default message
+                ticketSection.find('.finalPrice').text(''); // or 'Final Ticket Price will be £0.00'
 
                 var deleteButton = $(
                     '<button type="button" class="btn btn-danger delete-button">Delete</button>');

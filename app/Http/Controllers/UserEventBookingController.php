@@ -171,6 +171,17 @@ class UserEventBookingController extends Controller
       'payment_status' => 'unpaid'
     ]);
 
+    // Calculate the total price of the items in the lineItems array
+    $totalAmount = 0;
+    foreach ($lineItems as $lineItem) {
+      $unitAmount = $lineItem['price_data']['unit_amount']; // Unit amount in cents
+      $quantity = $lineItem['quantity'];
+      $totalAmount += $unitAmount * $quantity;
+    }
+
+    // Calculate the 7% commission
+    $commissionAmount = (int)($totalAmount * 0.07); // 7% of the total amount (in cents)
+
     $checkoutSession = $stripe->checkout->sessions->create([
       'mode' => 'payment',
       'line_items' =>  $lineItems,
@@ -180,7 +191,7 @@ class UserEventBookingController extends Controller
         'user_id' => $user->id,
       ],
       'payment_intent_data' => [
-        'application_fee_amount' => 100, // Commission of Plateform (1$) but sent as cents
+        'application_fee_amount' => $commissionAmount, // Commission of Plateform sent as cents (7%)
         'transfer_data' => ['destination' => $stripeSettings->account_id],
       ],
       'success_url' => route('paymentSuccess'),

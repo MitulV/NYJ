@@ -147,7 +147,6 @@
                                         </div>
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
-
                                                 <div class="input-group">
                                                     <label for="ticketPrice">Ticket Price</label>
                                                     <div class="input-group">
@@ -162,10 +161,13 @@
                                             <div class="form-group col-md-6">
                                                 <label>Number of Tickets</label>
                                                 <input type="number" name="ticket_quantity[]" class="form-control"
-                                                    placeholder="Enter Number of Tickets">
+                                                    placeholder="Enter Number of Tickets" />
                                             </div>
+                                            <span class="finalPrice"></span>
                                         </div>
+
                                     </div>
+
                                 </div>
 
                             </div>
@@ -237,8 +239,9 @@
                                                 <span class="input-group-text">£</span>
                                             </div>
                                             <input type="number" name="group_ticket_price" id="group_ticket_price"
-                                                class="form-control" placeholder="Enter Ticket Price">
+                                                class="form-control" placeholder="Enter Ticket Price" />
                                         </div>
+                                        <span class="groupFinalPrice"></span>
                                     </div>
                                 </div>
                                 <div class="form-group col-md-6">
@@ -283,8 +286,41 @@
             }
         });
 
+        $(document).on('blur', 'input[name="ticket_price[]"]', function() {
+            // Get the ticket price value
+            var ticketPrice = parseFloat($(this).val());
+
+            // Calculate 7% of the ticket price
+            if (!isNaN(ticketPrice)) {
+                var finalPrice = ticketPrice + (ticketPrice * 0.07); // Add 7% to the ticket price
+
+                // Find the finalPrice span in the same section and update it
+                $(this).closest('.ticket-info-section').find('.finalPrice').text('Final Ticket Price will be £' +
+                    finalPrice.toFixed(2));
+            }
+        });
 
         $(document).ready(function() {
+
+            $('#group_ticket_price').on('blur', function() {
+
+                // Get the group ticket price value
+                var groupTicketPrice = parseFloat($(this).val());
+
+
+
+                // Calculate 7% of the group ticket price
+                if (!isNaN(groupTicketPrice)) {
+                    var finalGroupPrice = groupTicketPrice + (groupTicketPrice *
+                        0.07); // Add 7% to the price
+
+
+                    // Update the label with the final group ticket price
+                    $('.groupFinalPrice').text('Final Group Ticket Price will be £' +
+                        finalGroupPrice.toFixed(2));
+                }
+            });
+
 
             $('#minAgeDiv').hide();
             $('#maxAgeDiv').hide();
@@ -337,6 +373,9 @@
                 inputs.each(function() {
                     $(this).val('');
                 });
+
+                // Reset the final price label to an empty state or default message
+                ticketSection.find('.finalPrice').text(''); // or 'Final Ticket Price will be £0.00'
 
                 var deleteButton = $(
                     '<button type="button" class="btn btn-danger delete-button">Delete</button>');
@@ -392,7 +431,7 @@
 
             if (city === '-- Select --' || address === '' || $('#longDescription').summernote(
                     'isEmpty') ||
-                $('#termsConditions').summernote('isEmpty') || ageRestrictions === '-- Select --') {
+                ageRestrictions === '-- Select --') {
                 alert('Please fill out all required fields.');
                 isValid = false;
                 return isValid;
@@ -493,13 +532,6 @@
                     return isValid;
                 }
             }
-
-            /*var additionalInfo = $('#additionalInfo').val();
-            if (additionalInfo === '') {
-                alert('Please fill out all required fields.');
-                isValid = false;
-                return isValid;
-            }*/
 
             var banner1 = $('#banner1').prop('files')[0];
             var banner2 = $('#banner2').prop('files')[0];
